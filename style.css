@@ -1,0 +1,25 @@
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+#gameBoard {
+  display: grid;
+  justify-content: center;
+  margin: auto;
+  grid-template-columns: repeat(var(--numCols), 1fr);
+  grid-template-rows: repeat(var(--numRows), 1fr);
+  border: 0.1px solid rgb(188, 188, 188);
+  width: 181vh;
+  height: 80vh;
+}
+
+#gameBoard > div {
+  border: 0.1px solid rgb(187, 187, 187);
+}
