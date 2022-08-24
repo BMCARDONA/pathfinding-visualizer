@@ -1,4 +1,3 @@
-
 // gameBoard must be an id -- it can't be a class. 
 let gameBoard = document.getElementById('gameBoard');
 let coordinateArray = []
@@ -16,7 +15,7 @@ for (let row = 0; row < numberOfRows; row++) {
         coordinateArray.push([row, col])
         let div = document.createElement('div');
         div.id = `${row}-${col}`
-        div.classList.add('unvisited_node');
+        div.classList.add('unvisited');
         gameBoard.appendChild(div);
     }
 }
@@ -29,6 +28,7 @@ unvisitedNodes.forEach(node => {
       let coordinates = node.id.split("-");
       let row = parseInt(coordinates[0]);
       let col = parseInt(coordinates[1]);
+      // DFS
       let visitedNodes = []
       for (let row = 0; row < numberOfRows; row++) {
           for (let col = 0; col < numberOfCols; col++) {
@@ -45,11 +45,11 @@ function depthFirstSearch(row, col, visitedNodes) {
     }
     visitedNodes[row][col] = true;
     let neighboringNode = document.getElementById(`${row}-${col}`);
-    neighboringNode.style.backgroundColor = 'purple';
-    setTimeout(depthFirstSearch, 10, row + 1, col, visitedNodes);
-    setTimeout(depthFirstSearch, 10, row - 1, col, visitedNodes);
-    setTimeout(depthFirstSearch, 10, row + 1, col + 1, visitedNodes);
-    setTimeout(depthFirstSearch, 10, row + 1, col - 1, visitedNodes);
+    neighboringNode.style.backgroundColor = 'seagreen';
+    depthFirstSearch(row + 1, col, visitedNodes);
+    depthFirstSearch(row - 1, col, visitedNodes);
+    depthFirstSearch(row, col + 1, visitedNodes);
+    depthFirstSearch(row, col - 1, visitedNodes);
 }
 
-makeGrid(numberOfRows, numberOfCols)  
+makeGrid(numberOfRows, numberOfCols) 
