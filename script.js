@@ -18,4 +18,14 @@ for (let row = 0; row < numberOfRows; row++) {
     }
 }
 
-makeGrid(numberOfRows, numberOfCols)
+// Use querySelectorAll to retrieve direct children
+// Link: https://stackoverflow.com/questions/3680876/using-queryselectorall-to-retrieve-direct-children
+unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited_node");
+unvisitedNodes.forEach(node => {
+    node.addEventListener('click', () => {
+        node.style.backgroundColor = 'blue';
+    })
+});
+
+
+makeGrid(numberOfRows, numberOfCols)  
