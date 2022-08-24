@@ -20,38 +20,6 @@ for (let row = 0; row < numberOfRows; row++) {
     }
 }
 
-// Use querySelectorAll to retrieve direct children
-// Link: https://stackoverflow.com/questions/3680876/using-queryselectorall-to-retrieve-direct-children
-// let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
-// unvisitedNodes.forEach(node => {
-//     node.addEventListener('click', () => {
-//         let coordinates = node.id.split("-");
-//         let row = parseInt(coordinates[0]);
-//         let col = parseInt(coordinates[1]);
-//         // DFS
-//         DFS(row, col, startNode);
-//     })
-// });
-
-// function DFS(row, col, currentNode) {
-//     if (row < 0 || row > 26 || col < 0 || col > 63 || currentNode.classList.contains('visited')) {
-//         return;
-//     }
-//     let startNode = document.getElementById(`${row}-${col}`);
-//     startNode.style.backgroundColor = 'seagreen';
-//     currentNode.classList.remove('unvisited');
-//     currentNode.classList.add('visited');
-//     let neighboringNode = document.getElementById(`${row + 1}-${col}`);
-//     neighboringNode.style.backgroundColor = 'seagreen';
-//     DFS(row + 1, col, neighboringNode);
-//     // DFS(row - 1, col, neighboringNode);
-//     // DFS(row, col + 1, neighboringNode);
-//     // DFS(row, col - 1, neighboringNode);
-// }
-
-// makeGrid(numberOfRows, numberOfCols) 
-
-
 
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
 unvisitedNodes.forEach(node => {
@@ -60,25 +28,52 @@ unvisitedNodes.forEach(node => {
         let row = parseInt(coordinates[0]);
         let col = parseInt(coordinates[1]);
         // DFS
-        DFS(row, col);
+        let currentNode = document.getElementById(`${row}-${col}`)
+        DFS(currentNode);
     })
 });
 
-
-// recursive
-function DFS(row, col) {
-    let currentNode = document.getElementById(`${row}-${col}`);
-    if (row < 0 || row > 26 || col < 0 || col > 63 || currentNode.classList.contains('visited')) {
-        return;
+// iterative -- don't need to create a visited array; we already have a class devoted to that!
+function DFS(node) {
+    let stack = [node]
+    while (stack.length !== 0) {
+        currentNode = stack.pop();
+        currentNode.style.backgroundColor = 'blue';
+        currentNode.classList.remove('unvisited');
+        currentNode.classList.add('visited');
+        let coordinates = currentNode.id.split("-");
+        let row = parseInt(coordinates[0]);
+        let col = parseInt(coordinates[1]);
+        // topNode
+        if (row - 1 >= 0) {
+            let topNode = document.getElementById(`${row - 1}-${col}`);
+            if (!(topNode.classList.contains('visited')) && (topNode != null)) {
+                stack.push(topNode);
+            } 
+        }
+        // bottomNode
+        if (row + 1 <= 26) {
+          let bottomNode = document.getElementById(`${row + 1}-${col}`);
+          if (!(bottomNode.classList.contains('visited'))) {
+              stack.push(bottomNode);
+          } 
+        }       
+        // leftNode
+        if (col - 1 >= 0) {
+          let leftNode = document.getElementById(`${row}-${col - 1}`);
+          if (!(leftNode.classList.contains('visited'))) {
+              stack.push(leftNode);
+          } 
+        }   
+        // rightNode
+        if (col + 1 <= 63) {
+          let rightNode = document.getElementById(`${row}-${col + 1}`);
+          if (!(rightNode.classList.contains('visited'))) {
+              stack.push(rightNode);
+          } 
+        }  
     }
-    currentNode.style.backgroundColor = 'blue';
-    currentNode.classList.remove('unvisited');
-    currentNode.classList.add('visited');
-    DFS(row + 1, col);
-    DFS(row - 1, col);
-    DFS(row, col + 1);
-    DFS(row, col - 1);
+    return;
 }
-
 
 makeGrid(numberOfRows, numberOfCols) 
