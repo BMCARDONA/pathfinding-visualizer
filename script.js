@@ -22,34 +22,31 @@ for (let row = 0; row < numberOfRows; row++) {
 
 // Use querySelectorAll to retrieve direct children
 // Link: https://stackoverflow.com/questions/3680876/using-queryselectorall-to-retrieve-direct-children
-let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited_node");
+let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
 unvisitedNodes.forEach(node => {
     node.addEventListener('click', () => {
-      let coordinates = node.id.split("-");
-      let row = parseInt(coordinates[0]);
-      let col = parseInt(coordinates[1]);
-      // DFS
-      let visitedNodes = []
-      for (let row = 0; row < numberOfRows; row++) {
-          for (let col = 0; col < numberOfCols; col++) {
-              visitedNodes.push([false]);
-          }
-      }
-      depthFirstSearch(row, col, visitedNodes);
+        let coordinates = node.id.split("-");
+        let row = parseInt(coordinates[0]);
+        let col = parseInt(coordinates[1]);
+        // DFS
+        let startNode = document.getElementById(`${row}-${col}`);
+        startNode.style.backgroundColor = 'seagreen';
+        DFS(row, col, startNode);
     })
 });
 
-function depthFirstSearch(row, col, visitedNodes) {
-    if (row < 0 || row > 26 || col < 0 || col > 63 || visitedNodes[row][col] == true) {
-      return;
+function DFS(row, col, currentNode) {
+    if (row < 0 || row > 26 || col < 0 || col > 63 || currentNode.classList.contains('visited')) {
+        return;
     }
-    visitedNodes[row][col] = true;
-    let neighboringNode = document.getElementById(`${row}-${col}`);
+    currentNode.classList.remove('unvisited');
+    currentNode.classList.add('visited');
+    let neighboringNode = document.getElementById(`${row + 1}-${col}`);
     neighboringNode.style.backgroundColor = 'seagreen';
-    depthFirstSearch(row + 1, col, visitedNodes);
-    depthFirstSearch(row - 1, col, visitedNodes);
-    depthFirstSearch(row, col + 1, visitedNodes);
-    depthFirstSearch(row, col - 1, visitedNodes);
+    DFS(row + 1, col, neighboringNode);
+    // DFS(row - 1, col, neighboringNode);
+    // DFS(row, col + 1, neighboringNode);
+    // DFS(row, col - 1, neighboringNode);
 }
 
 makeGrid(numberOfRows, numberOfCols) 
