@@ -83,34 +83,16 @@ function DFS(node) {
 
 
       // leftNode
-      if (col - 1 >= 0) {generalFunction(row, col - 1);
-      }   
-      else {
-        numberOfBarriers += 1;
-      }
+      (col - 1 >= 0) ? generalFunction(row, col - 1) : numberOfBarriers += 1;
       
-
       // bottomNode
-      if (row + 1 <= 26) {
-          generalFunction(row + 1, col);
-      }  
-      else {
-        numberOfBarriers += 1;
-      }
+      (row + 1 <= 26) ? generalFunction(row + 1, col) : numberOfBarriers += 1;
+
       // rightNode
-      if (col + 1 <= 63) {
-        generalFunction(row, col + 1);
-      }  
-      else {
-        numberOfBarriers += 1;
-      }
+      (col + 1 <= 63) ? generalFunction(row, col + 1) : numberOfBarriers += 1;
+      
       // topNode
-      if (row - 1 >= 0) {
-        generalFunction(row - 1, col);
-      }
-      else {
-        numberOfBarriers += 1;
-      }
+      (row - 1 >= 0) ? generalFunction(row - 1, col) : numberOfBarriers += 1;
 
 
       if (possiblePathsForNode >= 2) {
@@ -121,6 +103,7 @@ function DFS(node) {
         currentNode.classList.add('dead-end');
       }
   }
+  
   // Convert set to array
   // Helpful link: https://stackoverflow.com/questions/16401216/iterate-over-set-elements
 
