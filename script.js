@@ -33,47 +33,60 @@ unvisitedNodes.forEach(node => {
     })
 });
 
-// iterative -- don't need to create a visited array; we already have a class devoted to that!
+
 function DFS(node) {
-    let stack = [node]
-    while (stack.length !== 0) {
-        currentNode = stack.pop();
-        currentNode.style.backgroundColor = 'blue';
-        currentNode.classList.remove('unvisited');
-        currentNode.classList.add('visited');
-        let coordinates = currentNode.id.split("-");
-        let row = parseInt(coordinates[0]);
-        let col = parseInt(coordinates[1]);
-        // topNode
-        if (row - 1 >= 0) {
-            let topNode = document.getElementById(`${row - 1}-${col}`);
-            if (!(topNode.classList.contains('visited')) && (topNode != null)) {
-                stack.push(topNode);
-            } 
-        }
-        // bottomNode
-        if (row + 1 <= 26) {
-          let bottomNode = document.getElementById(`${row + 1}-${col}`);
-          if (!(bottomNode.classList.contains('visited'))) {
-              stack.push(bottomNode);
-          } 
-        }       
-        // leftNode
-        if (col - 1 >= 0) {
-          let leftNode = document.getElementById(`${row}-${col - 1}`);
-          if (!(leftNode.classList.contains('visited'))) {
-              stack.push(leftNode);
-          } 
-        }   
-        // rightNode
-        if (col + 1 <= 63) {
-          let rightNode = document.getElementById(`${row}-${col + 1}`);
-          if (!(rightNode.classList.contains('visited'))) {
-              stack.push(rightNode);
-          } 
-        }  
+  let stack = [node]
+  let visitedNodesInOrder = new Set();
+  while (stack.length !== 0) {
+      currentNode = stack.pop();
+      visitedNodesInOrder.add(currentNode);
+      // currentNode.style.backgroundColor = 'blue';
+      currentNode.classList.remove('unvisited');
+      currentNode.classList.add('visited');
+
+      let coordinates = currentNode.id.split("-");
+      let row = parseInt(coordinates[0]);
+      let col = parseInt(coordinates[1]);    
+      // leftNode
+      if (col - 1 >= 0) {
+        let leftNode = document.getElementById(`${row}-${col - 1}`);
+        if (!(leftNode.classList.contains('visited'))) {
+            stack.push(leftNode);
+        } 
+      }   
+      // bottomNode
+      if (row + 1 <= 26) {
+        let bottomNode = document.getElementById(`${row + 1}-${col}`);
+        if (!(bottomNode.classList.contains('visited'))) {
+            stack.push(bottomNode);
+        } 
+      }  
+      // rightNode
+      if (col + 1 <= 63) {
+        let rightNode = document.getElementById(`${row}-${col + 1}`);
+        if (!(rightNode.classList.contains('visited'))) {
+            stack.push(rightNode);
+        } 
+      }  
+      // topNode
+      if (row - 1 >= 0) {
+        let topNode = document.getElementById(`${row - 1}-${col}`);
+        if (!(topNode.classList.contains('visited')) && (topNode != null)) {
+            stack.push(topNode);
+        } 
     }
-    return;
+  }
+  console.log(visitedNodesInOrder);
+  // how do we loop through a set?
+  b = Array.from(visitedNodesInOrder);
+  for (let i = 0; i < b.length; i++) {
+  setTimeout(() => {
+    console.log("hello")
+    const node = b[i];
+    node.style.backgroundColor = 'blue';
+  }, 10 * i);
+}
+  return;
 }
 
 makeGrid(numberOfRows, numberOfCols) 
