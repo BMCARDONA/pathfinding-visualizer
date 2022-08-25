@@ -11,23 +11,6 @@ function makeGrid(numRows, numCols) {
     gameBoard.style.setProperty('--numCols', numCols); 
 }
 
-// add "target" to one node, "unvisited" to other nodes
-for (let row = 0; row < numberOfRows; row++) {
-    for (let col = 0; col < numberOfCols; col++) {
-        let div = document.createElement('div');
-        div.id = `${row}-${col}`
-        if (row == 13 && col == 55) {
-            div.classList.add('target');
-            gameBoard.appendChild(div);
-            div.style.backgroundColor = "green";
-        }
-        else {
-          div.classList.add('unvisited');
-          gameBoard.appendChild(div);
-        }
-    }
-}
-
 function drawWall(e) {
   if (mouseDown === true) {
     e.target.style.backgroundColor = "black";
@@ -48,17 +31,23 @@ function getNodeColumn(node) {
     return (c);
 }
 
-let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
-unvisitedNodes.forEach(node => {
-    node.addEventListener('mousedown', drawWall);
-    node.addEventListener('mouseover', drawWall);
-    node.addEventListener('click', () => {
-        let row = getNodeRow(node); 
-        let col = getNodeColumn(node); 
-        let currentNode = document.getElementById(`${row}-${col}`)
-        DFS(currentNode);
-    })
-});
+function getManhattanDistance(node) {
+    let row = getNodeRow(node); 
+    let col = getNodeColumn(node); 
+    let manhattanDistance = Math.abs(13 - row) + Math.abs(55 - col);
+    node.classList.add(`${manhattanDistance}`);
+    node.textContent = `${manhattanDistance}`
+}
+
+function showColoredPath(array) {
+    for (let i = 0; i < array.length; i++) {
+        setTimeout(() => {
+            let pathToTargetNode = array[i];
+            pathToTargetNode.style.backgroundColor = 'blue';
+            getManhattanDistance(pathToTargetNode);
+        }, 10 * i);
+    }
+}
 
 function DFS(node) {
     let stack = [node]
@@ -104,52 +93,40 @@ function DFS(node) {
         }
     }
 
-
-    function getManhattanDistance(node) {
-        let row = getNodeRow(node); 
-        let col = getNodeColumn(node); 
-        let manhattanDistance = Math.abs(13 - row) + Math.abs(55 - col);
-        node.classList.add(`${manhattanDistance}`);
-        node.textContent = `${manhattanDistance}`
-    }
-
-    usefulNodes = [];
-    arrayOfVisitedNodes = Array.from(visitedNodesInOrder);
-    console.log(arrayOfVisitedNodes);
-    for (let i = 0; i < arrayOfVisitedNodes.length; i++) {
-        targetReached = false;
-        const node = arrayOfVisitedNodes[i];
-        if (node.classList.contains('target')) {
-            targetReached = true;
-            length = i;
-            for (let j = 0; j < length + 1; j++) {
-                setTimeout(() => {
-                    const pathToTargetNode = arrayOfVisitedNodes[j];
-                    pathToTargetNode.style.backgroundColor = 'blue';
-                }, 10 * j);
-            }
-        }
-    }
-
-    let addUseless = false;
-    for (let i = 0; i < arrayOfVisitedNodes.length; i++) {
-        let node = arrayOfVisitedNodes[i];
-        if (node.classList.contains('dead-end')) {
-            addUseless = true;
-        }
-        else if (node.classList.contains('fork')) {
-            addUseless = false;
-        }
-        if (addUseless) {
-            node.classList.add('useless')
-        }
-        else {
-            usefulNodes.push(node);
-        }
-        console.log(node);
-        getManhattanDistance(node);
-    }
+    arrayOfVisitedNodesInOrder = Array.from(visitedNodesInOrder);
+    showColoredPath(arrayOfVisitedNodesInOrder);
     return;
 }
+
+
+// add "target" to one node, "unvisited" to other nodes
+for (let row = 0; row < numberOfRows; row++) {
+    for (let col = 0; col < numberOfCols; col++) {
+        let div = document.createElement('div');
+        div.id = `${row}-${col}`
+        if (row == 13 && col == 55) {
+            div.classList.add('target');
+            gameBoard.appendChild(div);
+            div.style.backgroundColor = "green";
+        }
+        else {
+          div.classList.add('unvisited');
+          gameBoard.appendChild(div);
+        }
+    }
+}
+
+let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
+unvisitedNodes.forEach(node => {
+    node.addEventListener('mousedown', drawWall);
+    node.addEventListener('mouseover', drawWall);
+    node.addEventListener('click', () => {
+        let row = getNodeRow(node); 
+        let col = getNodeColumn(node); 
+        let currentNode = document.getElementById(`${row}-${col}`)
+        DFS(currentNode);
+    })
+});
+
 
 makeGrid(numberOfRows, numberOfCols) 
