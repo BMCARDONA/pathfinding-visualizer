@@ -3,6 +3,9 @@ let gameBoard = document.getElementById('gameBoard');
 let coordinateArray = []
 let numberOfRows = 27
 let numberOfCols = 64
+let mouseDown = false
+window.onmousedown = () => mouseDown = true;
+window.onmouseup = () => mouseDown = false;
 
 function makeGrid(numRows, numCols) {
   gameBoard.style.setProperty('--numRows', numRows); 
@@ -20,9 +23,18 @@ for (let row = 0; row < numberOfRows; row++) {
     }
 }
 
+function drawWall(e) {
+  if (mouseDown === true) {
+    e.target.style.backgroundColor = "black";
+    e.target.classList.remove('unvisited');
+    e.target.classList.add('wall');
+  }
+}
 
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
 unvisitedNodes.forEach(node => {
+    node.addEventListener('mousedown', drawWall);
+    node.addEventListener('mouseover', drawWall);
     node.addEventListener('click', () => {
         let coordinates = node.id.split("-");
         let row = parseInt(coordinates[0]);
@@ -40,7 +52,6 @@ function DFS(node) {
   while (stack.length !== 0) {
       currentNode = stack.pop();
       visitedNodesInOrder.add(currentNode);
-      // currentNode.style.backgroundColor = 'blue';
       currentNode.classList.remove('unvisited');
       currentNode.classList.add('visited');
 
@@ -77,13 +88,14 @@ function DFS(node) {
     }
   }
   console.log(visitedNodesInOrder);
-  // how do we loop through a set?
+  // change set to array
+  // Helpful link: https://stackoverflow.com/questions/16401216/iterate-over-set-elements
   b = Array.from(visitedNodesInOrder);
   for (let i = 0; i < b.length; i++) {
   setTimeout(() => {
     console.log("hello")
     const node = b[i];
-    node.style.backgroundColor = 'blue';
+    node.style.backgroundColor = 'royalblue';
   }, 10 * i);
 }
   return;
