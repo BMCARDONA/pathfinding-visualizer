@@ -61,33 +61,32 @@ function DFS(node) {
       // leftNode
       if (col - 1 >= 0) {
         let leftNode = document.getElementById(`${row}-${col - 1}`);
-        if (!(leftNode.classList.contains('visited'))) {
+        if (!(leftNode.classList.contains('visited')) && !(leftNode.classList.contains('wall'))) {
             stack.push(leftNode);
         } 
       }   
       // bottomNode
       if (row + 1 <= 26) {
         let bottomNode = document.getElementById(`${row + 1}-${col}`);
-        if (!(bottomNode.classList.contains('visited'))) {
+        if (!(bottomNode.classList.contains('visited')) && !(bottomNode.classList.contains('wall'))) {
             stack.push(bottomNode);
         } 
       }  
       // rightNode
       if (col + 1 <= 63) {
         let rightNode = document.getElementById(`${row}-${col + 1}`);
-        if (!(rightNode.classList.contains('visited'))) {
+        if (!(rightNode.classList.contains('visited')) && !(rightNode.classList.contains('wall'))) {
             stack.push(rightNode);
         } 
       }  
       // topNode
       if (row - 1 >= 0) {
         let topNode = document.getElementById(`${row - 1}-${col}`);
-        if (!(topNode.classList.contains('visited')) && (topNode != null)) {
+        if (!(topNode.classList.contains('visited')) && !(topNode.classList.contains('wall'))) {
             stack.push(topNode);
         } 
     }
   }
-  console.log(visitedNodesInOrder);
   // change set to array
   // Helpful link: https://stackoverflow.com/questions/16401216/iterate-over-set-elements
   b = Array.from(visitedNodesInOrder);
