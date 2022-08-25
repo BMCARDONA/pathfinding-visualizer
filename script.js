@@ -51,7 +51,6 @@ unvisitedNodes.forEach(node => {
     })
 });
 
-// We're not using DFS to get all the nodes! We're using it till we reach a target node!
 
 function DFS(node) {
   let stack = [node]
@@ -63,74 +62,56 @@ function DFS(node) {
       currentNode.classList.add('visited');
       let coordinates = currentNode.id.split("-");
       let row = parseInt(coordinates[0]);
-      let col = parseInt(coordinates[1]);   
-      
-      // only put node on stack if it hasn't already been visited and isn't a wall
+      let col = parseInt(coordinates[1]);  
+      let possiblePathsForNode = 0;
+      let numberOfBarriers = 0; 
 
+      function generalFunction(row, col) {
+        let node = document.getElementById(`${row}-${col}`);
+        if (node.classList.contains('visited') == false && node.classList.contains('wall') == false) {
+            stack.push(node);
+            possiblePathsForNode += 1;
+        } 
+        else if (node.classList.contains('wall')) {
+          numberOfBarriers += 1;
+        }
+      }
+      
       if (currentNode.classList.contains('target')) {
         break;
       }
 
-      let possiblePathsForNode = 0;
-      let numberOfBarriers = 0;
 
       // leftNode
-      if (col - 1 >= 0) {
-        let leftNode = document.getElementById(`${row}-${col - 1}`);
-        if (leftNode.classList.contains('visited') == false && leftNode.classList.contains('wall') == false) {
-            stack.push(leftNode);
-            possiblePathsForNode += 1;
-        } 
-        else if (leftNode.classList.contains('wall')) {
-          numberOfBarriers += 1;
-        }
+      if (col - 1 >= 0) {generalFunction(row, col - 1);
       }   
       else {
         numberOfBarriers += 1;
       }
+      
 
       // bottomNode
       if (row + 1 <= 26) {
-        let bottomNode = document.getElementById(`${row + 1}-${col}`);
-        if (bottomNode.classList.contains('visited') == false && bottomNode.classList.contains('wall') == false) {
-            stack.push(bottomNode);
-            possiblePathsForNode += 1;
-        } 
-        else if (bottomNode.classList.contains('wall')) {
-          numberOfBarriers += 1;
-        }
+          generalFunction(row + 1, col);
       }  
       else {
         numberOfBarriers += 1;
       }
       // rightNode
       if (col + 1 <= 63) {
-        let rightNode = document.getElementById(`${row}-${col + 1}`);
-        if (rightNode.classList.contains('visited') == false && rightNode.classList.contains('wall') == false) {
-            stack.push(rightNode);
-            possiblePathsForNode += 1;
-        } 
-        else if (rightNode.classList.contains('wall')) {
-          numberOfBarriers += 1;
-        }
+        generalFunction(row, col + 1);
       }  
       else {
         numberOfBarriers += 1;
       }
       // topNode
       if (row - 1 >= 0) {
-        let topNode = document.getElementById(`${row - 1}-${col}`);
-        if (topNode.classList.contains('visited') == false && topNode.classList.contains('wall') == false) {
-            stack.push(topNode);
-            possiblePathsForNode += 1;
-        } 
-        else if (topNode.classList.contains('wall')) {
-          numberOfBarriers += 1;
-        }
+        generalFunction(row - 1, col);
       }
       else {
         numberOfBarriers += 1;
       }
+
 
       if (possiblePathsForNode >= 2) {
         currentNode.classList.add('fork');
@@ -140,9 +121,18 @@ function DFS(node) {
         currentNode.classList.add('dead-end');
       }
   }
-  // change set to array
+  // Convert set to array
   // Helpful link: https://stackoverflow.com/questions/16401216/iterate-over-set-elements
-  
+
+  function getManhattanDistance(node) {
+    let coordinates = node.id.split("-");
+    let row = parseInt(coordinates[0]);
+    let col = parseInt(coordinates[1]);
+    let manhattanDistance = Math.abs(13 - row) + Math.abs(55 - col);
+    node.classList.add(`${manhattanDistance}`);
+    node.textContent = `${manhattanDistance}`
+    node.style.fontFamily = 'Lato';
+  }
 
   d = [];
 
@@ -166,10 +156,10 @@ function DFS(node) {
           d.push(node);
       }
       console.log(node);
+      getManhattanDistance(node);
   }
 
   d.reverse()
-  // console.log(d);
 
 
 
@@ -187,6 +177,7 @@ function DFS(node) {
               setTimeout(() => {
                 const pathToTargetNode = b[j];
                 pathToTargetNode.style.backgroundColor = 'blue';
+                // getManhattanDistance(pathToTargetNode);
               }, 10 * j);
               timeToFindNode = 10 * length + 1;
           }
