@@ -1,6 +1,5 @@
 // gameBoard must be an id -- it can't be a class. 
 let gameBoard = document.getElementById('gameBoard');
-let coordinateArray = []
 let numberOfRows = 27
 let numberOfCols = 64
 let mouseDown = false
@@ -12,14 +11,21 @@ function makeGrid(numRows, numCols) {
   gameBoard.style.setProperty('--numCols', numCols); 
 }
 
+// add "target" to one node, "unvisited" to other nodes
 for (let row = 0; row < numberOfRows; row++) {
     for (let col = 0; col < numberOfCols; col++) {
-        // add [row, col] to board array
-        coordinateArray.push([row, col])
         let div = document.createElement('div');
         div.id = `${row}-${col}`
-        div.classList.add('unvisited');
-        gameBoard.appendChild(div);
+        // target node
+        if (row == 13 && col == 55) {
+            div.classList.add('target');
+            gameBoard.appendChild(div);
+            div.style.backgroundColor = "red";
+        }
+        else {
+          div.classList.add('unvisited');
+          gameBoard.appendChild(div);
+        }
     }
 }
 
