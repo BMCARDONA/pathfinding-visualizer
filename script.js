@@ -51,6 +51,7 @@ unvisitedNodes.forEach(node => {
     })
 });
 
+// We're not using DFS to get all the nodes! We're using it till we reach a target!
 
 function DFS(node) {
   let stack = [node]
@@ -60,49 +61,73 @@ function DFS(node) {
       visitedNodesInOrder.add(currentNode);
       currentNode.classList.remove('unvisited');
       currentNode.classList.add('visited');
-
       let coordinates = currentNode.id.split("-");
       let row = parseInt(coordinates[0]);
-      let col = parseInt(coordinates[1]);    
+      let col = parseInt(coordinates[1]);   
+      
+      // only put node on stack if it hasn't already been visited and isn't a wall
+
+      if (currentNode.classList.contains('target')) {
+        break;
+      }
+
       // leftNode
       if (col - 1 >= 0) {
         let leftNode = document.getElementById(`${row}-${col - 1}`);
-        if (!(leftNode.classList.contains('visited')) && !(leftNode.classList.contains('wall'))) {
+        if (leftNode.classList.contains('visited') == false && leftNode.classList.contains('wall') == false) {
             stack.push(leftNode);
         } 
       }   
       // bottomNode
       if (row + 1 <= 26) {
         let bottomNode = document.getElementById(`${row + 1}-${col}`);
-        if (!(bottomNode.classList.contains('visited')) && !(bottomNode.classList.contains('wall'))) {
+        if (bottomNode.classList.contains('visited') == false && bottomNode.classList.contains('wall') == false) {
             stack.push(bottomNode);
         } 
       }  
       // rightNode
       if (col + 1 <= 63) {
         let rightNode = document.getElementById(`${row}-${col + 1}`);
-        if (!(rightNode.classList.contains('visited')) && !(rightNode.classList.contains('wall'))) {
+        if (rightNode.classList.contains('visited') == false && rightNode.classList.contains('wall') == false) {
             stack.push(rightNode);
         } 
       }  
       // topNode
       if (row - 1 >= 0) {
         let topNode = document.getElementById(`${row - 1}-${col}`);
-        if (!(topNode.classList.contains('visited')) && !(topNode.classList.contains('wall'))) {
+        if (topNode.classList.contains('visited') == false && topNode.classList.contains('wall') == false) {
             stack.push(topNode);
         } 
-    }
+      }
   }
   // change set to array
   // Helpful link: https://stackoverflow.com/questions/16401216/iterate-over-set-elements
   b = Array.from(visitedNodesInOrder);
   for (let i = 0; i < b.length; i++) {
-  setTimeout(() => {
-    console.log("hello")
-    const node = b[i];
-    node.style.backgroundColor = 'royalblue';
-  }, 10 * i);
-}
+      targetReached = false;
+      const node = b[i];
+      if (node.classList.contains('target')) {
+          targetReached = true;
+          node.style.backgroundColor = 'yellow';
+          length = i;
+          let timeToFindNode = 0;
+          for (let j = 0; j < length + 1; j++) {
+              setTimeout(() => {
+                const pathToTargetNode = b[j];
+                pathToTargetNode.style.backgroundColor = 'blue';
+              }, 10 * j);
+              timeToFindNode = 10 * length + 1;
+          }
+          setTimeout(() => {
+            for (let k = 0; k < length + 1; k++) {
+                setTimeout(() => {
+                    const pathToTargetNode = b[k];
+                    pathToTargetNode.style.backgroundColor = 'green';
+                }, 10 * k);
+            }
+          }, timeToFindNode);
+      }
+  }
   return;
 }
 
