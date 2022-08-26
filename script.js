@@ -1,14 +1,24 @@
-// gameBoard must be an id -- it can't be a class. 
-let gameBoard = document.getElementById('gameBoard');
-let numberOfRows = 27
-let numberOfCols = 64
-let mouseDown = false
-window.onmousedown = () => mouseDown = true;
-window.onmouseup = () => mouseDown = false;
-
 function makeGrid(numRows, numCols) {
     gameBoard.style.setProperty('--numRows', numRows); 
     gameBoard.style.setProperty('--numCols', numCols); 
+}
+
+function appendDivsToBoard(numberOfRows, numberOfCols) {
+    for (let row = 0; row < numberOfRows; row++) {
+        for (let col = 0; col < numberOfCols; col++) {
+            let div = document.createElement('div');
+            div.id = `${row}-${col}`
+            if (row == 13 && col == 55) {
+                div.classList.add('target');
+                gameBoard.appendChild(div);
+                div.style.backgroundColor = "green";
+            }
+            else {
+              div.classList.add('unvisited');
+              gameBoard.appendChild(div);
+            }
+        }
+    }
 }
 
 function drawWall(e) {
@@ -90,28 +100,6 @@ function markNodeAsVisited(node) {
 //         }
 //     }
 // }
-
-class Node {
-    constructor(parent, child) {
-        this.parent = parent;
-        this.child = child;
-    }
-}
-
-class NodeProperties {
-    constructor(visited=false, start, target) {
-        this.visited = visited;
-        this.start = start;
-        this.target = target;
-    }
-}
-
-class NodeDecorator {
-    constructor(firstPathColor = "blue", shortestPathColor = "yellow") {
-        this.firstPathColor = firstPathColor;
-        this.shortestPathColor = shortestPathColor;
-    }
-}
   
 
 function DFS(node) {
@@ -178,23 +166,39 @@ function DFS(node) {
     return;
 }
 
+////////////////////////////////////////////////////////////////////////////////////
 
-// add "target" to one node, "unvisited" to other nodes
-for (let row = 0; row < numberOfRows; row++) {
-    for (let col = 0; col < numberOfCols; col++) {
-        let div = document.createElement('div');
-        div.id = `${row}-${col}`
-        if (row == 13 && col == 55) {
-            div.classList.add('target');
-            gameBoard.appendChild(div);
-            div.style.backgroundColor = "green";
-        }
-        else {
-          div.classList.add('unvisited');
-          gameBoard.appendChild(div);
-        }
+class Node {
+    constructor(parent, child) {
+        this.parent = parent;
+        this.child = child;
     }
 }
+
+class NodeProperties {
+    constructor(visited=false, start, target) {
+        this.visited = visited;
+        this.start = start;
+        this.target = target;
+    }
+}
+
+class NodeDecorator {
+    constructor(firstPathColor = "blue", shortestPathColor = "yellow") {
+        this.firstPathColor = firstPathColor;
+        this.shortestPathColor = shortestPathColor;
+    }
+}
+
+let gameBoard = document.getElementById('gameBoard');
+let numberOfRows = 27
+let numberOfCols = 64
+let mouseDown = false
+window.onmousedown = () => mouseDown = true;
+window.onmouseup = () => mouseDown = false;
+makeGrid(numberOfRows, numberOfCols) 
+appendDivsToBoard(numberOfRows, numberOfCols)
+
 
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
 unvisitedNodes.forEach(node => {
@@ -207,5 +211,3 @@ unvisitedNodes.forEach(node => {
         DFS(currentNode);
     })
 });
-
-makeGrid(numberOfRows, numberOfCols) 
