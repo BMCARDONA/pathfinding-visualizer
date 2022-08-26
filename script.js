@@ -39,14 +39,19 @@ function getManhattanDistance(node) {
     node.textContent = `${manhattanDistance}`
 }
 
-function showColoredPath(array) {
+function showPathToTargetNode(array) {
     for (let i = 0; i < array.length; i++) {
         setTimeout(() => {
-            let pathToTargetNode = array[i];
-            pathToTargetNode.style.backgroundColor = 'blue';
-            getManhattanDistance(pathToTargetNode);
+            let currentNodeOnPath = array[i];
+            currentNodeOnPath.style.backgroundColor = 'blue';
+            // getManhattanDistance(currentNodeOnPath);
         }, 10 * i);
     }
+}
+
+function markNodeAsVisited(node) {
+    node.classList.remove('unvisited');
+    node.classList.add('visited');
 }
 
 function DFS(node) {
@@ -55,8 +60,8 @@ function DFS(node) {
     while (stack.length !== 0) {
         currentNode = stack.pop();
         visitedNodesInOrder.add(currentNode);
-        currentNode.classList.remove('unvisited');
-        currentNode.classList.add('visited');
+        markNodeAsVisited(currentNode)
+
         let possiblePathsForNode = 0;
         let numberOfBarriers = 0; 
         let row = getNodeRow(currentNode); 
@@ -94,7 +99,7 @@ function DFS(node) {
     }
 
     arrayOfVisitedNodesInOrder = Array.from(visitedNodesInOrder);
-    showColoredPath(arrayOfVisitedNodesInOrder);
+    showPathToTargetNode(arrayOfVisitedNodesInOrder);
     return;
 }
 
