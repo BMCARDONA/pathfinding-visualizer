@@ -175,11 +175,9 @@ class Node {
     }
 }
 
-class NodeProperties {
-    constructor(visited=false, start, target) {
+class NodeVisited {
+    constructor(visited=false) {
         this.visited = visited;
-        this.start = start;
-        this.target = target;
     }
 }
 
@@ -207,7 +205,8 @@ unvisitedNodes.forEach(node => {
     node.addEventListener('click', () => {
         let row = getNodeRow(node); 
         let col = getNodeColumn(node); 
-        let currentNode = document.getElementById(`${row}-${col}`)
-        DFS(currentNode);
+        let startNode = document.getElementById(`${row}-${col}`)
+        startNode.classList.add('start');
+        DFS(startNode);
     })
 });
