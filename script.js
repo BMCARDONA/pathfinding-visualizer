@@ -138,24 +138,15 @@ function DFS(startNode) {
 ////////////////////////////////////////////////////////////////////////////////////
 
 class Node {
-    constructor(parent, child) {
+    constructor(parent=null, child=null, visited=false, firstPathColor = "blue", shortestPathColor="yellow") {
         this.parent = parent;
         this.child = child;
-    }
-}
-
-class NodeVisited {
-    constructor(visited=false) {
         this.visited = visited;
-    }
-}
-
-class NodeDecorator {
-    constructor(firstPathColor = "blue", shortestPathColor = "yellow") {
         this.firstPathColor = firstPathColor;
         this.shortestPathColor = shortestPathColor;
     }
 }
+
 
 let gameBoard = document.getElementById('gameBoard');
 let numberOfRows = 27
