@@ -49,7 +49,7 @@ function getManhattanDistance(node) {
     node.textContent = `${manhattanDistance}`
 }
 
-function showPathToTargetNode(array) {
+function colorFirstPath(array) {
     timeToFinishBluePath = 0
     for (let i = 0; i < array.length; i++) {
         setTimeout(() => {
@@ -59,16 +59,6 @@ function showPathToTargetNode(array) {
         }, 10 * i);  
         timeToFinishBluePath = 10 * array.length;
     }
-    setTimeout(() => {
-        for (let k = 0; k < array.length; k++) {
-            setTimeout(() => {
-                let currentNodeOnPath = array[k];
-                if (currentNodeOnPath.classList.contains('dead-end')) {
-                    currentNodeOnPath.style.background = 'orange';
-                }    
-            }, 10 * k);
-        }
-    }, timeToFinishBluePath)
 
 }
 
@@ -89,56 +79,51 @@ function DFS(startNode) {
         let row = getNodeRow(currentNode); 
         let col = getNodeColumn(currentNode); 
 
-        function generalFunction(parentNode, row, col) {
+        function notTargetNode(parentNode, row, col) {
             let childNode = document.getElementById(`${row}-${col}`);
             if (childNode.classList.contains('visited') == false && childNode.classList.contains('wall') == false) {
                 stack.push(childNode);
-                if (childNode.classList.contains('target')) {
-                    childNode = new Node(parentNode, true);
-                }
-                else {
-                    childNode = new Node(parentNode, false);
-                }
-                console.log(childNode.parent)
-
-                if (childNode.isTarget) {
-                    let node = childNode;
-                    while (node.parent) {
-                        node.parent.style.backgroundColor = 'yellow';
-                        node = node.parent;
-                    }
-                }
+                childNode = new Node(parentNode);
+                console.log(childNode.parent);
             } 
         }
         
+        function targetNode(node) {
+            while (node.parent) {
+                node.parent.style.backgroundColor = 'yellow';
+                node = node.parent;
+            }
+        }
+
         if (currentNode.classList.contains('target')) {
+            targetNode(currentNode);
             break;
         }
 
         // leftNode, bottomNode, rightNode, topNode
         if ((col - 1 >= 0)) {
-            generalFunction(currentNode, row, col - 1)
+            notTargetNode(currentNode, row, col - 1);
         }
         if ((row + 1 <= 26)) {
-            generalFunction(currentNode, row + 1, col)
+            notTargetNode(currentNode, row + 1, col);
         }
         if ((col + 1 <= 63)) {
-            generalFunction(currentNode, row, col + 1)
+            notTargetNode(currentNode, row, col + 1);
         }
         if ((row - 1 >= 0)) {
-            generalFunction(currentNode, row - 1, col)
+            notTargetNode(currentNode, row - 1, col);
         }
     }
 
     arrayOfVisitedNodesInOrder = Array.from(visitedNodesInOrder);
-    showPathToTargetNode(arrayOfVisitedNodesInOrder);
+    colorFirstPath(arrayOfVisitedNodesInOrder);
     return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
 
 class Node {
-    constructor(parent=null, child=null, visited=false, firstPathColor = "blue", shortestPathColor="yellow") {
+    constructor(parent=false, child=false, visited=false, firstPathColor = "blue", shortestPathColor="yellow") {
         this.parent = parent;
         this.child = child;
         this.visited = visited;
