@@ -59,15 +59,6 @@ function showPathToTargetNode(array) {
         }, 10 * i);  
         timeToFinishBluePath = 10 * array.length;
     }
-    // setTimeout(() => {
-    //     for (let k = 0; k < array.length; k++) {
-    //         setTimeout(() => {
-    //             let currentNodeOnPath = array[k];
-    //             currentNodeOnPath.style.backgroundColor = 'yellow';
-    //             // getManhattanDistance(currentNodeOnPath);
-    //         }, 10 * k);
-    //     }
-    // }, timeToFinishBluePath)
     setTimeout(() => {
         for (let k = 0; k < array.length; k++) {
             setTimeout(() => {
@@ -75,11 +66,6 @@ function showPathToTargetNode(array) {
                 if (currentNodeOnPath.classList.contains('dead-end')) {
                     currentNodeOnPath.style.background = 'orange';
                 }    
-                // else if (currentNodeOnPath.classList.contains('fork')) {
-                //     currentNodeOnPath.style.background = 'purple';
-                // }  
-                // currentNodeOnPath.style.backgroundColor = 'yellow';
-                // getManhattanDistance(currentNodeOnPath);
             }, 10 * k);
         }
     }, timeToFinishBluePath)
@@ -91,15 +77,6 @@ function markNodeAsVisited(node) {
     node.classList.add('visited');
 }
 
-
-// function labelForkNodes(array) {
-//     for (let i = 0; i < array.length; i++) {
-//         node = array[i];
-//         if (node.classList.contains('fork')) {
-//             node.style.background = 'orange';
-//         }
-//     }
-// }
   
 
 function DFS(startNode) {
