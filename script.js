@@ -91,13 +91,27 @@ function markNodeAsVisited(node) {
 //     }
 // }
 
-
 class Node {
-    constructor(child, parent=null) {
-      this.child = child;
-      this.parent = parent;
+    constructor(parent, child) {
+        this.parent = parent;
+        this.child = child;
     }
-  }
+}
+
+class NodeProperties {
+    constructor(visited=false, start, target) {
+        this.visited = visited;
+        this.start = start;
+        this.target = target;
+    }
+}
+
+class NodeDecorator {
+    constructor(firstPathColor = "blue", shortestPathColor = "yellow") {
+        this.firstPathColor = firstPathColor;
+        this.shortestPathColor = shortestPathColor;
+    }
+}
   
 
 function DFS(node) {
@@ -113,16 +127,26 @@ function DFS(node) {
         let possiblePathsForNode = 0;
         let numberOfBarriers = 0; 
 
-
-        function generalFunction(currentNode, row, col) {
+        function generalFunction(parentNode, row, col) {
             let childNode = document.getElementById(`${row}-${col}`);
             if (childNode.classList.contains('visited') == false && childNode.classList.contains('wall') == false) {
-                let count = parseInt(currentNode.textContent) + 1;
-                currentNode = new Node(childNode);
-                // let childNode = new Node(null, currentNode);
-                currentNode.child.textContent = `${count}`
                 stack.push(childNode);
                 possiblePathsForNode += 1;
+                if (childNode.classList.contains('target')) {
+                    childNode = new Node(parentNode, true);
+                }
+                else {
+                    childNode = new Node(parentNode, false);
+                }
+                console.log(childNode.parent)
+
+                if (childNode.isTarget) {
+                    let node = childNode;
+                    while (node.parent) {
+                        node.parent.style.backgroundColor = 'yellow';
+                        node = node.parent;
+                    }
+                }
             } 
             else if (childNode.classList.contains('wall')) {
                 numberOfBarriers += 1;
@@ -183,6 +207,5 @@ unvisitedNodes.forEach(node => {
         DFS(currentNode);
     })
 });
-
 
 makeGrid(numberOfRows, numberOfCols) 
