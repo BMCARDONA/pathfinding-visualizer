@@ -111,14 +111,11 @@ function DFS(startNode) {
         markNodeAsVisited(currentNode)
         let row = getNodeRow(currentNode); 
         let col = getNodeColumn(currentNode); 
-        let possiblePathsForNode = 0;
-        let numberOfBarriers = 0; 
 
         function generalFunction(parentNode, row, col) {
             let childNode = document.getElementById(`${row}-${col}`);
             if (childNode.classList.contains('visited') == false && childNode.classList.contains('wall') == false) {
                 stack.push(childNode);
-                possiblePathsForNode += 1;
                 if (childNode.classList.contains('target')) {
                     childNode = new Node(parentNode, true);
                 }
@@ -135,9 +132,6 @@ function DFS(startNode) {
                     }
                 }
             } 
-            else if (childNode.classList.contains('wall')) {
-                numberOfBarriers += 1;
-            }
         }
         
         if (currentNode.classList.contains('target')) {
@@ -145,18 +139,17 @@ function DFS(startNode) {
         }
 
         // leftNode, bottomNode, rightNode, topNode
-        (col - 1 >= 0) ? generalFunction(currentNode, row, col - 1) : numberOfBarriers += 1;
-        (row + 1 <= 26) ? generalFunction(currentNode, row + 1, col) : numberOfBarriers += 1;
-        (col + 1 <= 63) ? generalFunction(currentNode, row, col + 1) : numberOfBarriers += 1;
-        (row - 1 >= 0) ? generalFunction(currentNode, row - 1, col) : numberOfBarriers += 1;
-
-        
-        if (possiblePathsForNode >= 2) {
-            currentNode.classList.add('fork');
+        if ((col - 1 >= 0)) {
+            generalFunction(currentNode, row, col - 1)
         }
-
-        if (numberOfBarriers >= 3) {
-            currentNode.classList.add('dead-end');
+        if ((row + 1 <= 26)) {
+            generalFunction(currentNode, row + 1, col)
+        }
+        if ((col + 1 <= 63)) {
+            generalFunction(currentNode, row, col + 1)
+        }
+        if ((row - 1 >= 0)) {
+            generalFunction(currentNode, row - 1, col)
         }
     }
 
