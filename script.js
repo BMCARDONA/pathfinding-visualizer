@@ -102,9 +102,8 @@ function markNodeAsVisited(node) {
 // }
   
 
-function DFS(node) {
-    let stack = [node]
-    node.textContent = '1'
+function DFS(startNode) {
+    let stack = [startNode];
     let visitedNodesInOrder = new Set();
     while (stack.length !== 0) {
         currentNode = stack.pop();
