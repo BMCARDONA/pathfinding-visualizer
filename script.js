@@ -40,13 +40,40 @@ function getManhattanDistance(node) {
 }
 
 function showPathToTargetNode(array) {
+    timeToFinishBluePath = 0
     for (let i = 0; i < array.length; i++) {
         setTimeout(() => {
             let currentNodeOnPath = array[i];
             currentNodeOnPath.style.backgroundColor = 'blue';
             // getManhattanDistance(currentNodeOnPath);
-        }, 10 * i);
+        }, 10 * i);  
+        timeToFinishBluePath = 10 * array.length;
     }
+    // setTimeout(() => {
+    //     for (let k = 0; k < array.length; k++) {
+    //         setTimeout(() => {
+    //             let currentNodeOnPath = array[k];
+    //             currentNodeOnPath.style.backgroundColor = 'yellow';
+    //             // getManhattanDistance(currentNodeOnPath);
+    //         }, 10 * k);
+    //     }
+    // }, timeToFinishBluePath)
+    setTimeout(() => {
+        for (let k = 0; k < array.length; k++) {
+            setTimeout(() => {
+                let currentNodeOnPath = array[k];
+                if (currentNodeOnPath.classList.contains('dead-end')) {
+                    currentNodeOnPath.style.background = 'orange';
+                }    
+                // else if (currentNodeOnPath.classList.contains('fork')) {
+                //     currentNodeOnPath.style.background = 'purple';
+                // }  
+                // currentNodeOnPath.style.backgroundColor = 'yellow';
+                // getManhattanDistance(currentNodeOnPath);
+            }, 10 * k);
+        }
+    }, timeToFinishBluePath)
+
 }
 
 function markNodeAsVisited(node) {
@@ -54,27 +81,50 @@ function markNodeAsVisited(node) {
     node.classList.add('visited');
 }
 
+
+// function labelForkNodes(array) {
+//     for (let i = 0; i < array.length; i++) {
+//         node = array[i];
+//         if (node.classList.contains('fork')) {
+//             node.style.background = 'orange';
+//         }
+//     }
+// }
+
+
+class Node {
+    constructor(child, parent=null) {
+      this.child = child;
+      this.parent = parent;
+    }
+  }
+  
+
 function DFS(node) {
     let stack = [node]
+    node.textContent = '1'
     let visitedNodesInOrder = new Set();
     while (stack.length !== 0) {
         currentNode = stack.pop();
         visitedNodesInOrder.add(currentNode);
         markNodeAsVisited(currentNode)
-
-        let possiblePathsForNode = 0;
-        let numberOfBarriers = 0; 
         let row = getNodeRow(currentNode); 
         let col = getNodeColumn(currentNode); 
+        let possiblePathsForNode = 0;
+        let numberOfBarriers = 0; 
 
 
-        function generalFunction(row, col) {
-            let node = document.getElementById(`${row}-${col}`);
-            if (node.classList.contains('visited') == false && node.classList.contains('wall') == false) {
-                stack.push(node);
+        function generalFunction(currentNode, row, col) {
+            let childNode = document.getElementById(`${row}-${col}`);
+            if (childNode.classList.contains('visited') == false && childNode.classList.contains('wall') == false) {
+                let count = parseInt(currentNode.textContent) + 1;
+                currentNode = new Node(childNode);
+                // let childNode = new Node(null, currentNode);
+                currentNode.child.textContent = `${count}`
+                stack.push(childNode);
                 possiblePathsForNode += 1;
             } 
-            else if (node.classList.contains('wall')) {
+            else if (childNode.classList.contains('wall')) {
                 numberOfBarriers += 1;
             }
         }
@@ -84,11 +134,12 @@ function DFS(node) {
         }
 
         // leftNode, bottomNode, rightNode, topNode
-        (col - 1 >= 0) ? generalFunction(row, col - 1) : numberOfBarriers += 1;
-        (row + 1 <= 26) ? generalFunction(row + 1, col) : numberOfBarriers += 1;
-        (col + 1 <= 63) ? generalFunction(row, col + 1) : numberOfBarriers += 1;
-        (row - 1 >= 0) ? generalFunction(row - 1, col) : numberOfBarriers += 1;
+        (col - 1 >= 0) ? generalFunction(currentNode, row, col - 1) : numberOfBarriers += 1;
+        (row + 1 <= 26) ? generalFunction(currentNode, row + 1, col) : numberOfBarriers += 1;
+        (col + 1 <= 63) ? generalFunction(currentNode, row, col + 1) : numberOfBarriers += 1;
+        (row - 1 >= 0) ? generalFunction(currentNode, row - 1, col) : numberOfBarriers += 1;
 
+        
         if (possiblePathsForNode >= 2) {
             currentNode.classList.add('fork');
         }
