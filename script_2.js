@@ -5,6 +5,7 @@ let numberOfCols = 64
 let mouseDown = false
 window.onmousedown = () => mouseDown = true;
 window.onmouseup = () => mouseDown = false;
+let shortestPath = []
 
 // add "target" to one node, "unvisited" to other nodes
 for (let row = 0; row < numberOfRows; row++) {
@@ -30,20 +31,22 @@ unvisitedNodes.forEach(node => {
   node.addEventListener('click', () => {
       let row = getNodeRow(node); 
       let col = getNodeColumn(node); 
-      let startNode = document.getElementById(`${row}-${col}`);
       let array = [];
       // am I even the array back?
-      DFS(startNode, row + 1, col, array);
-      DFS(startNode, row - 1, col, array);
-      DFS(startNode, row, col + 1, array);
-      DFS(startNode, row, col - 1, array);
-      console.log(array);
-      // for (let i = 0; i < array.length; i++) {
-      //   setTimeout(() => {
-      //       let node = array[i];
-      //       colorNodeBlue(node.parent);
-      //   }, 10 * i); 
-      // }
+      DFS(array, null, row + 1, col)
+      DFS(array, null, row - 1, col)
+      DFS(array, null, row, col + 1)
+      DFS(array, null, row, col - 1)
+      // DFS(startNode, row + 1, col, array);
+      // DFS(startNode, row - 1, col, array);
+      // DFS(startNode, row, col + 1, array);
+      // DFS(startNode, row, col - 1, array);
+      for (let i = 0; i < array.length; i++) {
+        setTimeout(() => {
+            let node = array[i];
+            colorNodeBlue(node);
+        }, 10 * i); 
+      }
   })
 });
 
@@ -82,42 +85,114 @@ function markNodeAsVisited(node) {
 }
 
 
-class NodeParent {
-  constructor(parent) {
+class Node {
+  constructor(parent, row, col) {
     this.parent = parent;
+    this.row = row;
+    this.col = col;
+    this.parents = []
+  }
+  addParent(name) {
+    this.parents.push(new Node(name));
   }
 }
 
+
 let targetReached = false;
 
-function DFS(parentNode, row, col, array) {
-    let currentArray = array
-    let currentNode = document.getElementById(`${row}-${col}`);
-    let childNode = new NodeParent(parentNode);
-    if (row < 0 || row > 26 || col < 0 || col > 63 || currentNode.classList.contains('visited') || currentNode.classList.contains('wall')) {
+
+function DFS(array, parentNode, row, col) {
+    let currentArray = array;
+    let nextNode = document.getElementById(`${row}-${col}`);
+    let childNode = new Node(parentNode, row, col);
+    childNode.addParent(nextNode);
+    if (row < 0 || row > 26 || col < 0 || col > 63 || nextNode.classList.contains('visited') || nextNode.classList.contains('wall')) {
         return;
     }
-    markNodeAsVisited(currentNode);
+    markNodeAsVisited(nextNode);
+
     if (row == 13 && col == 55) {
       targetReached = true;
+      console.log(childNode.parents)
+      let node = childNode;
+      while (node.parent != null) {
+
+          let shortestPathNode = document.getElementById(`${node.row}-${node.col}`);
+          shortestPathNode.style.backgroundColor = 'yellow';
+          node = node.parent;
+      }
     }
-    if (targetReached == false) {
-      colorNodeBlue(currentNode);
-      markNodeAsVisited(currentNode);
-      currentArray.push(childNode);
+
+    else if (targetReached == false) {
+      markNodeAsVisited(nextNode);
+      currentArray.push(nextNode);
+      DFS(currentArray, childNode, row + 1, col);
+      DFS(currentArray, childNode, row - 1, col);
+      DFS(currentArray, childNode, row, col + 1);
+      DFS(currentArray, childNode, row, col - 1);
     }
-    // if (targetReached) {
-    //   node = childNode;
-    //   while (node.parent) {
-    //       node.parent.style.backgroundColor = 'yellow';
-    //       node = node.parent;
-    //   }
-    // }
-    DFS(childNode, row + 1, col, currentArray);
-    DFS(childNode, row - 1, col, currentArray);
-    DFS(childNode, row, col + 1, currentArray);
-    DFS(childNode, row, col - 1, currentArray);
 }
+
+// function DFS(array, parentNode, row, col) {
+  //   let currentArray = array;
+  //   let nextNode = document.getElementById(`${row}-${col}`);
+  //   let childNode = new Node(parentNode, row, col);
+  //   childNode.addParent(nextNode);
+  //   if (row < 0 || row > 26 || col < 0 || col > 63 || nextNode.classList.contains('visited') || nextNode.classList.contains('wall')) {
+  //       return;
+  //   }
+  //   markNodeAsVisited(nextNode);
+  //   if (row == 13 && col == 55) {
+  //     targetReached = true;
+  //     console.log(childNode.parents)
+  //     let node = childNode;
+  //     while (node.parent != null) {
+  //         let shortestPathNode = document.getElementById(`${node.row}-${node.col}`);
+  //         shortestPathNode.style.backgroundColor = 'yellow';
+  //         node = node.parent;
+  //     }
+  //   }
+  
+  //   else {
+  //     markNodeAsVisited(nextNode);
+  //     currentArray.push(nextNode);
+  //     DFS(currentArray, childNode, row + 1, col);
+  //     DFS(currentArray, childNode, row - 1, col);
+  //     DFS(currentArray, childNode, row, col + 1);
+  //     DFS(currentArray, childNode, row, col - 1);
+  //   }
+  // }
+
+
+
+// function DFS(parentNode, row, col, array) {
+//     let currentArray = array
+//     let currentNode = document.getElementById(`${row}-${col}`);
+//     let childNode = new NodeParent(parentNode);
+//     if (row < 0 || row > 26 || col < 0 || col > 63 || currentNode.classList.contains('visited') || currentNode.classList.contains('wall')) {
+//         return;
+//     }
+//     markNodeAsVisited(currentNode);
+//     if (row == 13 && col == 55) {
+//       targetReached = true;
+//     }
+//     if (targetReached == false) {
+//       colorNodeBlue(currentNode);
+//       markNodeAsVisited(currentNode);
+//       currentArray.push(childNode);
+//     }
+//     // if (targetReached) {
+//     //   node = childNode;
+//     //   while (node.parent) {
+//     //       node.parent.style.backgroundColor = 'yellow';
+//     //       node = node.parent;
+//     //   }
+//     // }
+//     DFS(childNode, row + 1, col, currentArray);
+//     DFS(childNode, row - 1, col, currentArray);
+//     DFS(childNode, row, col + 1, currentArray);
+//     DFS(childNode, row, col - 1, currentArray);
+// }
 
 
 makeGrid(numberOfRows, numberOfCols) 
