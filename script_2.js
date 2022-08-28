@@ -32,18 +32,18 @@ unvisitedNodes.forEach(node => {
       let col = getNodeColumn(node); 
       let startNode = document.getElementById(`${row}-${col}`);
       let array = [];
+      // am I even the array back?
       DFS(startNode, row + 1, col, array);
       DFS(startNode, row - 1, col, array);
       DFS(startNode, row, col + 1, array);
       DFS(startNode, row, col - 1, array);
       console.log(array);
-      for (let i = 0; i < array.length; i++) {
-        setTimeout(() => {
-            let node = array[i];
-            // need to access CHILD -- cannot just access node, that wouldn't make sense!
-            colorNodeBlue(node.child);
-        }, 10 * i); 
-      }
+      // for (let i = 0; i < array.length; i++) {
+      //   setTimeout(() => {
+      //       let node = array[i];
+      //       colorNodeBlue(node.parent);
+      //   }, 10 * i); 
+      // }
   })
 });
 
@@ -82,35 +82,41 @@ function markNodeAsVisited(node) {
 }
 
 
-class NodeChild {
-  constructor(child) {
-    this.child = child;
+class NodeParent {
+  constructor(parent) {
+    this.parent = parent;
   }
 }
 
 let targetReached = false;
 
-
 function DFS(parentNode, row, col, array) {
-    let childNode = document.getElementById(`${row}-${col}`);
-    if (row < 0 || row > 26 || col < 0 || col > 63 || childNode.classList.contains('visited') || childNode.classList.contains('wall')) {
+    let currentArray = array
+    let currentNode = document.getElementById(`${row}-${col}`);
+    let childNode = new NodeParent(parentNode);
+    if (row < 0 || row > 26 || col < 0 || col > 63 || currentNode.classList.contains('visited') || currentNode.classList.contains('wall')) {
         return;
     }
-
-    markNodeAsVisited(childNode);
-    parentNode = new NodeChild(childNode);
-    // push node into array only if we HAVEN'T reached target
-    if (targetReached == false) {
-      array.push(parentNode);
-      if (childNode.classList.contains('target')) {
-        targetReached = true;
-      }
+    markNodeAsVisited(currentNode);
+    if (row == 13 && col == 55) {
+      targetReached = true;
     }
-
-    DFS(childNode, row + 1, col, array);
-    DFS(childNode, row - 1, col, array);
-    DFS(childNode, row, col + 1, array);
-    DFS(childNode, row, col - 1, array);
+    if (targetReached == false) {
+      colorNodeBlue(currentNode);
+      markNodeAsVisited(currentNode);
+      currentArray.push(childNode);
+    }
+    // if (targetReached) {
+    //   node = childNode;
+    //   while (node.parent) {
+    //       node.parent.style.backgroundColor = 'yellow';
+    //       node = node.parent;
+    //   }
+    // }
+    DFS(childNode, row + 1, col, currentArray);
+    DFS(childNode, row - 1, col, currentArray);
+    DFS(childNode, row, col + 1, currentArray);
+    DFS(childNode, row, col - 1, currentArray);
 }
 
 
