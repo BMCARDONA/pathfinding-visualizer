@@ -1,4 +1,4 @@
-*{
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -21,5 +21,21 @@ body {
 }
 
 #gameBoard > div {
-  border: 0.1px solid rgb(187, 187, 187);
+  border: 0.1px solid rgb(172, 176, 251);
+  border-radius: 2px;
+}
+
+
+@keyframes foundFirstPath {
+  50% {
+    transform: scale(1.05);
+    background-color: #ecea65;
+  }
+}
+
+@keyframes foundShortestPath {
+  50% {
+    transform: scale(1.05);
+    background-color: #43689f;
+  }
 }

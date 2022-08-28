@@ -41,19 +41,21 @@ unvisitedNodes.forEach(node => {
       // DFS(startNode, row - 1, col, array);
       // DFS(startNode, row, col + 1, array);
       // DFS(startNode, row, col - 1, array);
-      let timeToFinishBluePath = 10 * array.length;
+      let timeToFinishBluePath = 20 * array.length;
       for (let i = 0; i < array.length; i++) {
         setTimeout(() => {
             let node = array[i];
-            colorNodeBlue(node);
-        }, 10 * i); 
+            changeNodeColor(node, 'red');
+            node.style.animation = "foundFirstPath 1s";
+        }, 20 * i); 
       }
       setTimeout(() => {
         shortestPath.reverse()
-          for (let i = 0; i < shortestPath.length; i++) {
+          for (let i = 0; i < shortestPath.length - 1; i++) {
             setTimeout(() => {
                 let node = shortestPath[i];
-                node.style.backgroundColor = 'yellow';
+                changeNodeColor(node, 'purple'); 
+                node.style.animation = "foundShortestPath 1s";
             }, 10 * i); 
           }
       }, timeToFinishBluePath)
@@ -85,8 +87,8 @@ function getNodeColumn(node) {
     return (c);
 }
 
-function colorNodeBlue(node) {
-    node.style.backgroundColor = 'blue';
+function changeNodeColor(node, color) {
+    node.style.backgroundColor = color;
 }
 
 function markNodeAsVisited(node) {
