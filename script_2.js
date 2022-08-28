@@ -41,12 +41,22 @@ unvisitedNodes.forEach(node => {
       // DFS(startNode, row - 1, col, array);
       // DFS(startNode, row, col + 1, array);
       // DFS(startNode, row, col - 1, array);
+      let timeToFinishBluePath = 10 * array.length;
       for (let i = 0; i < array.length; i++) {
         setTimeout(() => {
             let node = array[i];
             colorNodeBlue(node);
         }, 10 * i); 
       }
+      setTimeout(() => {
+        shortestPath.reverse()
+          for (let i = 0; i < shortestPath.length; i++) {
+            setTimeout(() => {
+                let node = shortestPath[i];
+                node.style.backgroundColor = 'yellow';
+            }, 10 * i); 
+          }
+      }, timeToFinishBluePath)
   })
 });
 
@@ -116,9 +126,8 @@ function DFS(array, parentNode, row, col) {
       console.log(childNode.parents)
       let node = childNode;
       while (node.parent != null) {
-
           let shortestPathNode = document.getElementById(`${node.row}-${node.col}`);
-          shortestPathNode.style.backgroundColor = 'yellow';
+          shortestPath.push(shortestPathNode);
           node = node.parent;
       }
     }
