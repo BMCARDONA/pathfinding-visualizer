@@ -45,7 +45,7 @@ unvisitedNodes.forEach(node => {
       for (let i = 0; i < array.length; i++) {
         setTimeout(() => {
             let node = array[i];
-            changeNodeColor(node, 'red');
+            changeNodeColor(node, 'slateblue');
             node.style.animation = "foundFirstPath 1s";
         }, 20 * i); 
       }
@@ -54,9 +54,9 @@ unvisitedNodes.forEach(node => {
           for (let i = 0; i < shortestPath.length - 1; i++) {
             setTimeout(() => {
                 let node = shortestPath[i];
-                changeNodeColor(node, 'purple'); 
+                changeNodeColor(node, 'pink'); 
                 node.style.animation = "foundShortestPath 1s";
-            }, 10 * i); 
+            }, 20 * i); 
           }
       }, timeToFinishBluePath)
   })

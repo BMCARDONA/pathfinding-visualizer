@@ -28,14 +28,14 @@ body {
 
 @keyframes foundFirstPath {
   50% {
-    transform: scale(1.05);
-    background-color: #ecea65;
+    transform: scale(1.1);
+    background-color: #00b6ad;
   }
 }
 
 @keyframes foundShortestPath {
   50% {
-    transform: scale(1.05);
-    background-color: #43689f;
+    transform: scale(1.1);
+    background-color: #af66eb;
   }
 }
