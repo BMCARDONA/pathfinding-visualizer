@@ -5,11 +5,11 @@ function makeGrid(numRows, numCols) {
 }
 
 function drawWall(e) {
-if (mouseDown === true) {
-  e.target.style.backgroundColor = "rgb(77, 78, 107)";
-  e.target.classList.remove('unvisited');
-  e.target.classList.add('wall');
-}
+    if (mouseDown === true) {
+      e.target.style.backgroundColor = "rgb(77, 78, 107)";
+      e.target.classList.remove('unvisited');
+      e.target.classList.add('wall');
+    }
 }
 
 function getNodeRow(node) {
@@ -92,11 +92,13 @@ function shortestPathColorAnimation(array) {
     for (let i = 0; i < array.length - 1; i++) {
       setTimeout(() => {
           let node = array[i];
-          changeNodeColor(node, 'rgb(234, 52, 128)'); 
+          // changeNodeColor(node, 'rgb(234, 52, 128)'); 
+          changeNodeColor(node, 'rgb(255, 253, 129')
           node.style.animation = "foundShortestPath 1s";
       }, 40 * i); 
     }
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -145,6 +147,32 @@ unvisitedNodes.forEach(node => {
       setTimeout(() => {
         shortestPathColorAnimation(dfsShortestPath);
       }, timeToFinishBluePath)
+  })
+});
+
+
+// Random board generator
+
+function drawWallWithButton(node) {
+    node.style.backgroundColor = "rgb(77, 78, 107)";
+    node.classList.remove('unvisited');
+    node.classList.add('wall');
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+let generateRandomWallsButton = document.getElementById("generate-random-walls-button");
+generateRandomWallsButton.addEventListener('click', () => {
+  unvisitedNodes.forEach(node => {
+      let randomNumber = getRandomInt(0, 3);
+      if (randomNumber == 0) {
+          console.log("true")
+          drawWallWithButton(node);
+      }
   })
 });
 
