@@ -65,8 +65,10 @@ function dfsPathColorAnimation(array) {
   for (let i = 0; i < array.length; i++) {
     setTimeout(() => {
         let node = array[i];
-        changeNodeColor(node, 'slateblue');
-        node.style.animation = "foundFirstPath 0.5s";
+        if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
+          changeNodeColor(node, 'slateblue');
+          node.style.animation = "foundFirstPath 0.5s";
+        }
     }, pathSpeed * i); 
   }
 }
@@ -77,7 +79,7 @@ function shortestPathColorAnimation(array) {
     for (let i = 0; i < array.length - 1; i++) {
       setTimeout(() => {
           let node = array[i];
-          if (node.classList.contains('target') == false) {
+          if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
             changeNodeColor(node, '#00b6ad')
             node.style.animation = "foundShortestPath 0.5s";
           }
@@ -172,37 +174,35 @@ let numberOfRows = 27
 let numberOfCols = 64
 let pathSpeed = 10;
 let mouseDown = false
-
 window.onmousedown = () => mouseDown = true;
 window.onmouseup = () => mouseDown = false;
+let targetReached = false;
 let dfsShortestPath = []
-
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
 
 
-let targetReached = false;
+
+
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
 unvisitedNodes.forEach(node => {
-  node.addEventListener('mousedown', drawWall);
-  node.addEventListener('mouseover', drawWall);
+    node.addEventListener('mousedown', drawWall);
+    node.addEventListener('mouseover', drawWall);
 })
 
 
 let algorithmToVisualize = ''
-// dfs 
 let dfsButton = document.getElementById("dfsButton")
 
 dfsButton.addEventListener('click', () => {
   algorithmToVisualize = 'dfs'
 });
 
+let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
 let col = 8
 let startNode = document.getElementById(`${row}-${col}`)
-startNode.style.backgroundColor = "red";
+changeNodeColor(startNode, "red")
 startNode.classList.add('start');
-
-let visualizeButton = document.getElementById("visualizeButton")
 visualizeButton.addEventListener('click', () => {
   if (algorithmToVisualize == 'dfs') {
     beginDFS(startNode, row, col)
