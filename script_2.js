@@ -12,6 +12,18 @@ function drawWall(e) {
     }
 }
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+function drawWallWithButton(node) {
+  node.style.backgroundColor = "rgb(77, 78, 107)";
+  node.classList.remove('unvisited');
+  node.classList.add('wall');
+}
+
 function getNodeRow(node) {
   let coordinates = node.id.split("-");
   let r = parseInt(coordinates[0]);
@@ -56,12 +68,15 @@ function DFS(array, parentNode, row, col) {
 
   if (row == 13 && col == 55) {
     targetReached = true;
-    console.log(childNode.parents)
     let node = childNode;
-    while (node.parent != null) {
+    while (true) {
+        console.log(node.parent);
         let shortestPathNode = document.getElementById(`${node.row}-${node.col}`);
         dfsShortestPath.push(shortestPathNode);
         node = node.parent;
+        if (node == null) {
+            break;
+        }
     }
   }
 
@@ -81,7 +96,7 @@ function dfsPathColorAnimation(array) {
     setTimeout(() => {
         let node = array[i];
         changeNodeColor(node, 'slateblue');
-        node.style.animation = "foundFirstPath 1s";
+        node.style.animation = "foundFirstPath 0.5s";
     }, pathSpeed * i); 
   }
 }
@@ -92,9 +107,10 @@ function shortestPathColorAnimation(array) {
     for (let i = 0; i < array.length - 1; i++) {
       setTimeout(() => {
           let node = array[i];
-          // changeNodeColor(node, 'rgb(234, 52, 128)'); 
-          changeNodeColor(node, 'rgb(255, 253, 129')
-          node.style.animation = "foundShortestPath 1s";
+          if (node.classList.contains('target') == false) {
+            changeNodeColor(node, '#00b6ad')
+            node.style.animation = "foundShortestPath 0.5s";
+          }
       }, pathSpeed * i); 
     }
 }
@@ -138,7 +154,9 @@ unvisitedNodes.forEach(node => {
       node.style.backgroundColor = "red";
       let row = getNodeRow(node); 
       let col = getNodeColumn(node); 
-      let array = [];
+      let startNode = document.getElementById(`${node.row}-${node.col}`)
+      dfsShortestPath.push(startNode);
+      let array = []
       DFS(array, null, row + 1, col)
       DFS(array, null, row - 1, col)
       DFS(array, null, row, col + 1)
@@ -154,24 +172,11 @@ unvisitedNodes.forEach(node => {
 
 // Random board generator
 
-function drawWallWithButton(node) {
-    node.style.backgroundColor = "rgb(77, 78, 107)";
-    node.classList.remove('unvisited');
-    node.classList.add('wall');
-}
-
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 let generateRandomWallsButton = document.getElementById("generate-random-walls-button");
 generateRandomWallsButton.addEventListener('click', () => {
   unvisitedNodes.forEach(node => {
       let randomNumber = getRandomInt(0, 3);
       if (randomNumber == 0) {
-          console.log("true")
           drawWallWithButton(node);
       }
   })
