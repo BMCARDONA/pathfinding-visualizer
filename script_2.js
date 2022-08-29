@@ -82,7 +82,7 @@ function dfsPathColorAnimation(array) {
         let node = array[i];
         changeNodeColor(node, 'slateblue');
         node.style.animation = "foundFirstPath 1s";
-    }, 40 * i); 
+    }, pathSpeed * i); 
   }
 }
 
@@ -95,7 +95,7 @@ function shortestPathColorAnimation(array) {
           // changeNodeColor(node, 'rgb(234, 52, 128)'); 
           changeNodeColor(node, 'rgb(255, 253, 129')
           node.style.animation = "foundShortestPath 1s";
-      }, 40 * i); 
+      }, pathSpeed * i); 
     }
 }
 
@@ -107,6 +107,7 @@ function shortestPathColorAnimation(array) {
 let gameBoard = document.getElementById('gameBoard');
 let numberOfRows = 27
 let numberOfCols = 64
+let pathSpeed = 10;
 let mouseDown = false
 window.onmousedown = () => mouseDown = true;
 window.onmouseup = () => mouseDown = false;
@@ -142,7 +143,7 @@ unvisitedNodes.forEach(node => {
       DFS(array, null, row - 1, col)
       DFS(array, null, row, col + 1)
       DFS(array, null, row, col - 1)
-      let timeToFinishBluePath = 40 * array.length;
+      let timeToFinishBluePath = pathSpeed * array.length;
       dfsPathColorAnimation(array);
       setTimeout(() => {
         shortestPathColorAnimation(dfsShortestPath);
