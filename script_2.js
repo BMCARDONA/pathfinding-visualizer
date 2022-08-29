@@ -180,13 +180,26 @@ unvisitedNodes.forEach(node => {
   node.addEventListener('mousedown', drawWall);
   node.addEventListener('mouseover', drawWall);
 })
+
+
+let algorithmToVisualize = ''
+// dfs 
+let dfsButton = document.getElementById("dfsButton")
+
+dfsButton.addEventListener('click', () => {
+  algorithmToVisualize = 'dfs'
+});
+
+let visualizeButton = document.getElementById("visualizeButton")
+visualizeButton.addEventListener('click', () => {
   let row = 13
   let col = 8
   let startNode = document.getElementById(`${row}-${col}`)
   startNode.style.backgroundColor = "red";
-
-  // dfs 
-  beginDFS(startNode, row, col)
+  if (algorithmToVisualize == 'dfs') {
+    beginDFS(startNode, row, col)
+  }
+});
 
 
 // Random board generator
