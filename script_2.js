@@ -134,6 +134,24 @@ function beginDFS(startNode, row, col) {
 }
 
 
+function createUnvisitedAndTargetNodes(numberOfRows, numberOfCols) {
+  for (let row = 0; row < numberOfRows; row++) {
+    for (let col = 0; col < numberOfCols; col++) {
+        let div = document.createElement('div');
+        div.id = `${row}-${col}`
+        if (row == 13 && col == 55) {
+            div.classList.add('target');
+            gameBoard.appendChild(div);
+            div.style.backgroundColor = "green";
+        }
+        else {
+          div.classList.add('unvisited');
+          gameBoard.appendChild(div);
+        }
+    }
+  }
+}
+
 
 
 
@@ -154,25 +172,13 @@ let numberOfRows = 27
 let numberOfCols = 64
 let pathSpeed = 10;
 let mouseDown = false
+
 window.onmousedown = () => mouseDown = true;
 window.onmouseup = () => mouseDown = false;
 let dfsShortestPath = []
 
-for (let row = 0; row < numberOfRows; row++) {
-  for (let col = 0; col < numberOfCols; col++) {
-      let div = document.createElement('div');
-      div.id = `${row}-${col}`
-      if (row == 13 && col == 55) {
-          div.classList.add('target');
-          gameBoard.appendChild(div);
-          div.style.backgroundColor = "green";
-      }
-      else {
-        div.classList.add('unvisited');
-        gameBoard.appendChild(div);
-      }
-  }
-}
+createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
+
 
 let targetReached = false;
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
@@ -190,12 +196,14 @@ dfsButton.addEventListener('click', () => {
   algorithmToVisualize = 'dfs'
 });
 
+let row = 13
+let col = 8
+let startNode = document.getElementById(`${row}-${col}`)
+startNode.style.backgroundColor = "red";
+startNode.classList.add('start');
+
 let visualizeButton = document.getElementById("visualizeButton")
 visualizeButton.addEventListener('click', () => {
-  let row = 13
-  let col = 8
-  let startNode = document.getElementById(`${row}-${col}`)
-  startNode.style.backgroundColor = "red";
   if (algorithmToVisualize == 'dfs') {
     beginDFS(startNode, row, col)
   }
@@ -208,7 +216,7 @@ let generateRandomWallsButton = document.getElementById("generate-random-walls-b
 generateRandomWallsButton.addEventListener('click', () => {
   unvisitedNodes.forEach(node => {
       let randomNumber = getRandomInt(0, 3);
-      if (randomNumber == 0) {
+      if ((randomNumber == 0) && (node.classList.contains('start') == false) && (node.classList.contains('target') == false)) {
         drawWallWithButton(node);
       }
   })
