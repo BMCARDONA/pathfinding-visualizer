@@ -1,16 +1,3 @@
-
-class Node {
-  constructor(parent, row, col) {
-    this.parent = parent;
-    this.row = row;
-    this.col = col;
-    this.parents = []
-  }
-  addParent(name) {
-    this.parents.push(new Node(name));
-  }
-}
-
 // functions 
 function makeGrid(numRows, numCols) {
   gameBoard.style.setProperty('--numRows', numRows); 
@@ -19,7 +6,7 @@ function makeGrid(numRows, numCols) {
 
 function drawWall(e) {
 if (mouseDown === true) {
-  e.target.style.backgroundColor = "black";
+  e.target.style.backgroundColor = "rgb(77, 78, 107)";
   e.target.classList.remove('unvisited');
   e.target.classList.add('wall');
 }
@@ -46,8 +33,19 @@ function markNodeAsVisited(node) {
   node.classList.add('visited');
 }
 
+class Node {
+  constructor(parent, row, col) {
+    this.parent = parent;
+    this.row = row;
+    this.col = col;
+    this.parents = []
+  }
+  addParent(name) {
+    this.parents.push(new Node(name));
+  }
+}
+
 function DFS(array, parentNode, row, col) {
-  let currentArray = array;
   let nextNode = document.getElementById(`${row}-${col}`);
   let childNode = new Node(parentNode, row, col);
   childNode.addParent(nextNode);
@@ -62,22 +60,45 @@ function DFS(array, parentNode, row, col) {
     let node = childNode;
     while (node.parent != null) {
         let shortestPathNode = document.getElementById(`${node.row}-${node.col}`);
-        shortestPath.push(shortestPathNode);
+        dfsShortestPath.push(shortestPathNode);
         node = node.parent;
     }
   }
 
   else if (targetReached == false) {
     markNodeAsVisited(nextNode);
-    currentArray.push(nextNode);
-    DFS(currentArray, childNode, row + 1, col);
-    DFS(currentArray, childNode, row - 1, col);
-    DFS(currentArray, childNode, row, col + 1);
-    DFS(currentArray, childNode, row, col - 1);
+    array.push(nextNode);
+    DFS(array, childNode, row + 1, col);
+    DFS(array, childNode, row - 1, col);
+    DFS(array, childNode, row, col + 1);
+    DFS(array, childNode, row, col - 1);
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////////////
+
+function dfsPathColorAnimation(array) {
+  for (let i = 0; i < array.length; i++) {
+    setTimeout(() => {
+        let node = array[i];
+        changeNodeColor(node, 'slateblue');
+        node.style.animation = "foundFirstPath 1s";
+    }, 40 * i); 
+  }
+}
+
+
+function shortestPathColorAnimation(array) {
+    array.reverse()
+    for (let i = 0; i < array.length - 1; i++) {
+      setTimeout(() => {
+          let node = array[i];
+          changeNodeColor(node, 'rgb(234, 52, 128)'); 
+          node.style.animation = "foundShortestPath 1s";
+      }, 40 * i); 
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
 
 
 // gameBoard must be an id -- it can't be a class. 
@@ -87,7 +108,7 @@ let numberOfCols = 64
 let mouseDown = false
 window.onmousedown = () => mouseDown = true;
 window.onmouseup = () => mouseDown = false;
-let shortestPath = []
+let dfsShortestPath = []
 
 for (let row = 0; row < numberOfRows; row++) {
   for (let col = 0; col < numberOfCols; col++) {
@@ -105,11 +126,13 @@ for (let row = 0; row < numberOfRows; row++) {
   }
 }
 
+let targetReached = false;
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
 unvisitedNodes.forEach(node => {
   node.addEventListener('mousedown', drawWall);
   node.addEventListener('mouseover', drawWall);
   node.addEventListener('click', () => {
+      node.style.backgroundColor = "red";
       let row = getNodeRow(node); 
       let col = getNodeColumn(node); 
       let array = [];
@@ -118,32 +141,11 @@ unvisitedNodes.forEach(node => {
       DFS(array, null, row, col + 1)
       DFS(array, null, row, col - 1)
       let timeToFinishBluePath = 40 * array.length;
-      for (let i = 0; i < array.length; i++) {
-        setTimeout(() => {
-            let node = array[i];
-            changeNodeColor(node, 'slateblue');
-            node.style.animation = "foundFirstPath 1s";
-        }, 40 * i); 
-      }
+      dfsPathColorAnimation(array);
       setTimeout(() => {
-        shortestPath.reverse()
-          for (let i = 0; i < shortestPath.length - 1; i++) {
-            setTimeout(() => {
-                let node = shortestPath[i];
-                changeNodeColor(node, 'red'); 
-                node.style.animation = "foundShortestPath 1s";
-            }, 40 * i); 
-          }
+        shortestPathColorAnimation(dfsShortestPath);
       }, timeToFinishBluePath)
   })
 });
-
-
-
-
-
-
-let targetReached = false;
-
 
 makeGrid(numberOfRows, numberOfCols) 
