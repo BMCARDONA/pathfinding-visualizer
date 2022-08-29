@@ -179,16 +179,14 @@ let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
 unvisitedNodes.forEach(node => {
   node.addEventListener('mousedown', drawWall);
   node.addEventListener('mouseover', drawWall);
-  node.addEventListener('click', () => {
-      node.style.backgroundColor = "red";
-      let row = getNodeRow(node); 
-      let col = getNodeColumn(node); 
-      let startNode = document.getElementById(`${node.row}-${node.col}`)
+})
+  let row = 13
+  let col = 8
+  let startNode = document.getElementById(`${row}-${col}`)
+  startNode.style.backgroundColor = "red";
 
-      // dfs 
-      beginDFS(startNode, row, col)
-  })
-});
+  // dfs 
+  beginDFS(startNode, row, col)
 
 
 // Random board generator
