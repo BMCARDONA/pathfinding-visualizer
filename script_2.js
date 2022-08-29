@@ -19,12 +19,9 @@ function getRandomInt(min, max) {
   }
 
 function drawWallWithButton(node) {
-  node.style.animation = "generateWalls 1s";
-  setTimeout(() => {
-      node.style.backgroundColor = 'rgb(77, 78, 107)';
-  }, 1000); 
-  node.classList.remove('unvisited');
-  node.classList.add('wall');
+    node.style.backgroundColor = 'rgb(77, 78, 107)';
+    node.classList.remove('unvisited');
+    node.classList.add('wall');
 }
 
 function getNodeRow(node) {
@@ -124,10 +121,10 @@ function DFS(array, parentNode, row, col) {
 function beginDFS(startNode, row, col) {
     dfsShortestPath.push(startNode);
     let array = []
-    DFS(array, null, row + 1, col)
-    DFS(array, null, row - 1, col)
     DFS(array, null, row, col + 1)
     DFS(array, null, row, col - 1)
+    DFS(array, null, row + 1, col)
+    DFS(array, null, row - 1, col)
     let timeToFinishBluePath = pathSpeed * array.length;
     dfsPathColorAnimation(array);
     setTimeout(() => {
@@ -155,6 +152,36 @@ function createUnvisitedAndTargetNodes(numberOfRows, numberOfCols) {
 }
 
 
+function clearBoard(numberOfRows, numberOfCols) {
+  console.log("hello");
+  for (let row = 0; row < numberOfRows; row++) {
+    for (let col = 0; col < numberOfCols; col++) {
+        let node = document.getElementById(`${row}-${col}`)
+        // target
+        if (row == 13 && col == 8) {
+            node.setAttribute("class", "");
+            node.classList.add('start');
+            node.classList.add('unvisited');
+            node.style.backgroundColor = 'red';
+        }
+        // target
+        else if (row == 13 && col == 55) {
+            node.setAttribute("class", "");
+            node.classList.add('target');
+            node.style.backgroundColor = 'green';
+        }
+        else {
+            node.setAttribute("class", "");
+            node.classList.add('unvisited');
+            node.style.backgroundColor = 'white';
+        }
+        mouseDown = false
+        targetReached = false;
+        dfsShortestPath = []
+    }
+  }
+}
+
 
 
 
@@ -172,15 +199,15 @@ function createUnvisitedAndTargetNodes(numberOfRows, numberOfCols) {
 let gameBoard = document.getElementById('gameBoard');
 let numberOfRows = 27
 let numberOfCols = 64
+createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
 let pathSpeed = 10;
+
+
 let mouseDown = false
 window.onmousedown = () => mouseDown = true;
 window.onmouseup = () => mouseDown = false;
 let targetReached = false;
 let dfsShortestPath = []
-createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-
-
 
 
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
@@ -189,7 +216,7 @@ unvisitedNodes.forEach(node => {
     node.addEventListener('mouseover', drawWall);
 })
 
-
+// visualization 
 let algorithmToVisualize = ''
 let dfsButton = document.getElementById("dfsButton")
 
@@ -214,6 +241,7 @@ visualizeButton.addEventListener('click', () => {
 
 let generateRandomWallsButton = document.getElementById("generate-random-walls-button");
 generateRandomWallsButton.addEventListener('click', () => {
+  clearBoard(numberOfRows, numberOfCols);
   unvisitedNodes.forEach(node => {
       let randomNumber = getRandomInt(0, 3);
       if ((randomNumber == 0) && (node.classList.contains('start') == false) && (node.classList.contains('target') == false)) {
@@ -221,5 +249,11 @@ generateRandomWallsButton.addEventListener('click', () => {
       }
   })
 });
+
+let clearBoardButton = document.getElementById("clear-board-button");
+clearBoardButton.addEventListener('click', () => {
+    clearBoard(numberOfRows, numberOfCols);
+});
+
 
 makeGrid(numberOfRows, numberOfCols) 
