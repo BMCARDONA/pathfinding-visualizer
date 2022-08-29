@@ -57,6 +57,32 @@ class Node {
   }
 }
 
+
+function dfsPathColorAnimation(array) {
+  for (let i = 0; i < array.length; i++) {
+    setTimeout(() => {
+        let node = array[i];
+        changeNodeColor(node, 'slateblue');
+        node.style.animation = "foundFirstPath 0.5s";
+    }, pathSpeed * i); 
+  }
+}
+
+
+function shortestPathColorAnimation(array) {
+    array.reverse()
+    for (let i = 0; i < array.length - 1; i++) {
+      setTimeout(() => {
+          let node = array[i];
+          if (node.classList.contains('target') == false) {
+            changeNodeColor(node, '#00b6ad')
+            node.style.animation = "foundShortestPath 0.5s";
+          }
+      }, pathSpeed * i); 
+    }
+}
+
+
 function DFS(array, parentNode, row, col) {
   let nextNode = document.getElementById(`${row}-${col}`);
   let childNode = new Node(parentNode, row, col);
@@ -90,30 +116,30 @@ function DFS(array, parentNode, row, col) {
   }
 }
 
-
-function dfsPathColorAnimation(array) {
-  for (let i = 0; i < array.length; i++) {
+function beginDFS(startNode, row, col) {
+    dfsShortestPath.push(startNode);
+    let array = []
+    DFS(array, null, row + 1, col)
+    DFS(array, null, row - 1, col)
+    DFS(array, null, row, col + 1)
+    DFS(array, null, row, col - 1)
+    let timeToFinishBluePath = pathSpeed * array.length;
+    dfsPathColorAnimation(array);
     setTimeout(() => {
-        let node = array[i];
-        changeNodeColor(node, 'slateblue');
-        node.style.animation = "foundFirstPath 0.5s";
-    }, pathSpeed * i); 
-  }
+      shortestPathColorAnimation(dfsShortestPath);
+    }, timeToFinishBluePath)
 }
 
 
-function shortestPathColorAnimation(array) {
-    array.reverse()
-    for (let i = 0; i < array.length - 1; i++) {
-      setTimeout(() => {
-          let node = array[i];
-          if (node.classList.contains('target') == false) {
-            changeNodeColor(node, '#00b6ad')
-            node.style.animation = "foundShortestPath 0.5s";
-          }
-      }, pathSpeed * i); 
-    }
-}
+
+
+
+
+
+
+
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -155,17 +181,9 @@ unvisitedNodes.forEach(node => {
       let row = getNodeRow(node); 
       let col = getNodeColumn(node); 
       let startNode = document.getElementById(`${node.row}-${node.col}`)
-      dfsShortestPath.push(startNode);
-      let array = []
-      DFS(array, null, row + 1, col)
-      DFS(array, null, row - 1, col)
-      DFS(array, null, row, col + 1)
-      DFS(array, null, row, col - 1)
-      let timeToFinishBluePath = pathSpeed * array.length;
-      dfsPathColorAnimation(array);
-      setTimeout(() => {
-        shortestPathColorAnimation(dfsShortestPath);
-      }, timeToFinishBluePath)
+
+      // dfs 
+      beginDFS(startNode, row, col)
   })
 });
 
