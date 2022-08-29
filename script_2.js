@@ -19,7 +19,10 @@ function getRandomInt(min, max) {
   }
 
 function drawWallWithButton(node) {
-  node.style.backgroundColor = "rgb(77, 78, 107)";
+  node.style.animation = "generateWalls 1s";
+  setTimeout(() => {
+      node.style.backgroundColor = 'rgb(77, 78, 107)';
+  }, 1000); 
   node.classList.remove('unvisited');
   node.classList.add('wall');
 }
@@ -195,7 +198,7 @@ generateRandomWallsButton.addEventListener('click', () => {
   unvisitedNodes.forEach(node => {
       let randomNumber = getRandomInt(0, 3);
       if (randomNumber == 0) {
-          drawWallWithButton(node);
+        drawWallWithButton(node);
       }
   })
 });
