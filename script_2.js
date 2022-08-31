@@ -20,7 +20,9 @@ function getRandomInt(min, max) {
 
 function drawWallWithButton(node) {
     node.style.backgroundColor = 'rgb(77, 78, 107)';
-    node.classList.remove('unvisited');
+    if (node.classList.contains('unvisited')) {
+      node.classList.remove('unvisited')
+    }
     node.classList.add('wall');
 }
 
@@ -41,7 +43,9 @@ function changeNodeColor(node, color) {
 }
 
 function markNodeAsVisited(node) {
-  node.classList.remove('unvisited');
+  if (node.classList.contains('unvisited')) {
+    node.classList.remove('unvisited')
+  }
   node.classList.add('visited');
 }
 
@@ -77,7 +81,7 @@ function shortestPathColorAnimation(array) {
       setTimeout(() => {
           let node = array[i];
           if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
-            changeNodeColor(node, '#00b6ad')
+            changeNodeColor(node, 'rgb(255, 253, 129)')
             node.style.animation = "foundShortestPath 0.5s";
           }
       }, pathSpeed * i); 
@@ -98,7 +102,6 @@ function DFS(array, parentNode, row, col) {
     targetReached = true;
     let node = childNode;
     while (true) {
-        console.log(node.parent);
         let shortestPathNode = document.getElementById(`${node.row}-${node.col}`);
         dfsShortestPath.push(shortestPathNode);
         node = node.parent;
@@ -153,18 +156,17 @@ function createUnvisitedAndTargetNodes(numberOfRows, numberOfCols) {
 
 
 function clearBoard(numberOfRows, numberOfCols) {
-  console.log("hello");
   for (let row = 0; row < numberOfRows; row++) {
     for (let col = 0; col < numberOfCols; col++) {
         let node = document.getElementById(`${row}-${col}`)
-        // target
+        // start node
         if (row == 13 && col == 8) {
             node.setAttribute("class", "");
             node.classList.add('start');
             node.classList.add('unvisited');
             node.style.backgroundColor = 'red';
         }
-        // target
+        // target node
         else if (row == 13 && col == 55) {
             node.setAttribute("class", "");
             node.classList.add('target');
@@ -199,8 +201,9 @@ function clearBoard(numberOfRows, numberOfCols) {
 let gameBoard = document.getElementById('gameBoard');
 let numberOfRows = 27
 let numberOfCols = 64
+makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-let pathSpeed = 10;
+let pathSpeed = 30;
 
 
 let mouseDown = false
@@ -211,18 +214,120 @@ let dfsShortestPath = []
 
 
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
-unvisitedNodes.forEach(node => {
-    node.addEventListener('mousedown', drawWall);
-    node.addEventListener('mouseover', drawWall);
-})
+// unvisitedNodes.forEach(node => {
+//     node.addEventListener('mousedown', drawWall);
+//     node.addEventListener('mouseover', drawWall);
+// })
 
-// visualization 
+
+
+// visualization button
 let algorithmToVisualize = ''
-let dfsButton = document.getElementById("dfsButton")
 
+
+// dfs 
+let dfsButton = document.getElementById("dfsButton")
 dfsButton.addEventListener('click', () => {
   algorithmToVisualize = 'dfs'
 });
+
+
+// bfs 
+let bfsButton = document.getElementById("bfsButton")
+bfsButton.addEventListener('click', () => {
+  algorithmToVisualize = 'bfs'
+});
+
+
+function bfsPathColorAnimation(array) {
+  for (let i = 0; i < array.length; i++) {
+    setTimeout(() => {
+        let node = array[i];
+        if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
+          changeNodeColor(node, 'slateblue');
+          node.style.animation = "foundFirstPath 0.5s";
+        }
+    }, pathSpeed * i); 
+  }
+}
+
+function bfsShortestPathAnimation(array) {
+    array.reverse()
+    for (let i = 0; i < array.length - 1; i++) {
+      setTimeout(() => {
+          let node = array[i];
+          let domNode = document.getElementById(`${node.row}-${node.col}`)
+          if (domNode.classList.contains('start') == false && domNode.classList.contains('target') == false) {
+            changeNodeColor(domNode, 'rgb(255, 253, 129)')
+            domNode.style.animation = "foundShortestPath 0.5s";
+          }
+      }, pathSpeed * i); 
+    }
+}
+
+let bfsVisited = [];
+let bfsShortestPath = [];
+
+class bfsNode {
+  constructor(row, col, parent) {
+    this.row = row;
+    this.col = col;
+    this.parent = parent;
+  }
+}
+
+function bfs(row, col) {
+    let startNode = new bfsNode(row, col, null);
+    queue = [startNode]
+    while (queue.length > 0) {
+        let currentNode = queue.shift();
+        let domNode = document.getElementById(`${currentNode.row}-${currentNode.col}`)
+        // domNode is null
+        if (domNode.classList.contains('target')) {
+            node = currentNode;
+            while (true) {
+                bfsShortestPath.push(node);
+                node = node.parent;
+                if (node == null) {
+                    break;
+                }
+            }
+            break;
+        }
+        else if (domNode.classList.contains('wall') == false && domNode.classList.contains('visited') == false) {
+            markNodeAsVisited(domNode);
+            bfsVisited.push(domNode);
+    
+            if (currentNode.row + 1 <= 26) {
+                topNode = new bfsNode(currentNode.row + 1, currentNode.col, currentNode)
+                if (queue.includes(topNode) == false) {
+                    queue.push(topNode);
+                }
+            }
+            if (currentNode.row - 1 >= 0) {
+                bottomNode = new bfsNode(currentNode.row - 1, currentNode.col, currentNode)
+                if (queue.includes(bottomNode) == false) {
+                  queue.push(bottomNode);
+              }
+            }
+            if (currentNode.col - 1 >= 0) {
+                leftNode = new bfsNode(currentNode.row, currentNode.col - 1, currentNode)
+                if (queue.includes(leftNode) == false) {
+                    queue.push(leftNode);
+              }
+            }
+            if (currentNode.col + 1 <= 63) {
+                rightNode = new bfsNode(currentNode.row, currentNode.col + 1, currentNode)
+                if (queue.includes(rightNode) == false) {
+                    queue.push(rightNode);
+              }
+            }
+        }
+    }
+}
+
+
+
 
 let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
@@ -233,6 +338,14 @@ startNode.classList.add('start');
 visualizeButton.addEventListener('click', () => {
   if (algorithmToVisualize == 'dfs') {
     beginDFS(startNode, row, col)
+  }
+  if (algorithmToVisualize == 'bfs') {
+      bfs(row, col)
+      bfsPathColorAnimation(bfsVisited);
+      let timeToFinishBluePath = pathSpeed * bfsVisited.length;
+      setTimeout(() => {
+        bfsShortestPathAnimation(bfsShortestPath);
+      }, timeToFinishBluePath)
   }
 });
 
@@ -256,4 +369,4 @@ clearBoardButton.addEventListener('click', () => {
 });
 
 
-makeGrid(numberOfRows, numberOfCols) 
+

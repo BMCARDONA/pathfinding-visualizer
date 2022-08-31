@@ -22,7 +22,7 @@ body {
 
 #gameBoard > div {
   border: 0.1px solid rgb(217, 219, 255);
-  /* border-radius: 2px; */
+  border-radius: 1px;
 }
 
 
@@ -37,13 +37,13 @@ body {
   50% {
     transform: scale(1.1);
     /* background-color: red; */
-    background-color: rgb(255, 253, 129);
+    background-color: #00b6ad;
   }
 }
 
-@keyframes generateWalls {
+/* @keyframes generateWalls {
   100% {
     /* transform: scale(1.1); */
-    background-color: rgb(77, 78, 107);
-  }
-}
+    /* background-color: rgb(77, 78, 107); */
+  /* }
+}  */
