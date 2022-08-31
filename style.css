@@ -28,16 +28,14 @@ body {
 
 @keyframes foundFirstPath {
   50% {
-    transform: scale(1.1);
-    background-color: cyan;
+    background-color: coral;
   }
 }
 
 @keyframes foundShortestPath {
-  50% {
+  100% {
     transform: scale(1.1);
     /* background-color: red; */
-    background-color: #00b6ad;
   }
 }
 

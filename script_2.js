@@ -259,7 +259,7 @@ function bfsShortestPathAnimation(array) {
           let domNode = document.getElementById(`${node.row}-${node.col}`)
           if (domNode.classList.contains('start') == false && domNode.classList.contains('target') == false) {
             changeNodeColor(domNode, shortPathColor)
-            domNode.style.animation = "foundShortestPath 2s";
+            domNode.style.animation = "foundShortestPath 3s";
           }
       }, pathSpeed * i); 
     }
@@ -337,7 +337,7 @@ function bfs(row, col) {
 let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
 let col = 8
-let shortPathColor = 'yellow';
+let shortPathColor = 'springgreen';
 let mainPathColor = '#f64c72'
 let startNode = document.getElementById(`${row}-${col}`)
 changeNodeColor(startNode, "red")
