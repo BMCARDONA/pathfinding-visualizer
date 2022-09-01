@@ -203,7 +203,7 @@ let numberOfRows = 27
 let numberOfCols = 64
 makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-let pathSpeed = 10;
+let pathSpeed = 40;
 
 
 let mouseDown = false
@@ -266,14 +266,18 @@ function bfsShortestPathAnimation(array) {
 }
 
 
-let bfsVisited = [];
-let bfsShortestPath = [];
-
 class bfsNode {
   constructor(row, col, parent) {
     this.row = row;
     this.col = col;
     this.parent = parent;
+  }
+}
+
+function addNodeToQueue(currentNode, queue, rowIncrement, colIncrement) {
+  node = new bfsNode(currentNode.row + rowIncrement, currentNode.col + colIncrement, currentNode)
+  if (queue.includes(node) == false) {
+      queue.push(node);
   }
 }
 
@@ -283,7 +287,6 @@ function bfs(row, col) {
     while (queue.length > 0) {
         let currentNode = queue.shift();
         let domNode = document.getElementById(`${currentNode.row}-${currentNode.col}`)
-        // domNode is null
         if (domNode.classList.contains('target')) {
             node = currentNode;
             while (true) {
@@ -298,34 +301,21 @@ function bfs(row, col) {
         else if (domNode.classList.contains('wall') == false && domNode.classList.contains('visited') == false) {
             markNodeAsVisited(domNode);
             bfsVisited.push(domNode);
-  
 
             if (currentNode.row - 1 >= 0) {
-                bottomNode = new bfsNode(currentNode.row - 1, currentNode.col, currentNode)
-                if (queue.includes(bottomNode) == false) {
-                  queue.push(bottomNode);
-              }
+                addNodeToQueue(currentNode, queue, -1, 0)
             }
 
             if (currentNode.col + 1 <= 63) {
-              rightNode = new bfsNode(currentNode.row, currentNode.col + 1, currentNode)
-              if (queue.includes(rightNode) == false) {
-                  queue.push(rightNode);
-            }
+                addNodeToQueue(currentNode, queue, 0, 1)
             }
 
             if (currentNode.row + 1 <= 26) {
-              topNode = new bfsNode(currentNode.row + 1, currentNode.col, currentNode)
-              if (queue.includes(topNode) == false) {
-                  queue.push(topNode);
-              }
-          }
+                addNodeToQueue(currentNode, queue, 1, 0)
+            }
 
             if (currentNode.col - 1 >= 0) {
-                leftNode = new bfsNode(currentNode.row, currentNode.col - 1, currentNode)
-                if (queue.includes(leftNode) == false) {
-                    queue.push(leftNode);
-              }
+                addNodeToQueue(currentNode, queue, 0, -1)
             }
         }
     }
@@ -337,9 +327,11 @@ function bfs(row, col) {
 let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
 let col = 8
-let shortPathColor = 'springgreen';
+let shortPathColor = 'blueviolet';
 let mainPathColor = '#f64c72'
 let startNode = document.getElementById(`${row}-${col}`)
+let bfsVisited = [];
+let bfsShortestPath = [];
 changeNodeColor(startNode, "red")
 startNode.classList.add('start');
 visualizeButton.addEventListener('click', () => {
