@@ -203,7 +203,7 @@ let numberOfRows = 27
 let numberOfCols = 64
 makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-let pathSpeed = 40;
+let pathSpeed = 20;
 
 
 let mouseDown = false
@@ -306,13 +306,13 @@ function bfs(row, col) {
                 addNodeToQueue(currentNode, queue, -1, 0)
             }
 
-            if (currentNode.col + 1 <= 63) {
-                addNodeToQueue(currentNode, queue, 0, 1)
-            }
-
             if (currentNode.row + 1 <= 26) {
                 addNodeToQueue(currentNode, queue, 1, 0)
             }
+
+            if (currentNode.col + 1 <= 63) {
+              addNodeToQueue(currentNode, queue, 0, 1)
+          }
 
             if (currentNode.col - 1 >= 0) {
                 addNodeToQueue(currentNode, queue, 0, -1)
@@ -327,8 +327,8 @@ function bfs(row, col) {
 let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
 let col = 8
-let shortPathColor = 'blueviolet';
-let mainPathColor = '#f64c72'
+let shortPathColor = 'rgb(115, 249, 191)';
+let mainPathColor = 'rgb(100, 110, 256)'
 let startNode = document.getElementById(`${row}-${col}`)
 let bfsVisited = [];
 let bfsShortestPath = [];
