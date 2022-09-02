@@ -303,6 +303,12 @@ bfsButton.addEventListener('click', () => {
   algorithmToVisualize = 'bfs'
 });
 
+// astar button
+let astarButton = document.getElementById("astarButton")
+astarButton.addEventListener('click', () => {
+  algorithmToVisualize = 'astar'
+});
+
 let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
 let col = 8
@@ -312,6 +318,9 @@ let startNode = document.getElementById(`${row}-${col}`)
 let bfsVisited = [];
 let bfsShortestPath = [];
 changeNodeColor(startNode, "red")
+
+
+
 startNode.classList.add('start');
 visualizeButton.addEventListener('click', () => {
   if (algorithmToVisualize == 'dfs') {

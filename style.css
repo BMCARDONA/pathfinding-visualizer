@@ -32,6 +32,7 @@ body {
 #generate-random-walls-button,
 #dfsButton,
 #bfsButton,
+#astarButton,
 #visualizeButton {
   font-weight: 700;
   font-size: 20px;
@@ -47,7 +48,8 @@ body {
 
 
 #dfsButton,
-#bfsButton {
+#bfsButton,
+#astarButton {
   background-color: rgb(104, 118, 164);
 }
 
@@ -60,6 +62,7 @@ body {
 #generate-random-walls-button:hover,
 #dfsButton:hover,
 #bfsButton:hover,
+#astarButton:hover,
 #visualizeButton:hover {
   filter: brightness(35%) !important;
   -webkit-transition: all .4s ease;
