@@ -50,7 +50,7 @@ function markNodeAsVisited(node) {
 }
 
 
-// dfs 
+/////////////////////////////////////////// dfs ///////////////////////////////////////////
 
 class Node {
   constructor(parent, row, col) {
@@ -180,15 +180,13 @@ function clearBoard(numberOfRows, numberOfCols) {
             node.classList.add('unvisited');
             node.style.backgroundColor = 'white';
         }
-        mouseDown = false
         targetReached = false;
-        dfsShortestPath = []
     }
   }
 }
 
 
-// bfs
+/////////////////////////////////////////// bfs ///////////////////////////////////////////
 
 function bfsPathColorAnimation(array) {
   for (let i = 0; i < array.length; i++) {
@@ -272,6 +270,129 @@ function bfs(row, col) {
     }
 }
 
+
+/////////////////////////////////////////// astar ///////////////////////////////////////////
+// Pseudocode:
+
+class aStarNode {
+  constructor(parent, row, col, g, f) {
+    this.parent = parent;
+    this.row = row;
+    this.col = col;
+    this.g = g;
+    this.f = f;
+  }
+}
+
+function isNodeInVisited(array, row, col) {
+  for (let i = 0; i < array.length; i++) {
+    node = array[i];
+    if (node.row == row && node.col == col) {
+        return(true);
+    }
+    return(false);
+  } 
+}
+
+function createNode(parent, row, col, g, f) {
+    let node = aStarNode(currentNode, row, col, g, f)
+    return(node);
+}
+
+function addNodeToQueue(queue, node) {
+    queue.push(node);
+}
+
+function updateNodeInQueue(queue, node) {
+    for (let i = 0; i < queue.length; i++) {
+      existingNode = queue[i];
+      if (node.g < existingNode.g) {
+          existingNode.g = node.g;
+          existingNode.parent = node.parent
+      }
+    } 
+}
+
+function isNodeInQueue(queue, node) {
+    if (queue.includes(node)) {
+        // update node's g attribute and parent attribute, if necessary.
+        updateNodeInQueue(queue, node);
+    }
+    else {
+        // add node to queue
+        addNodeToQueue(queue, node);
+    }
+}
+
+
+function heuristic(row, col) {
+    // Manhattan distance
+    distance = Math.abs(row - 13) + Math.abs(col - 55);
+    return (distance); 
+}
+
+
+function aStarSearch(startRow, startCol) {
+    let heuristicValue = heuristic(startRow, startCol);
+    let startNode = new aStarNode(null, startRow, startCol, 0, heuristicValue);
+    queue = [startNode]
+    visited = []
+    while (queue.length > 0) {
+        let currentNode = queue[0];
+        // set currentNode to queue element with lowest f value
+        for (let i = 0; i < queue.length; i++) {
+            node = queue[i];
+            if (node.f < currentNode.f) {
+              currentNode = node;
+          }
+        } 
+        // if target node is found
+        if (currentNode.row == 13 && currentNode.col == 55) {
+            return console.log("target found!");
+        }
+        const currentNodeIdx = queue.indexOf(currentNode)
+        // We splice an array from the queue -- not an element! 
+        let pluckedArray = queue.splice(currentNodeIdx, 1);  // 2nd parameter means remove one item only
+        let pluckedNode = pluckedArray[0];
+        visited.push(pluckedNode);
+        // check if adjacent node has same row and column as currentNode
+        let firstNeighbor = isNodeInVisited(visited, pluckedNode.row - 1, pluckedNode.col);
+        let secondNeighbor = isNodeInVisited(visited, pluckedNode.row, pluckedNode.col + 1);
+        let thirdNeighbor = isNodeInVisited(visited, pluckedNode.row + 1, pluckedNode.col);
+        let fourthNeighbor = isNodeInVisited(visited, pluckedNode.row, pluckedNode.col - 1);
+        // store booleans (which tell us whether node is in VISITED)
+        let children = [firstNeighbor, secondNeighbor, thirdNeighbor, fourthNeighbor];
+
+        for (let i = 0; i < children.length; i++) {
+            // if node not in visited
+            if (children[i] == false) {
+                if (i == 0) {
+                    let heuristicValue = heuristic(pluckedNode.row - 1, pluckedNode.col);
+                    // set attributes of child
+                    let childNode = new aStarNode(pluckedNode, pluckedNode.row - 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
+                    isNodeInQueue(queue, childNode);
+                }
+                if (i == 1) {
+                    let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col + 1);
+                    let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col + 1, pluckedNode.g + 1, heuristicValue);
+                    isNodeInQueue(queue, childNode);
+                }
+                if (i == 2) {
+                    let heuristicValue = heuristic(pluckedNode.row + 1, pluckedNode.col);
+                    let childNode = new aStarNode(pluckedNode, pluckedNode.row + 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
+                    isNodeInQueue(queue, childNode);
+                }
+                if (i == 3) {
+                    let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col - 1);
+                    let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col - 1, pluckedNode.g + 1, heuristicValue);
+                    isNodeInQueue(queue, childNode);
+                }
+            }
+        }
+    }
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // gameBoard must be an id -- it can't be a class. 
@@ -280,15 +401,22 @@ let numberOfRows = 27
 let numberOfCols = 64
 makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-let pathSpeed = 40;
-let mouseDown = false
-window.onmousedown = () => mouseDown = true;
-window.onmouseup = () => mouseDown = false;
+let pathSpeed = 3;
 let targetReached = false;
 let dfsShortestPath = []
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
-let algorithmToVisualize = ''
+let visualizeButton = document.getElementById("visualizeButton")
+let row = 13
+let col = 8
+let shortPathColor = 'rgb(255, 253, 129)';
+let mainPathColor = '#08b6ab'
+let bfsVisited = [];
+let bfsShortestPath = [];
+let startNode = document.getElementById(`${row}-${col}`)
+changeNodeColor(startNode, "red")
 
+
+let algorithmToVisualize = ''
 
 // dfs button
 let dfsButton = document.getElementById("dfsButton")
@@ -309,17 +437,6 @@ astarButton.addEventListener('click', () => {
   algorithmToVisualize = 'astar'
 });
 
-let visualizeButton = document.getElementById("visualizeButton")
-let row = 13
-let col = 8
-let shortPathColor = 'rgb(255, 253, 129)';
-let mainPathColor = '#08b6ab'
-let startNode = document.getElementById(`${row}-${col}`)
-let bfsVisited = [];
-let bfsShortestPath = [];
-changeNodeColor(startNode, "red")
-
-
 
 startNode.classList.add('start');
 visualizeButton.addEventListener('click', () => {
@@ -334,6 +451,9 @@ visualizeButton.addEventListener('click', () => {
         bfsShortestPathAnimation(bfsShortestPath);
       }, timeToFinishBluePath)
   }
+  else if (algorithmToVisualize == 'astar') {
+      aStarSearch(13, 8);
+  }
 });
 
 
@@ -342,6 +462,9 @@ visualizeButton.addEventListener('click', () => {
 let generateRandomWallsButton = document.getElementById("generate-random-walls-button");
 generateRandomWallsButton.addEventListener('click', () => {
   clearBoard(numberOfRows, numberOfCols);
+  dfsShortestPath = [];
+  bfsVisited = [];
+  bfsShortestPath = []
   unvisitedNodes.forEach(node => {
       let randomNumber = getRandomInt(0, 3);
       if ((randomNumber == 0) && (node.classList.contains('start') == false) && (node.classList.contains('target') == false)) {
