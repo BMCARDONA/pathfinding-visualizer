@@ -49,6 +49,9 @@ function markNodeAsVisited(node) {
   node.classList.add('visited');
 }
 
+
+// dfs 
+
 class Node {
   constructor(parent, row, col) {
     this.parent = parent;
@@ -185,59 +188,7 @@ function clearBoard(numberOfRows, numberOfCols) {
 }
 
 
-
-
-
-
-
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-
-// gameBoard must be an id -- it can't be a class. 
-let gameBoard = document.getElementById('gameBoard');
-let numberOfRows = 27
-let numberOfCols = 64
-makeGrid(numberOfRows, numberOfCols) 
-createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-let pathSpeed = 40;
-
-
-let mouseDown = false
-window.onmousedown = () => mouseDown = true;
-window.onmouseup = () => mouseDown = false;
-let targetReached = false;
-let dfsShortestPath = []
-
-
-let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
-// unvisitedNodes.forEach(node => {
-//     node.addEventListener('mousedown', drawWall);
-//     node.addEventListener('mouseover', drawWall);
-// })
-
-
-
-// visualization button
-let algorithmToVisualize = ''
-
-
-// dfs 
-let dfsButton = document.getElementById("dfsButton")
-dfsButton.addEventListener('click', () => {
-  algorithmToVisualize = 'dfs'
-});
-
-
-// bfs 
-let bfsButton = document.getElementById("bfsButton")
-bfsButton.addEventListener('click', () => {
-  algorithmToVisualize = 'bfs'
-});
-
+// bfs
 
 function bfsPathColorAnimation(array) {
   for (let i = 0; i < array.length; i++) {
@@ -321,8 +272,36 @@ function bfs(row, col) {
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+// gameBoard must be an id -- it can't be a class. 
+let gameBoard = document.getElementById('gameBoard');
+let numberOfRows = 27
+let numberOfCols = 64
+makeGrid(numberOfRows, numberOfCols) 
+createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
+let pathSpeed = 40;
+let mouseDown = false
+window.onmousedown = () => mouseDown = true;
+window.onmouseup = () => mouseDown = false;
+let targetReached = false;
+let dfsShortestPath = []
+let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
+let algorithmToVisualize = ''
 
 
+// dfs button
+let dfsButton = document.getElementById("dfsButton")
+dfsButton.addEventListener('click', () => {
+  algorithmToVisualize = 'dfs'
+});
+
+
+// bfs button
+let bfsButton = document.getElementById("bfsButton")
+bfsButton.addEventListener('click', () => {
+  algorithmToVisualize = 'bfs'
+});
 
 let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
