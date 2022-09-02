@@ -1,5 +1,8 @@
 # Pathfinding Visualizer
-Welcome to my pathfinding visualizer project! This project was largely inspired by Clement Mihailescu (see his YouTube channel here! -> https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g) and the CS50's Introduction to Artificial Intelligence with Python. Access the live demo here: https://bmcardona.github.io/pathfinding-visualizer/
+- Welcome to my pathfinding visualizer project! 
+- Access the live demo here: https://bmcardona.github.io/pathfinding-visualizer/
+
+This project was inspired by Clement Mihailescu's project of the same name (see his YouTube channel here: https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g) and CS50's Introduction to Artificial Intelligence with Python. 
 
 # Things I learned:
 - How to provide each div (in this case, each cell in the grid) with an id containing its respective coordinate.
