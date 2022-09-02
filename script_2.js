@@ -299,7 +299,7 @@ function createNode(parent, row, col, g, f) {
     return(node);
 }
 
-function addNodeToQueue(queue, node) {
+function addCurrentNodeToQueue(queue, node) {
     queue.push(node);
 }
 
@@ -320,7 +320,7 @@ function isNodeInQueue(queue, node) {
     }
     else {
         // add node to queue
-        addNodeToQueue(queue, node);
+        addCurrentNodeToQueue(queue, node);
     }
 }
 
@@ -348,44 +348,58 @@ function aStarSearch(startRow, startCol) {
         } 
         // if target node is found
         if (currentNode.row == 13 && currentNode.col == 55) {
-            return console.log("target found!");
+            node = currentNode;
+            while (true) {
+                astarShortestPath.push(node);
+                node = node.parent;
+                if (node == null) {
+                    break;
+                }
+            }
+            return;
         }
         const currentNodeIdx = queue.indexOf(currentNode)
         // We splice an array from the queue -- not an element! 
         let pluckedArray = queue.splice(currentNodeIdx, 1);  // 2nd parameter means remove one item only
         let pluckedNode = pluckedArray[0];
         visited.push(pluckedNode);
-        // check if adjacent node has same row and column as currentNode
-        let firstNeighbor = isNodeInVisited(visited, pluckedNode.row - 1, pluckedNode.col);
-        let secondNeighbor = isNodeInVisited(visited, pluckedNode.row, pluckedNode.col + 1);
-        let thirdNeighbor = isNodeInVisited(visited, pluckedNode.row + 1, pluckedNode.col);
-        let fourthNeighbor = isNodeInVisited(visited, pluckedNode.row, pluckedNode.col - 1);
-        // store booleans (which tell us whether node is in VISITED)
-        let children = [firstNeighbor, secondNeighbor, thirdNeighbor, fourthNeighbor];
+        let domNode = document.getElementById(`${pluckedNode.row}-${pluckedNode.col}`)
+        if (domNode.classList.contains('wall') == false && domNode.classList.contains('visited') == false) {
+            markNodeAsVisited(domNode);
+            astarVisited.push(domNode);
 
-        for (let i = 0; i < children.length; i++) {
-            // if node not in visited
-            if (children[i] == false) {
-                if (i == 0) {
-                    let heuristicValue = heuristic(pluckedNode.row - 1, pluckedNode.col);
-                    // set attributes of child
-                    let childNode = new aStarNode(pluckedNode, pluckedNode.row - 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
-                    isNodeInQueue(queue, childNode);
-                }
-                if (i == 1) {
-                    let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col + 1);
-                    let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col + 1, pluckedNode.g + 1, heuristicValue);
-                    isNodeInQueue(queue, childNode);
-                }
-                if (i == 2) {
-                    let heuristicValue = heuristic(pluckedNode.row + 1, pluckedNode.col);
-                    let childNode = new aStarNode(pluckedNode, pluckedNode.row + 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
-                    isNodeInQueue(queue, childNode);
-                }
-                if (i == 3) {
-                    let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col - 1);
-                    let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col - 1, pluckedNode.g + 1, heuristicValue);
-                    isNodeInQueue(queue, childNode);
+            // check if adjacent node has same row and column as currentNode
+            let firstNeighbor = isNodeInVisited(visited, pluckedNode.row - 1, pluckedNode.col);
+            let secondNeighbor = isNodeInVisited(visited, pluckedNode.row, pluckedNode.col + 1);
+            let thirdNeighbor = isNodeInVisited(visited, pluckedNode.row + 1, pluckedNode.col);
+            let fourthNeighbor = isNodeInVisited(visited, pluckedNode.row, pluckedNode.col - 1);
+            // store booleans (which tell us whether node is in VISITED)
+            let children = [firstNeighbor, secondNeighbor, thirdNeighbor, fourthNeighbor];
+    
+            for (let i = 0; i < children.length; i++) {
+                // if node not in visited
+                if (children[i] == false) {
+                    if (i == 0) {
+                        let heuristicValue = heuristic(pluckedNode.row - 1, pluckedNode.col);
+                        // set attributes of child
+                        let childNode = new aStarNode(pluckedNode, pluckedNode.row - 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
+                        isNodeInQueue(queue, childNode);
+                    }
+                    if (i == 1) {
+                        let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col + 1);
+                        let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col + 1, pluckedNode.g + 1, heuristicValue);
+                        isNodeInQueue(queue, childNode);
+                    }
+                    if (i == 2) {
+                        let heuristicValue = heuristic(pluckedNode.row + 1, pluckedNode.col);
+                        let childNode = new aStarNode(pluckedNode, pluckedNode.row + 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
+                        isNodeInQueue(queue, childNode);
+                    }
+                    if (i == 3) {
+                        let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col - 1);
+                        let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col - 1, pluckedNode.g + 1, heuristicValue);
+                        isNodeInQueue(queue, childNode);
+                    }
                 }
             }
         }
@@ -401,7 +415,7 @@ let numberOfRows = 27
 let numberOfCols = 64
 makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-let pathSpeed = 3;
+let pathSpeed = 20;
 let targetReached = false;
 let dfsShortestPath = []
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
@@ -410,8 +424,11 @@ let row = 13
 let col = 8
 let shortPathColor = 'rgb(255, 253, 129)';
 let mainPathColor = '#08b6ab'
+// don't forget to reset these to empty arrays when you clear the board!
 let bfsVisited = [];
 let bfsShortestPath = [];
+let astarVisited = [];
+let astarShortestPath = [];
 let startNode = document.getElementById(`${row}-${col}`)
 changeNodeColor(startNode, "red")
 
@@ -440,20 +457,25 @@ astarButton.addEventListener('click', () => {
 
 startNode.classList.add('start');
 visualizeButton.addEventListener('click', () => {
-  if (algorithmToVisualize == 'dfs') {
-    beginDFS(startNode, row, col)
-  }
-  else if (algorithmToVisualize == 'bfs') {
-      bfs(row, col)
-      bfsPathColorAnimation(bfsVisited);
-      let timeToFinishBluePath = pathSpeed * bfsVisited.length;
-      setTimeout(() => {
-        bfsShortestPathAnimation(bfsShortestPath);
-      }, timeToFinishBluePath)
-  }
-  else if (algorithmToVisualize == 'astar') {
-      aStarSearch(13, 8);
-  }
+    if (algorithmToVisualize == 'dfs') {
+        beginDFS(startNode, row, col)
+    }
+    else if (algorithmToVisualize == 'bfs') {
+        bfs(row, col)
+        bfsPathColorAnimation(bfsVisited);
+        let timeToFinishBluePath = pathSpeed * bfsVisited.length;
+        setTimeout(() => {
+          bfsShortestPathAnimation(bfsShortestPath);
+        }, timeToFinishBluePath)
+    }
+    else if (algorithmToVisualize == 'astar') {
+        aStarSearch(row, col);
+        bfsPathColorAnimation(astarVisited);
+        let timeToFinishBluePath = pathSpeed * astarVisited.length;
+        setTimeout(() => {
+          bfsShortestPathAnimation(astarShortestPath);
+        }, timeToFinishBluePath)
+    }
 });
 
 
@@ -465,6 +487,8 @@ generateRandomWallsButton.addEventListener('click', () => {
   dfsShortestPath = [];
   bfsVisited = [];
   bfsShortestPath = []
+  astarVisited = [];
+  astarShortestPath = [];
   unvisitedNodes.forEach(node => {
       let randomNumber = getRandomInt(0, 3);
       if ((randomNumber == 0) && (node.classList.contains('start') == false) && (node.classList.contains('target') == false)) {
