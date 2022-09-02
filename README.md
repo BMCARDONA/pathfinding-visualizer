@@ -1,7 +1,7 @@
 # Pathfinding Visualizer
-- Welcome to my pathfinding visualizer project! Access the live demo here: https://bmcardona.github.io/pathfinding-visualizer/
+- Welcome to my pathfinding visualizer project! Access the live demo [here](https://bmcardona.github.io/pathfinding-visualizer/)
 
-- This project was inspired by Clement Mihailescu's project of the same name (see his YouTube channel here: https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g) and CS50's Introduction to Artificial Intelligence with Python.
+- This project was inspired by Clement Mihailescu's project of the same name (see his YouTube channel [here](https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g)) and CS50's Introduction to Artificial Intelligence with Python.
 
 ## Features
 - [x] Search Algorithms
