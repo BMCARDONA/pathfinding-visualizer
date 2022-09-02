@@ -114,9 +114,9 @@ function DFS(array, parentNode, row, col) {
   else if (targetReached == false) {
     markNodeAsVisited(nextNode);
     array.push(nextNode);
-    DFS(array, childNode, row + 1, col);
     DFS(array, childNode, row - 1, col);
     DFS(array, childNode, row, col + 1);
+    DFS(array, childNode, row + 1, col);
     DFS(array, childNode, row, col - 1);
   }
 }
@@ -124,10 +124,10 @@ function DFS(array, parentNode, row, col) {
 function beginDFS(startNode, row, col) {
     dfsShortestPath.push(startNode);
     let array = []
-    DFS(array, null, row, col + 1)
-    DFS(array, null, row, col - 1)
-    DFS(array, null, row + 1, col)
     DFS(array, null, row - 1, col)
+    DFS(array, null, row, col + 1)
+    DFS(array, null, row + 1, col)
+    DFS(array, null, row, col - 1)
     let timeToFinishBluePath = pathSpeed * array.length;
     dfsPathColorAnimation(array);
     setTimeout(() => {
@@ -203,7 +203,7 @@ let numberOfRows = 27
 let numberOfCols = 64
 makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-let pathSpeed = 20;
+let pathSpeed = 40;
 
 
 let mouseDown = false
@@ -327,8 +327,8 @@ function bfs(row, col) {
 let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
 let col = 8
-let shortPathColor = 'rgb(115, 249, 191)';
-let mainPathColor = 'rgb(100, 110, 256)'
+let shortPathColor = 'rgb(255, 253, 129)';
+let mainPathColor = '#08b6ab'
 let startNode = document.getElementById(`${row}-${col}`)
 let bfsVisited = [];
 let bfsShortestPath = [];
