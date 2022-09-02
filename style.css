@@ -1,13 +1,71 @@
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  font-family: 'Lato', sans-serif;
 }
 
 body {
-  display: flex;
+  padding: 0;
+  margin: 0;
+  border-width: 0px;
   justify-content: center;
 }
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  color:rgb(160, 160, 160);
+  padding: 10px;
+  background-color: rgb(56, 59, 88);
+  /* background-color: #25274d; */
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: rgb(210, 210, 210);
+    padding: 5px;
+}
+
+#clear-board-button,
+#generate-random-walls-button,
+#dfsButton,
+#bfsButton,
+#visualizeButton {
+  font-weight: 700;
+  font-size: 20px;
+  border-radius: 5px;
+  border: 0;
+  cursor: pointer;
+}
+
+#clear-board-button,
+#generate-random-walls-button {
+  background-color: rgb(126, 130, 145);
+}
+
+
+#dfsButton,
+#bfsButton {
+  background-color: rgb(104, 118, 164);
+}
+
+#visualizeButton {
+  background-color: #08b6ab;
+}
+
+
+#clear-board-button:hover,
+#generate-random-walls-button:hover,
+#dfsButton:hover,
+#bfsButton:hover,
+#visualizeButton:hover {
+  filter: brightness(35%) !important;
+  -webkit-transition: all .4s ease;
+}
+
+
 
 #gameBoard {
   display: grid;
@@ -21,21 +79,26 @@ body {
 }
 
 #gameBoard > div {
-  border: 0.1px solid rgb(217, 219, 255);
-  border-radius: 1px;
+  /* border: 0.1px solid rgb(217, 219, 255); */
+  border: 0.01px solid rgb(188, 246, 255);
+  /* border-radius: 10px;   */
+  border-style: solid;
 }
+
+
 
 
 @keyframes foundFirstPath {
   50% {
-    background-color: coral;
+    /* background-color: mediumspringgreen; */
+    background-color: royalblue;
   }
 }
 
 @keyframes foundShortestPath {
-  100% {
-    transform: scale(1.1);
-    /* background-color: red; */
+  50% {
+    /* transform: scale(1.2); */
+    /* background-color: coral; */
   }
 }
 
