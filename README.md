@@ -7,7 +7,7 @@
 - [x] Search Algorithms:
   - [X] Depth-First Search
   - [X] Breadth-First Search
-  - [ ] Greedy Best-First Search
+  - [X] Greedy Best-First Search
   - [X] A* Search
 
 - [ ] Speed Adjustment:
