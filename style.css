@@ -86,7 +86,7 @@ body {
 
 #gameBoard > div {
   /* border: 0.1px solid rgb(217, 219, 255); */
-  border: 0.1px rgb(222, 225, 225);
+  border: 0.1px lightgray;
   /* border-radius: 10px;   */
   border-style: solid;
 }
@@ -121,6 +121,7 @@ body {
 
   0% {
     background-color: rgba(73, 251, 53, 0.75);
+    border-color: rgba(73, 251, 53, 0.75);
   }
 }
 
