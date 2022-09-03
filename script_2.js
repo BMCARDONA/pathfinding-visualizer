@@ -24,7 +24,7 @@ function drawWallWithButton(node) {
       node.classList.remove('unvisited')
     }
     node.classList.add('wall');
-    // node.style.borderColor = 'rgb(24, 52, 69)';
+    node.style.borderColor = 'rgb(24, 52, 69)';
 }
 
 function getNodeRow(node) {
@@ -73,6 +73,8 @@ function dfsPathColorAnimation(array) {
         if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
           changeNodeColor(node, mainPathColor);
           node.style.animation = "foundFirstPath 1s";
+          node.style.borderColor = mainPathColor;
+
         }
     }, pathSpeed * i); 
   }
@@ -87,6 +89,7 @@ function shortestPathColorAnimation(array) {
           if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
             changeNodeColor(node, shortPathColor)
             node.style.animation = "foundShortestPath 2s";
+            node.style.borderColor = shortPathColor;
           }
       }, pathSpeed * i); 
     }
@@ -148,7 +151,6 @@ function createUnvisitedAndTargetNodes(numberOfRows, numberOfCols) {
         if (row == 13 && col == 55) {
             div.classList.add('target');
             gameBoard.appendChild(div);
-            div.style.backgroundColor = "green";
         }
         else {
           div.classList.add('unvisited');
@@ -169,17 +171,21 @@ function clearBoard(numberOfRows, numberOfCols) {
             node.classList.add('start');
             node.classList.add('unvisited');
             node.style.backgroundColor = 'red';
+            node.style.borderColor = 'red';
         }
         // target node
         else if (row == 13 && col == 55) {
             node.setAttribute("class", "");
             node.classList.add('target');
             node.style.backgroundColor = 'green';
+            node.style.borderColor = 'green';
         }
         else {
             node.setAttribute("class", "");
             node.classList.add('unvisited');
             node.style.backgroundColor = 'white';
+            node.style.borderColor = 'lightgray';
+            
         }
         targetReached = false;
         dfsShortestPath = [];
@@ -203,6 +209,7 @@ function bfsPathColorAnimation(array) {
         if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
           changeNodeColor(node, mainPathColor);
           node.style.animation = "foundFirstPath 0.5s";
+          node.style.borderColor = mainPathColor;
         }
     }, pathSpeed * i); 
   }
@@ -217,6 +224,7 @@ function bfsShortestPathAnimation(array) {
           if (domNode.classList.contains('start') == false && domNode.classList.contains('target') == false) {
             changeNodeColor(domNode, shortPathColor)
             domNode.style.animation = "foundShortestPath 3s";
+            domNode.style.borderColor = shortPathColor;
           }
       }, pathSpeed * i); 
     }
