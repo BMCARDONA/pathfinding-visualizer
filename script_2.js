@@ -380,25 +380,34 @@ function aStarSearch(startRow, startCol) {
                 // if node not in visited
                 if (children[i] == false) {
                     if (i == 0) {
-                        let heuristicValue = heuristic(pluckedNode.row - 1, pluckedNode.col);
                         // set attributes of child
-                        let childNode = new aStarNode(pluckedNode, pluckedNode.row - 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
-                        isNodeInQueue(queue, childNode);
+                        if (pluckedNode.row - 1 >= 0) {
+                          // set attributes of child
+                          let heuristicValue = heuristic(pluckedNode.row - 1, pluckedNode.col);
+                          let childNode = new aStarNode(pluckedNode, pluckedNode.row - 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
+                          isNodeInQueue(queue, childNode);
+                        }
                     }
                     if (i == 1) {
-                        let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col + 1);
-                        let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col + 1, pluckedNode.g + 1, heuristicValue);
-                        isNodeInQueue(queue, childNode);
+                        if (pluckedNode.col + 1 <= 63) {
+                            let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col + 1);
+                            let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col + 1, pluckedNode.g + 1, heuristicValue);
+                            isNodeInQueue(queue, childNode);
+                        }
                     }
                     if (i == 2) {
-                        let heuristicValue = heuristic(pluckedNode.row + 1, pluckedNode.col);
-                        let childNode = new aStarNode(pluckedNode, pluckedNode.row + 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
-                        isNodeInQueue(queue, childNode);
+                        if (pluckedNode.row + 1 <= 26) {
+                            let heuristicValue = heuristic(pluckedNode.row + 1, pluckedNode.col);
+                            let childNode = new aStarNode(pluckedNode, pluckedNode.row + 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
+                            isNodeInQueue(queue, childNode);
+                        }
                     }
                     if (i == 3) {
-                        let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col - 1);
-                        let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col - 1, pluckedNode.g + 1, heuristicValue);
-                        isNodeInQueue(queue, childNode);
+                        if (pluckedNode.col - 1 >= 0) {
+                          let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col - 1);
+                          let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col - 1, pluckedNode.g + 1, heuristicValue);
+                          isNodeInQueue(queue, childNode);
+                        }
                     }
                 }
             }
@@ -490,7 +499,7 @@ generateRandomWallsButton.addEventListener('click', () => {
   astarVisited = [];
   astarShortestPath = [];
   unvisitedNodes.forEach(node => {
-      let randomNumber = getRandomInt(0, 3);
+      let randomNumber = getRandomInt(0, 2);
       if ((randomNumber == 0) && (node.classList.contains('start') == false) && (node.classList.contains('target') == false)) {
         drawWallWithButton(node);
       }
