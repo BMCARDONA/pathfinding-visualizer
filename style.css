@@ -15,9 +15,9 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 40px;
-  color:rgb(160, 160, 160);
+  color:rgb(182, 182, 182);
   padding: 10px;
-  background-color: rgb(56, 59, 88);
+  background-color: rgb(41, 41, 41);
   /* background-color: #25274d; */
 }
 
@@ -83,7 +83,7 @@ body {
 
 #gameBoard > div {
   /* border: 0.1px solid rgb(217, 219, 255); */
-  border: 0.01px solid rgb(188, 246, 255);
+  border: 0.1px rgb(222, 225, 225);
   /* border-radius: 10px;   */
   border-style: solid;
 }
@@ -92,16 +92,32 @@ body {
 
 
 @keyframes foundFirstPath {
+  /* background-color: mediumspringgreen; */
+  0% {
+    transform: scale(0.3);
+    background-color: rgba(66, 0, 9, 0.75);
+    border-radius: 100%;
+  }
+
   50% {
-    /* background-color: mediumspringgreen; */
-    background-color: royalblue;
+    background-color: rgba(217, 17, 74, 0.75);
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: rgba(107, 33, 180, 0.75);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgba(93, 63, 211, 0.75);
   }
 }
 
 @keyframes foundShortestPath {
-  50% {
-    /* transform: scale(1.2); */
-    /* background-color: coral; */
+
+  0% {
+    background-color: rgba(73, 251, 53, 0.75);
   }
 }
 
