@@ -24,6 +24,7 @@ function drawWallWithButton(node) {
       node.classList.remove('unvisited')
     }
     node.classList.add('wall');
+    // node.style.borderColor = 'rgb(24, 52, 69)';
 }
 
 function getNodeRow(node) {
