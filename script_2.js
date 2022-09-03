@@ -6,7 +6,7 @@ function makeGrid(numRows, numCols) {
 
 function drawWall(e) {
     if (mouseDown === true) {
-      e.target.style.backgroundColor = "rgb(77, 78, 107)";
+      e.target.style.backgroundColor = 'rgb(24, 52, 69)';
       e.target.classList.remove('unvisited');
       e.target.classList.add('wall');
     }
@@ -19,7 +19,7 @@ function getRandomInt(min, max) {
   }
 
 function drawWallWithButton(node) {
-    node.style.backgroundColor = 'rgb(77, 78, 107)';
+    node.style.backgroundColor = 'rgb(24, 52, 69)';
     if (node.classList.contains('unvisited')) {
       node.classList.remove('unvisited')
     }
@@ -181,6 +181,11 @@ function clearBoard(numberOfRows, numberOfCols) {
             node.style.backgroundColor = 'white';
         }
         targetReached = false;
+        dfsShortestPath = [];
+        bfsVisited = [];
+        bfsShortestPath = []
+        astarVisited = [];
+        astarShortestPath = [];
     }
   }
 }
@@ -424,15 +429,15 @@ let numberOfRows = 27
 let numberOfCols = 64
 makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-let pathSpeed = 20;
+let pathSpeed = 40;
 let targetReached = false;
 let dfsShortestPath = []
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
 let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
 let col = 8
-let shortPathColor = 'rgb(255, 253, 129)';
-let mainPathColor = '#08b6ab'
+let shortPathColor = '#08b6ab';
+let mainPathColor = 'rgb(93, 63, 211)';
 // don't forget to reset these to empty arrays when you clear the board!
 let bfsVisited = [];
 let bfsShortestPath = [];
@@ -493,13 +498,8 @@ visualizeButton.addEventListener('click', () => {
 let generateRandomWallsButton = document.getElementById("generate-random-walls-button");
 generateRandomWallsButton.addEventListener('click', () => {
   clearBoard(numberOfRows, numberOfCols);
-  dfsShortestPath = [];
-  bfsVisited = [];
-  bfsShortestPath = []
-  astarVisited = [];
-  astarShortestPath = [];
   unvisitedNodes.forEach(node => {
-      let randomNumber = getRandomInt(0, 2);
+      let randomNumber = getRandomInt(0, 3);
       if ((randomNumber == 0) && (node.classList.contains('start') == false) && (node.classList.contains('target') == false)) {
         drawWallWithButton(node);
       }
