@@ -4,16 +4,23 @@
 - This project was inspired by Clement Mihailescu's project of the same name (see his YouTube channel [here](https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g)) and CS50's Introduction to Artificial Intelligence with Python.
 
 ## Features
-- [x] Search Algorithms
+- [x] Search Algorithms:
   - [X] Depth-First Search
   - [X] Breadth-First Search
   - [ ] Greedy Best-First Search
-  - [ ] A* Search
+  - [X] A* Search
 
-- [ ] Speed Adjustment
+- [ ] Speed Adjustment:
   - [ ] Slow
   - [ ] Medium
   - [ ] Fast
+
+## To-do List:
+- Create animation when generating walls
+- Allow user to draw their own walls
+- Greedy best-first search
+- Stop Animation of search algorithm if "clear board" or "generate walls" is clicked. 
+
 
 
 ## What I learned:
@@ -25,3 +32,9 @@
 - Figured out how to "click then drag" on a grid to fill in the background color of the target cells. This just involves using 'mousedown' and 'mouseover'.
 - How to use ternary operators
 - How to use classes to keep track of a node's parents. (Learning this lesson proved to be a crucial part of finding the shortest path using the DFS algorithm.)
+
+
+
+<!-- add aStar functions
+
+I still have to add conditions to the main aStar function to check whether the current "dom" node is a wall or a border. Moreover, I need to switch the node's class from "unvisited" to "visited".  -->
