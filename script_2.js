@@ -186,6 +186,8 @@ function clearBoard(numberOfRows, numberOfCols) {
         bfsShortestPath = []
         astarVisited = [];
         astarShortestPath = [];
+        greedyBestFirstSearchVisited = [];
+        greedyBestFirstSearchShortestPath = [];
     }
   }
 }
