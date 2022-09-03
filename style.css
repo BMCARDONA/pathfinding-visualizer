@@ -33,6 +33,7 @@ body {
 #dfsButton,
 #bfsButton,
 #astarButton,
+#greedyBestFirstSearchButton,
 #visualizeButton {
   font-weight: 700;
   font-size: 20px;
@@ -49,7 +50,8 @@ body {
 
 #dfsButton,
 #bfsButton,
-#astarButton {
+#astarButton,
+#greedyBestFirstSearchButton {
   background-color: rgb(104, 118, 164);
 }
 
@@ -63,6 +65,7 @@ body {
 #dfsButton:hover,
 #bfsButton:hover,
 #astarButton:hover,
+#greedyBestFirstSearchButton:hover,
 #visualizeButton:hover {
   filter: brightness(35%) !important;
   -webkit-transition: all .4s ease;
