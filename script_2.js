@@ -277,7 +277,6 @@ function bfs(row, col) {
 
 
 /////////////////////////////////////////// astar ///////////////////////////////////////////
-// Pseudocode:
 
 class aStarNode {
   constructor(parent, row, col, g, f) {
@@ -297,11 +296,6 @@ function isNodeInVisited(array, row, col) {
     }
     return(false);
   } 
-}
-
-function createNode(parent, row, col, g, f) {
-    let node = aStarNode(currentNode, row, col, g, f)
-    return(node);
 }
 
 function addCurrentNodeToQueue(queue, node) {
@@ -351,7 +345,7 @@ function aStarSearch(startRow, startCol) {
               currentNode = node;
           }
         } 
-        // if target node is found
+        // if node is target
         if (currentNode.row == 13 && currentNode.col == 55) {
             node = currentNode;
             while (true) {
@@ -421,7 +415,105 @@ function aStarSearch(startRow, startCol) {
 }
 
 
+/////////////////////////////////////////// greedy best-first ///////////////////////////////////////////
+
+class greedyBestFirstNode {
+  constructor(parent, row, col, manhattan) {
+    this.parent = parent;
+    this.row = row;
+    this.col = col;
+    this.manhattan = manhattan;
+  }
+}
+
+let greedyBestFirstSearchVisited = [];
+let greedyBestFirstSearchShortestPath = [];
+
+
+function greedyBestFirstSearch(startRow, startCol) {
+    let heuristicValue = heuristic(startRow, startCol);
+    let startNode = new greedyBestFirstNode(null, startRow, startCol, heuristicValue);
+    queue = [startNode]
+    visited = []
+    while (queue.length > 0) {
+        let currentNode = queue[0];
+        // set currentNode to queue element with lowest manhattan value
+        for (let i = 0; i < queue.length; i++) {
+            node = queue[i];
+            if (node.manhattan < currentNode.manhattan) {
+              currentNode = node;
+          }
+        } 
+        // if node is target
+        if (currentNode.row == 13 && currentNode.col == 55) {
+            node = currentNode;
+            while (true) {
+                greedyBestFirstSearchShortestPath.push(node);
+                node = node.parent;
+                if (node == null) {
+                    break;
+                }
+            }
+            return;
+        }
+        const currentNodeIdx = queue.indexOf(currentNode)
+        // We splice an array from the queue -- not an element! 
+        let pluckedArray = queue.splice(currentNodeIdx, 1);  // 2nd parameter means remove one item only
+        let pluckedNode = pluckedArray[0];
+        visited.push(pluckedNode);
+        console.log(visited);
+        let domNode = document.getElementById(`${pluckedNode.row}-${pluckedNode.col}`)
+        if (domNode.classList.contains('wall') == false && domNode.classList.contains('visited') == false) {
+            markNodeAsVisited(domNode);
+            greedyBestFirstSearchVisited.push(domNode);
+
+            // check if adjacent node has same row and column as currentNode
+            let firstNeighbor = isNodeInVisited(visited, pluckedNode.row - 1, pluckedNode.col);
+            let secondNeighbor = isNodeInVisited(visited, pluckedNode.row, pluckedNode.col + 1);
+            let thirdNeighbor = isNodeInVisited(visited, pluckedNode.row + 1, pluckedNode.col);
+            let fourthNeighbor = isNodeInVisited(visited, pluckedNode.row, pluckedNode.col - 1);
+            // store booleans (which tell us whether node is in VISITED)
+            let children = [firstNeighbor, secondNeighbor, thirdNeighbor, fourthNeighbor];
+    
+            for (let i = 0; i < children.length; i++) {
+                // if node not in visited
+                if (children[i] == false) {
+                    if (i == 0) { 
+                        if (pluckedNode.row - 1 >= 0) {
+                          let heuristicValue = heuristic(pluckedNode.row - 1, pluckedNode.col);
+                          let childNode = new greedyBestFirstNode(pluckedNode, pluckedNode.row - 1, pluckedNode.col, heuristicValue);
+                          addCurrentNodeToQueue(queue, childNode)
+                        }
+                    }
+                    if (i == 1) {
+                        if (pluckedNode.col + 1 <= 63) {
+                            let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col + 1);
+                            let childNode = new greedyBestFirstNode(pluckedNode, pluckedNode.row, pluckedNode.col + 1, heuristicValue);
+                            addCurrentNodeToQueue(queue, childNode)
+                        }
+                    }
+                    if (i == 2) {
+                        if (pluckedNode.row + 1 <= 26) {
+                            let heuristicValue = heuristic(pluckedNode.row + 1, pluckedNode.col);
+                            let childNode = new greedyBestFirstNode(pluckedNode, pluckedNode.row + 1, pluckedNode.col, heuristicValue);
+                            addCurrentNodeToQueue(queue, childNode)
+                        }
+                    }
+                    if (i == 3) {
+                        if (pluckedNode.col - 1 >= 0) {
+                          let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col - 1);
+                          let childNode = new greedyBestFirstNode(pluckedNode, pluckedNode.row, pluckedNode.col - 1, heuristicValue);
+                           addCurrentNodeToQueue(queue, childNode)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // gameBoard must be an id -- it can't be a class. 
 let gameBoard = document.getElementById('gameBoard');
@@ -468,6 +560,11 @@ astarButton.addEventListener('click', () => {
   algorithmToVisualize = 'astar'
 });
 
+// greedy best-first button
+let greedyBestFirstSearchButton = document.getElementById("greedyBestFirstSearchButton")
+greedyBestFirstSearchButton.addEventListener('click', () => {
+  algorithmToVisualize = 'greedyBestFirst';
+});
 
 startNode.classList.add('start');
 visualizeButton.addEventListener('click', () => {
@@ -490,6 +587,14 @@ visualizeButton.addEventListener('click', () => {
           bfsShortestPathAnimation(astarShortestPath);
         }, timeToFinishBluePath)
     }
+    else if (algorithmToVisualize == 'greedyBestFirst') {
+      greedyBestFirstSearch(row, col);
+      bfsPathColorAnimation(greedyBestFirstSearchVisited);
+      let timeToFinishBluePath = pathSpeed * greedyBestFirstSearchVisited.length;
+      setTimeout(() => {
+        bfsShortestPathAnimation(greedyBestFirstSearchShortestPath);
+      }, timeToFinishBluePath)
+  }
 });
 
 
@@ -499,7 +604,7 @@ let generateRandomWallsButton = document.getElementById("generate-random-walls-b
 generateRandomWallsButton.addEventListener('click', () => {
   clearBoard(numberOfRows, numberOfCols);
   unvisitedNodes.forEach(node => {
-      let randomNumber = getRandomInt(0, 3);
+      let randomNumber = getRandomInt(0, 2);
       if ((randomNumber == 0) && (node.classList.contains('start') == false) && (node.classList.contains('target') == false)) {
         drawWallWithButton(node);
       }
