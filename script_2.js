@@ -1,3 +1,6 @@
+
+
+
 // functions 
 function makeGrid(numRows, numCols) {
   gameBoard.style.setProperty('--numRows', numRows); 
@@ -5,11 +8,17 @@ function makeGrid(numRows, numCols) {
 }
 
 function drawWall(e) {
+  if ((e.target.classList.contains('start') == false) && (e.target.classList.contains('target') == false)) {
     if (mouseDown === true) {
-      e.target.style.backgroundColor = 'rgb(24, 52, 69)';
-      e.target.classList.remove('unvisited');
+      if (e.target.classList.contains('unvisited')) {
+        e.target.classList.remove('unvisited')
+      }
       e.target.classList.add('wall');
+      e.target.style.backgroundColor = wallColor;
+      e.target.style.borderColor = wallColor;
+      e.target.style.animation = "generateWalls 0.5s";
     }
+  }
 }
 
 function getRandomInt(min, max) {
@@ -19,12 +28,12 @@ function getRandomInt(min, max) {
   }
 
 function drawWallWithButton(node) {
-    node.style.backgroundColor = 'rgb(24, 52, 69)';
     if (node.classList.contains('unvisited')) {
       node.classList.remove('unvisited')
     }
     node.classList.add('wall');
-    node.style.borderColor = 'rgb(24, 52, 69)';
+    node.style.backgroundColor = wallColor;
+    node.style.borderColor = wallColor;
     // node.style.animation = "generateWalls 0.5s";
 }
 
@@ -534,17 +543,24 @@ function greedyBestFirstSearch(startRow, startCol) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 // gameBoard must be an id -- it can't be a class. 
 let gameBoard = document.getElementById('gameBoard');
 let numberOfRows = 27
 let numberOfCols = 64
+let wallColor = 'rgb(24, 52, 69)';
 makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-let pathSpeed = 20;
+let pathSpeed = 40;
 let targetReached = false;
 let dfsShortestPath = []
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
+let mouseDown = false;
+window.onmousedown = () => mouseDown = true;
+window.onmouseup = () => mouseDown = false;
+unvisitedNodes.forEach(node => {
+    node.addEventListener('mousedown', drawWall);
+    node.addEventListener('mouseover', drawWall);
+});
 let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
 let col = 8
