@@ -151,6 +151,8 @@ function createUnvisitedAndTargetNodes(numberOfRows, numberOfCols) {
         if (row == 13 && col == 55) {
             div.classList.add('target');
             gameBoard.appendChild(div);
+            div.style.backgroundColor = "green";
+            div.style.borderColor = "green";
         }
         else {
           div.classList.add('unvisited');
