@@ -25,6 +25,7 @@ function drawWallWithButton(node) {
     }
     node.classList.add('wall');
     node.style.borderColor = 'rgb(24, 52, 69)';
+    // node.style.animation = "generateWalls 0.5s";
 }
 
 function getNodeRow(node) {
@@ -227,6 +228,11 @@ function bfsShortestPathAnimation(array) {
             changeNodeColor(domNode, shortPathColor)
             domNode.style.animation = "foundShortestPath 3s";
             domNode.style.borderColor = shortPathColor;
+            // domNode.textContent = `${i}`;
+            // domNode.style.textAlign = 'center';
+            // domNode.style.fontSize = '7px';
+            // domNode.style.justifyContent = 'center';
+
           }
       }, pathSpeed * i); 
     }
@@ -291,15 +297,7 @@ function bfs(row, col) {
 
 /////////////////////////////////////////// astar ///////////////////////////////////////////
 
-class aStarNode {
-  constructor(parent, row, col, g, f) {
-    this.parent = parent;
-    this.row = row;
-    this.col = col;
-    this.g = g;
-    this.f = f;
-  }
-}
+
 
 function isNodeInVisited(array, row, col) {
   for (let i = 0; i < array.length; i++) {
@@ -316,6 +314,7 @@ function addCurrentNodeToQueue(queue, node) {
 }
 
 function updateNodeInQueue(queue, node) {
+    // update g value of node 
     for (let i = 0; i < queue.length; i++) {
       existingNode = queue[i];
       if (node.g < existingNode.g) {
@@ -337,16 +336,21 @@ function isNodeInQueue(queue, node) {
 }
 
 
-function heuristic(row, col) {
-    // Manhattan distance
-    distance = Math.abs(row - 13) + Math.abs(col - 55);
-    return (distance); 
+// g = cost so far to reach node n, f = manhattan distance. 
+class aStarNode {
+  constructor(parent, row, col, g, h, f) {
+    this.parent = parent;
+    this.row = row;
+    this.col = col;
+    this.g = g;
+    this.h = h;
+    this.f = f;
+  }
 }
 
-
 function aStarSearch(startRow, startCol) {
-    let heuristicValue = heuristic(startRow, startCol);
-    let startNode = new aStarNode(null, startRow, startCol, 0, heuristicValue);
+    let distanceToTarget = manhattanDistance(startRow, startCol);
+    let startNode = new aStarNode(null, startRow, startCol, 0, distanceToTarget, 0 + distanceToTarget);
     queue = [startNode]
     visited = []
     while (queue.length > 0) {
@@ -392,33 +396,35 @@ function aStarSearch(startRow, startCol) {
                 // if node not in visited
                 if (children[i] == false) {
                     if (i == 0) {
-                        // set attributes of child
                         if (pluckedNode.row - 1 >= 0) {
-                          // set attributes of child
-                          let heuristicValue = heuristic(pluckedNode.row - 1, pluckedNode.col);
-                          let childNode = new aStarNode(pluckedNode, pluckedNode.row - 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
+                          let g = pluckedNode.g + 1;
+                          let h = manhattanDistance(pluckedNode.row - 1, pluckedNode.col);
+                          let childNode = new aStarNode(pluckedNode, pluckedNode.row - 1, pluckedNode.col, g, h, g + h);
                           isNodeInQueue(queue, childNode);
                         }
                     }
                     if (i == 1) {
                         if (pluckedNode.col + 1 <= 63) {
-                            let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col + 1);
-                            let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col + 1, pluckedNode.g + 1, heuristicValue);
+                            let g = pluckedNode.g + 1;
+                            let h = manhattanDistance(pluckedNode.row, pluckedNode.col + 1);
+                            let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col + 1, g, h, g + h);
                             isNodeInQueue(queue, childNode);
                         }
                     }
                     if (i == 2) {
                         if (pluckedNode.row + 1 <= 26) {
-                            let heuristicValue = heuristic(pluckedNode.row + 1, pluckedNode.col);
-                            let childNode = new aStarNode(pluckedNode, pluckedNode.row + 1, pluckedNode.col, pluckedNode.g + 1, heuristicValue);
+                            let g = pluckedNode.g + 1;
+                            let h = manhattanDistance(pluckedNode.row + 1, pluckedNode.col);
+                            let childNode = new aStarNode(pluckedNode, pluckedNode.row + 1, pluckedNode.col, g, h, g + h);
                             isNodeInQueue(queue, childNode);
                         }
                     }
                     if (i == 3) {
                         if (pluckedNode.col - 1 >= 0) {
-                          let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col - 1);
-                          let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col - 1, pluckedNode.g + 1, heuristicValue);
-                          isNodeInQueue(queue, childNode);
+                            let g = pluckedNode.g + 1;
+                            let h = manhattanDistance(pluckedNode.row, pluckedNode.col - 1);
+                            let childNode = new aStarNode(pluckedNode, pluckedNode.row, pluckedNode.col - 1, g, h, g + h);
+                            isNodeInQueue(queue, childNode);
                         }
                     }
                 }
@@ -439,12 +445,14 @@ class greedyBestFirstNode {
   }
 }
 
-let greedyBestFirstSearchVisited = [];
-let greedyBestFirstSearchShortestPath = [];
-
+function manhattanDistance(row, col) {
+  // Manhattan distance
+  distance = Math.abs(row - 13) + Math.abs(col - 55);
+  return (distance); 
+}
 
 function greedyBestFirstSearch(startRow, startCol) {
-    let heuristicValue = heuristic(startRow, startCol);
+    let heuristicValue = manhattanDistance(startRow, startCol);
     let startNode = new greedyBestFirstNode(null, startRow, startCol, heuristicValue);
     queue = [startNode]
     visited = []
@@ -474,7 +482,6 @@ function greedyBestFirstSearch(startRow, startCol) {
         let pluckedArray = queue.splice(currentNodeIdx, 1);  // 2nd parameter means remove one item only
         let pluckedNode = pluckedArray[0];
         visited.push(pluckedNode);
-        console.log(visited);
         let domNode = document.getElementById(`${pluckedNode.row}-${pluckedNode.col}`)
         if (domNode.classList.contains('wall') == false && domNode.classList.contains('visited') == false) {
             markNodeAsVisited(domNode);
@@ -493,28 +500,28 @@ function greedyBestFirstSearch(startRow, startCol) {
                 if (children[i] == false) {
                     if (i == 0) { 
                         if (pluckedNode.row - 1 >= 0) {
-                          let heuristicValue = heuristic(pluckedNode.row - 1, pluckedNode.col);
+                          let heuristicValue = manhattanDistance(pluckedNode.row - 1, pluckedNode.col);
                           let childNode = new greedyBestFirstNode(pluckedNode, pluckedNode.row - 1, pluckedNode.col, heuristicValue);
                           addCurrentNodeToQueue(queue, childNode)
                         }
                     }
                     if (i == 1) {
                         if (pluckedNode.col + 1 <= 63) {
-                            let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col + 1);
+                            let heuristicValue = manhattanDistance(pluckedNode.row, pluckedNode.col + 1);
                             let childNode = new greedyBestFirstNode(pluckedNode, pluckedNode.row, pluckedNode.col + 1, heuristicValue);
                             addCurrentNodeToQueue(queue, childNode)
                         }
                     }
                     if (i == 2) {
                         if (pluckedNode.row + 1 <= 26) {
-                            let heuristicValue = heuristic(pluckedNode.row + 1, pluckedNode.col);
+                            let heuristicValue = manhattanDistance(pluckedNode.row + 1, pluckedNode.col);
                             let childNode = new greedyBestFirstNode(pluckedNode, pluckedNode.row + 1, pluckedNode.col, heuristicValue);
                             addCurrentNodeToQueue(queue, childNode)
                         }
                     }
                     if (i == 3) {
                         if (pluckedNode.col - 1 >= 0) {
-                          let heuristicValue = heuristic(pluckedNode.row, pluckedNode.col - 1);
+                          let heuristicValue = manhattanDistance(pluckedNode.row, pluckedNode.col - 1);
                           let childNode = new greedyBestFirstNode(pluckedNode, pluckedNode.row, pluckedNode.col - 1, heuristicValue);
                            addCurrentNodeToQueue(queue, childNode)
                         }
@@ -534,7 +541,7 @@ let numberOfRows = 27
 let numberOfCols = 64
 makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-let pathSpeed = 40;
+let pathSpeed = 20;
 let targetReached = false;
 let dfsShortestPath = []
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
@@ -548,6 +555,8 @@ let bfsVisited = [];
 let bfsShortestPath = [];
 let astarVisited = [];
 let astarShortestPath = [];
+let greedyBestFirstSearchVisited = [];
+let greedyBestFirstSearchShortestPath = [];
 let startNode = document.getElementById(`${row}-${col}`)
 changeNodeColor(startNode, "red")
 
@@ -579,8 +588,48 @@ greedyBestFirstSearchButton.addEventListener('click', () => {
   algorithmToVisualize = 'greedyBestFirst';
 });
 
+function clearNodesThatAreNotWalls(numberOfRows, numberOfCols) {
+    for (let row = 0; row < numberOfRows; row++) {
+        for (let col = 0; col < numberOfCols; col++) {
+            let node = document.getElementById(`${row}-${col}`)
+            // start node
+            if (row == 13 && col == 8) {
+                node.setAttribute("class", "");
+                node.classList.add('start');
+                node.classList.add('unvisited');
+                node.style.backgroundColor = 'red';
+                node.style.borderColor = 'red';
+            }
+            // target node
+            else if (row == 13 && col == 55) {
+                node.setAttribute("class", "");
+                node.classList.add('target');
+                node.style.backgroundColor = 'green';
+                node.style.borderColor = 'green';
+            }
+            // if node is not wall
+            else if (node.classList.contains('wall') == false) {
+                node.setAttribute("class", "");
+                node.classList.add('unvisited');
+                node.style.backgroundColor = 'white';
+                node.style.borderColor = 'lightgray';
+                
+            }
+            targetReached = false;
+            dfsShortestPath = [];
+            bfsVisited = [];
+            bfsShortestPath = []
+            astarVisited = [];
+            astarShortestPath = [];
+            greedyBestFirstSearchVisited = [];
+            greedyBestFirstSearchShortestPath = [];
+        }
+    }
+}
+
 startNode.classList.add('start');
 visualizeButton.addEventListener('click', () => {
+    clearNodesThatAreNotWalls(numberOfRows, numberOfCols);
     if (algorithmToVisualize == 'dfs') {
         beginDFS(startNode, row, col)
     }
@@ -601,12 +650,12 @@ visualizeButton.addEventListener('click', () => {
         }, timeToFinishBluePath)
     }
     else if (algorithmToVisualize == 'greedyBestFirst') {
-      greedyBestFirstSearch(row, col);
-      bfsPathColorAnimation(greedyBestFirstSearchVisited);
-      let timeToFinishBluePath = pathSpeed * greedyBestFirstSearchVisited.length;
-      setTimeout(() => {
-        bfsShortestPathAnimation(greedyBestFirstSearchShortestPath);
-      }, timeToFinishBluePath)
+        greedyBestFirstSearch(row, col);
+        bfsPathColorAnimation(greedyBestFirstSearchVisited);
+        let timeToFinishBluePath = pathSpeed * greedyBestFirstSearchVisited.length;
+        setTimeout(() => {
+          bfsShortestPathAnimation(greedyBestFirstSearchShortestPath);
+        }, timeToFinishBluePath)
   }
 });
 
@@ -617,7 +666,7 @@ let generateRandomWallsButton = document.getElementById("generate-random-walls-b
 generateRandomWallsButton.addEventListener('click', () => {
   clearBoard(numberOfRows, numberOfCols);
   unvisitedNodes.forEach(node => {
-      let randomNumber = getRandomInt(0, 2);
+      let randomNumber = getRandomInt(0, 3);
       if ((randomNumber == 0) && (node.classList.contains('start') == false) && (node.classList.contains('target') == false)) {
         drawWallWithButton(node);
       }
