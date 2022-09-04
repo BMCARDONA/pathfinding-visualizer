@@ -17,6 +17,7 @@
 
 ## To-do List:
 - Create animation when generating walls
+- Enable different paths to be visualized on the same configuration of walls
 - Allow user to draw their own walls
 - Greedy best-first search
 - Stop Animation of search algorithm if "clear board" or "generate walls" is clicked. 

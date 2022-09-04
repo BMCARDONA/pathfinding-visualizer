@@ -83,7 +83,7 @@ function dfsPathColorAnimation(array) {
         if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
           changeNodeColor(node, mainPathColor);
           node.style.animation = "foundFirstPath 1s";
-          node.style.borderColor = mainPathColor;
+          node.style.borderColor = 'mainPathColor';
 
         }
     }, pathSpeed * i); 
@@ -100,6 +100,8 @@ function shortestPathColorAnimation(array) {
             changeNodeColor(node, shortPathColor)
             node.style.animation = "foundShortestPath 2s";
             node.style.borderColor = shortPathColor;
+            // add numbers to final path
+            // node.textContent = `${i}`;
           }
       }, pathSpeed * i); 
     }
@@ -207,6 +209,7 @@ function clearBoard(numberOfRows, numberOfCols) {
         astarShortestPath = [];
         greedyBestFirstSearchVisited = [];
         greedyBestFirstSearchShortestPath = [];
+        node.textContent = '';
     }
   }
 }
@@ -237,11 +240,8 @@ function bfsShortestPathAnimation(array) {
             changeNodeColor(domNode, shortPathColor)
             domNode.style.animation = "foundShortestPath 3s";
             domNode.style.borderColor = shortPathColor;
+            // add numbers to final path
             // domNode.textContent = `${i}`;
-            // domNode.style.textAlign = 'center';
-            // domNode.style.fontSize = '7px';
-            // domNode.style.justifyContent = 'center';
-
           }
       }, pathSpeed * i); 
     }
@@ -682,7 +682,7 @@ let generateRandomWallsButton = document.getElementById("generate-random-walls-b
 generateRandomWallsButton.addEventListener('click', () => {
   clearBoard(numberOfRows, numberOfCols);
   unvisitedNodes.forEach(node => {
-      let randomNumber = getRandomInt(0, 3);
+      let randomNumber = getRandomInt(0, 5);
       if ((randomNumber == 0) && (node.classList.contains('start') == false) && (node.classList.contains('target') == false)) {
         drawWallWithButton(node);
       }
