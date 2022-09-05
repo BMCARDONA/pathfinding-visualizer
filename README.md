@@ -10,10 +10,12 @@
   - [X] Greedy Best-First Search
   - [X] A* Search
 
-- [ ] Speed Adjustment:
-  - [ ] Slow
-  - [ ] Medium
-  - [ ] Fast
+- [X] Speed Adjustment:
+  - [X] Slow
+  - [X] Medium
+  - [X] Fast
+
+- [X] Draw own path
 
 ## To-do List:
 - Stop Animation of search algorithm if "clear board" or "generate walls" is clicked. 
