@@ -15,16 +15,16 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 30px;
-  color:rgb(46, 46, 46);
+  color:rgb(219, 219, 219);
   padding: 10px;
-  background-color: rgb(186, 186, 186);
+  background-color: rgb(79, 83, 119);
   /* background-color: #25274d; */
 }
 
 .buttons {
     display: flex;
     justify-content: space-evenly;
-    background-color: rgb(197, 197, 197);
+    background-color: white;
     padding: 5px;
 }
 
@@ -79,8 +79,9 @@ body {
 #astarButton:hover,
 #greedyBestFirstSearchButton:hover,
 #visualizeButton:hover {
-  filter: brightness(35%) !important;
+  filter: brightness(75%) !important;
   -webkit-transition: all .4s ease;
+  color: white; 
 }
 
 
