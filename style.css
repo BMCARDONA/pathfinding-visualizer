@@ -14,29 +14,32 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 40px;
-  color:rgb(182, 182, 182);
+  font-size: 30px;
+  color:rgb(46, 46, 46);
   padding: 10px;
-  background-color: rgb(41, 41, 41);
+  background-color: rgb(186, 186, 186);
   /* background-color: #25274d; */
 }
 
 .buttons {
     display: flex;
     justify-content: space-evenly;
-    background-color: rgb(210, 210, 210);
+    background-color: rgb(197, 197, 197);
     padding: 5px;
 }
 
 #clear-board-button,
 #generate-random-walls-button,
+#slow-button,
+#medium-button,
+#fast-button,
 #dfsButton,
 #bfsButton,
 #astarButton,
 #greedyBestFirstSearchButton,
 #visualizeButton {
-  font-weight: 700;
-  font-size: 20px;
+  /* font-weight: 600; */
+  font-size: 15px;
   border-radius: 5px;
   border: 0;
   cursor: pointer;
@@ -47,12 +50,18 @@ body {
   background-color: rgb(126, 130, 145);
 }
 
+#slow-button,
+#medium-button,
+#fast-button {
+  background-color: rgb(87, 92, 162);
+}
+
 
 #dfsButton,
 #bfsButton,
 #astarButton,
 #greedyBestFirstSearchButton {
-  background-color: rgb(104, 118, 164);
+  background-color: rgb(179, 150, 97);
 }
 
 #visualizeButton {
@@ -62,6 +71,9 @@ body {
 
 #clear-board-button:hover,
 #generate-random-walls-button:hover,
+#slow-button:hover,
+#medium-button:hover,
+#fast-button:hover,
 #dfsButton:hover,
 #bfsButton:hover,
 #astarButton:hover,
@@ -86,9 +98,16 @@ body {
 
 #gameBoard > div {
   /* border: 0.1px solid rgb(217, 219, 255); */
+  display: flex;
   border: 0.1px lightgray;
   /* border-radius: 10px;   */
   border-style: solid;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: lato;
+  font-size: 7px;
+  font-weight: 700px;
 }
 
 
@@ -98,7 +117,7 @@ body {
   /* background-color: mediumspringgreen; */
   0% {
     transform: scale(0.3);
-    background-color: rgba(66, 0, 9, 0.75);
+    background-color: rgba(62, 0, 10, 0.75);
     border-radius: 100%;
   }
 
@@ -122,6 +141,24 @@ body {
   0% {
     background-color: rgba(73, 251, 53, 0.75);
     border-color: rgba(73, 251, 53, 0.75);
+  }
+}
+
+@keyframes generateWalls {
+  0% {
+    transform: scale(0.3);
+    background-color: rgba(24, 52, 69, 0.75);
+    border-radius: 100%;
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: rgba(24, 52, 69, 0.75);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgba(24, 52, 69, 0.75);
   }
 }
 
