@@ -103,7 +103,7 @@ function shortestPathColorAnimation(array) {
             // add numbers to final path
             // node.textContent = `${i}`;
           }
-      }, pathSpeed * i); 
+      }, finishedPathSpeed * i); 
     }
 }
 
@@ -243,7 +243,7 @@ function bfsShortestPathAnimation(array) {
             // add numbers to final path
             // domNode.textContent = `${i}`;
           }
-      }, pathSpeed * i); 
+      }, finishedPathSpeed * i); 
     }
 }
 
@@ -550,7 +550,8 @@ let numberOfCols = 64
 let wallColor = 'rgb(24, 52, 69)';
 makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
-let pathSpeed = 40;
+let pathSpeed = 0;
+let finishedPathSpeed = 40;
 let targetReached = false;
 let dfsShortestPath = []
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
@@ -578,31 +579,109 @@ changeNodeColor(startNode, "red")
 
 
 let algorithmToVisualize = ''
-
+let defaultPathButtonColor = 'rgb(179, 150, 97)';
+let clickedPathButtonColor = 'rgb(179, 120, 97)';
 // dfs button
 let dfsButton = document.getElementById("dfsButton")
 dfsButton.addEventListener('click', () => {
-  algorithmToVisualize = 'dfs'
+    algorithmToVisualize = 'dfs';
+    changePathButtonsColors(algorithmToVisualize);
 });
 
 
 // bfs button
 let bfsButton = document.getElementById("bfsButton")
 bfsButton.addEventListener('click', () => {
-  algorithmToVisualize = 'bfs'
+    algorithmToVisualize = 'bfs';
+    changePathButtonsColors(algorithmToVisualize);
 });
 
 // astar button
 let astarButton = document.getElementById("astarButton")
 astarButton.addEventListener('click', () => {
-  algorithmToVisualize = 'astar'
+    algorithmToVisualize = 'astar'
+    changePathButtonsColors(algorithmToVisualize);
 });
 
 // greedy best-first button
 let greedyBestFirstSearchButton = document.getElementById("greedyBestFirstSearchButton")
 greedyBestFirstSearchButton.addEventListener('click', () => {
-  algorithmToVisualize = 'greedyBestFirst';
+    algorithmToVisualize = 'greedyBestFirst';
+    changePathButtonsColors(algorithmToVisualize);
 });
+
+function changePathButtonsColors(sortType) {
+  if (sortType == 'dfs') {
+    dfsButton.style.backgroundColor = clickedPathButtonColor;
+    bfsButton.style.backgroundColor = defaultPathButtonColor;
+    astarButton.style.backgroundColor = defaultPathButtonColor;
+    greedyBestFirstSearchButton.style.backgroundColor = defaultPathButtonColor;
+  }
+  else if (sortType == 'bfs') {
+    dfsButton.style.backgroundColor = defaultPathButtonColor;
+    bfsButton.style.backgroundColor = clickedPathButtonColor;
+    astarButton.style.backgroundColor = defaultPathButtonColor;
+    greedyBestFirstSearchButton.style.backgroundColor = defaultPathButtonColor;
+  }
+  else if (sortType == 'astar') {
+    dfsButton.style.backgroundColor = defaultPathButtonColor;
+    bfsButton.style.backgroundColor = defaultPathButtonColor;
+    astarButton.style.backgroundColor = clickedPathButtonColor;
+    greedyBestFirstSearchButton.style.backgroundColor = defaultPathButtonColor;
+  }
+  else if (sortType == 'greedyBestFirst') {
+    dfsButton.style.backgroundColor = defaultPathButtonColor;
+    bfsButton.style.backgroundColor = defaultPathButtonColor;
+    astarButton.style.backgroundColor = defaultPathButtonColor;
+    greedyBestFirstSearchButton.style.backgroundColor = clickedPathButtonColor;
+  }
+}
+
+
+
+// Speed buttons
+
+let speedOption = '';
+let slowButton = document.getElementById("slow-button");
+slowButton.addEventListener('click', () => {
+    changeSpeedButtonsColors('slow');
+    pathSpeed = 30;
+});
+
+let mediumButton = document.getElementById("medium-button");
+mediumButton.addEventListener('click', () => {
+    changeSpeedButtonsColors('medium');
+    pathSpeed = 20;
+});
+
+let fastButton = document.getElementById("fast-button");
+fastButton.addEventListener('click', () => {
+    changeSpeedButtonsColors('fast');
+    pathSpeed = 5;
+});
+
+
+let defaultSpeedButtonColor = 'rgb(87, 92, 162)';
+let clickedSpeedButtonColor = 'rgb(87, 92, 120)';
+function changeSpeedButtonsColors(sortType) {
+  if (sortType == 'slow') {
+    slowButton.style.backgroundColor = clickedSpeedButtonColor;
+    mediumButton.style.backgroundColor = defaultSpeedButtonColor;
+    fastButton.style.backgroundColor = defaultSpeedButtonColor;
+  }
+  else if (sortType == 'medium') {
+    mediumButton.style.backgroundColor = clickedSpeedButtonColor;
+    slowButton.style.backgroundColor = defaultSpeedButtonColor;
+    fastButton.style.backgroundColor = defaultSpeedButtonColor;
+  }
+  else if (sortType == 'fast') {
+    fastButton.style.backgroundColor = clickedSpeedButtonColor;
+    slowButton.style.backgroundColor = defaultSpeedButtonColor;
+    mediumButton.style.backgroundColor = defaultSpeedButtonColor;
+  }
+}
+
+
 
 function clearNodesThatAreNotWalls(numberOfRows, numberOfCols) {
     for (let row = 0; row < numberOfRows; row++) {
@@ -694,5 +773,7 @@ clearBoardButton.addEventListener('click', () => {
     clearBoard(numberOfRows, numberOfCols);
 });
 
+// Click events
 
-
+let clickEventOne = new Event('click');
+fastButton.dispatchEvent(clickEventOne);
