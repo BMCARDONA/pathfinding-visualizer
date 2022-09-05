@@ -83,8 +83,7 @@ function dfsPathColorAnimation(array) {
         if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
           changeNodeColor(node, mainPathColor);
           node.style.animation = "foundFirstPath 1s";
-          node.style.borderColor = 'mainPathColor';
-
+          node.style.borderColor = mainPathBorderColor;
         }
     }, pathSpeed * i); 
   }
@@ -99,7 +98,7 @@ function shortestPathColorAnimation(array) {
           if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
             changeNodeColor(node, shortPathColor)
             node.style.animation = "foundShortestPath 2s";
-            node.style.borderColor = shortPathColor;
+            node.style.borderColor = shortPathBorderColor;
             // add numbers to final path
             // node.textContent = `${i}`;
           }
@@ -224,7 +223,7 @@ function bfsPathColorAnimation(array) {
         if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
           changeNodeColor(node, mainPathColor);
           node.style.animation = "foundFirstPath 0.5s";
-          node.style.borderColor = mainPathColor;
+          node.style.borderColor = mainPathBorderColor;
         }
     }, pathSpeed * i); 
   }
@@ -239,7 +238,7 @@ function bfsShortestPathAnimation(array) {
           if (domNode.classList.contains('start') == false && domNode.classList.contains('target') == false) {
             changeNodeColor(domNode, shortPathColor)
             domNode.style.animation = "foundShortestPath 3s";
-            domNode.style.borderColor = shortPathColor;
+            domNode.style.borderColor = shortPathBorderColor;
             // add numbers to final path
             // domNode.textContent = `${i}`;
           }
@@ -566,7 +565,9 @@ let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
 let col = 8
 let shortPathColor = '#08b6ab';
+let shortPathBorderColor = 'green';
 let mainPathColor = 'rgb(93, 63, 211)';
+let mainPathBorderColor = 'rgb(93, 63, 100)';
 // don't forget to reset these to empty arrays when you clear the board!
 let bfsVisited = [];
 let bfsShortestPath = [];
@@ -761,7 +762,7 @@ let generateRandomWallsButton = document.getElementById("generate-random-walls-b
 generateRandomWallsButton.addEventListener('click', () => {
   clearBoard(numberOfRows, numberOfCols);
   unvisitedNodes.forEach(node => {
-      let randomNumber = getRandomInt(0, 5);
+      let randomNumber = getRandomInt(0, 3);
       if ((randomNumber == 0) && (node.classList.contains('start') == false) && (node.classList.contains('target') == false)) {
         drawWallWithButton(node);
       }
