@@ -3,21 +3,28 @@
   font-family: 'Lato', sans-serif;
 }
 
+
+:root {
+  --titleBackground: rgb(62, 60, 80);
+  --buttonColor: #d8d8d8;
+}
+
 body {
   padding: 0;
   margin: 0;
   border-width: 0px;
   justify-content: center;
+  flex-direction: column;
 }
 
 .title {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 25px;
-  color:#08b6ab;
+  font-size: 20px;
+  color: rgb(255, 255, 132);
   padding: 10px;
-  background-color: rgb(47, 42, 57);
+  background-color: var(--titleBackground);
   /* background-color: #25274d; */
   -moz-user-select: -moz-none;
   -khtml-user-select: none;
@@ -29,7 +36,15 @@ body {
 .buttons {
     display: flex;
     justify-content: space-evenly;
-    background-color: white;
+    align-items: center;
+    background-color: var(--titleBackground);
+    padding: 5px;
+}
+
+.visualize {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(46, 46, 46);
     padding: 5px;
 }
 
@@ -46,8 +61,10 @@ body {
 #visualizeButton {
   font-weight: 600;
   font-size: 15px;
-  border-radius: 5px;
+  border-radius: 2px;
+  height: 20px;
   border: 0;
+  color: var(--buttonColor);
   cursor: pointer;
   -moz-user-select: -moz-none;
   -khtml-user-select: none;
@@ -56,28 +73,32 @@ body {
   user-select: none;
 }
 
+
 #clear-board-button,
 #generate-random-walls-button {
-  background-color: rgb(126, 130, 145);
+  background-color: var(--titleBackground);
 }
 
 #slow-button,
 #medium-button,
 #fast-button {
-  background-color: rgb(87, 92, 162);
+  background-color: var(--titleBackground);
+  /* color: rgb(168, 181, 219) */
 }
-
 
 #dfsButton,
 #bfsButton,
 #astarButton,
 #greedyBestFirstSearchButton,
 #djikstraButton {
-  background-color: rgb(179, 150, 97);
+  background-color: var(--titleBackground);
 }
 
 #visualizeButton {
-  background-color: #08b6ab;
+  height: 35px;
+  background-color: rgb(124, 91, 255);
+  color: rgb(234, 234, 234);
+  font-weight: 600;
 }
 
 
@@ -92,9 +113,9 @@ body {
 #greedyBestFirstSearchButton:hover,
 #djikstraButton:hover,
 #visualizeButton:hover {
-  filter: brightness(75%) !important;
+  /* filter: brightness(85%) !important; */
   -webkit-transition: all .4s ease;
-  color: white; 
+  color: rgb(115, 115, 115); 
 }
 
 
@@ -136,12 +157,12 @@ body {
   /* background-color: mediumspringgreen; */
   0% {
     transform: scale(0.3);
-    background-color: rgba(62, 0, 10, 0.75);
+    background-color: rgba(184, 91, 91, 0.75);
     border-radius: 100%;
   }
 
   50% {
-    background-color: rgba(217, 17, 74, 0.75);
+    background-color: rgba(255, 0, 72, 0.75);
   }
 
   75% {
@@ -151,15 +172,34 @@ body {
 
   100% {
     transform: scale(1);
-    background-color: rgba(93, 63, 211, 0.75);
+    background-color: rgba(124, 91, 255, 0.75);
+  }
+}
+
+@keyframes flickerGreen {
+  /* background-color: mediumspringgreen; */
+  0% {
+    transform: scale(0.3);
+    background-color: rgba(57, 106, 75, 0.75);
+    border-radius: 100%;
   }
 }
 
 @keyframes foundShortestPath {
-
   0% {
-    background-color: rgba(73, 251, 53, 0.75);
-    border-color: green;
+    transform: scale(1);
+    background-color: rgba(65, 255, 172, 0.75);
+    border-color: lightskyblue;
+  }
+
+  50% {
+    transform: scale(1.1);
+    background-color: rgba(65, 255, 172, 0.75);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgba(65, 255, 172, 0.75);
   }
 }
 
@@ -187,3 +227,22 @@ body {
     /* background-color: rgb(77, 78, 107); */
   /* }
 }  */
+
+@keyframes restoreVisualizeButton {
+  0% {
+    transform: scale(0.3);
+    background-color: rgba(91, 255, 211, 0.75);
+  }
+
+  50% {
+    transform: scale(1.1);
+    background-color: rgba(91, 129, 255, 0.75);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgba(124, 91, 255, 0.75);
+  }
+}
+
+
