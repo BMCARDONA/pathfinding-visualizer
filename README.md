@@ -9,6 +9,7 @@
   - [X] Breadth-First Search
   - [X] Greedy Best-First Search
   - [X] A* Search
+  - [X] Dijkstra's algorithm
 
 - [X] Speed Adjustment:
   - [X] Slow
