@@ -34,7 +34,7 @@ function drawWallWithButton(node) {
     node.classList.add('wall');
     node.style.backgroundColor = wallColor;
     node.style.borderColor = wallColor;
-    // node.style.animation = "generateWalls 0.5s";
+    node.style.animation = "generateWalls 0.5s";
 }
 
 function getNodeRow(node) {
@@ -82,7 +82,7 @@ function dfsPathColorAnimation(array) {
         let node = array[i];
         if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
           changeNodeColor(node, mainPathColor);
-          node.style.animation = "foundFirstPath 1s";
+          node.style.animation = "foundFirstPath 0.5s";
           node.style.borderColor = mainPathBorderColor;
         }
     }, pathSpeed * i); 
@@ -99,8 +99,9 @@ function shortestPathColorAnimation(array) {
             changeNodeColor(node, shortPathColor)
             node.style.animation = "foundShortestPath 2s";
             node.style.borderColor = shortPathBorderColor;
-            // add numbers to final path
-            // node.textContent = `${i}`;
+          }
+          if (i == array.length - 2) {
+            enableButton();
           }
       }, finishedPathSpeed * i); 
     }
@@ -183,8 +184,8 @@ function clearBoard(numberOfRows, numberOfCols) {
             node.setAttribute("class", "");
             node.classList.add('start');
             node.classList.add('unvisited');
-            node.style.backgroundColor = 'red';
-            node.style.borderColor = 'red';
+            node.style.backgroundColor = 'tomato';
+            node.style.borderColor = 'tomato';
         }
         // target node
         else if (row == 13 && col == 55) {
@@ -239,10 +240,13 @@ function bfsShortestPathAnimation(array) {
           let domNode = document.getElementById(`${node.row}-${node.col}`)
           if (domNode.classList.contains('start') == false && domNode.classList.contains('target') == false) {
             changeNodeColor(domNode, shortPathColor)
-            domNode.style.animation = "foundShortestPath 3s";
+            domNode.style.animation = "foundShortestPath 2s";
             domNode.style.borderColor = shortPathBorderColor;
             // add numbers to final path
             // domNode.textContent = `${i}`;
+            if (i == array.length - 2) {
+              enableButton();
+            }
           }
       }, finishedPathSpeed * i); 
     }
@@ -690,7 +694,7 @@ let wallColor = 'rgb(24, 52, 69)';
 makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
 let pathSpeed = 0;
-let finishedPathSpeed = 40;
+let finishedPathSpeed = 30;
 let targetReached = false;
 let dfsShortestPath = []
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
@@ -704,9 +708,9 @@ unvisitedNodes.forEach(node => {
 let visualizeButton = document.getElementById("visualizeButton")
 let row = 13
 let col = 8
-let shortPathColor = '#08b6ab';
-let shortPathBorderColor = 'green';
-let mainPathColor = 'rgb(93, 63, 211)';
+let shortPathColor = 'rgb(65, 255, 172)';
+let shortPathBorderColor = 'lightskyblue';
+let mainPathColor = 'rgb(124, 91, 255)';
 let mainPathBorderColor = 'rgb(93, 63, 100)';
 // don't forget to reset these to empty arrays when you clear the board!
 let bfsVisited = [];
@@ -716,12 +720,12 @@ let astarShortestPath = [];
 let greedyBestFirstSearchVisited = [];
 let greedyBestFirstSearchShortestPath = [];
 let startNode = document.getElementById(`${row}-${col}`)
-changeNodeColor(startNode, "red")
+changeNodeColor(startNode, "tomato")
 
 
 let algorithmToVisualize = ''
-let defaultPathButtonColor = 'rgb(179, 150, 97)';
-let clickedPathButtonColor = 'rgb(179, 120, 97)';
+let defaultPathButtonColor = 'tomato';
+let clickedPathButtonColor = 'rgb(116, 250, 192)'; 
 // dfs button
 let dfsButton = document.getElementById("dfsButton")
 dfsButton.addEventListener('click', () => {
@@ -760,39 +764,39 @@ djikstraButton.addEventListener('click', () => {
 
 function changePathButtonsColors(sortType) {
   if (sortType == 'dfs') {
-    dfsButton.style.backgroundColor = clickedPathButtonColor;
-    bfsButton.style.backgroundColor = defaultPathButtonColor;
-    astarButton.style.backgroundColor = defaultPathButtonColor;
-    greedyBestFirstSearchButton.style.backgroundColor = defaultPathButtonColor;
-    djikstraButton.style.backgroundColor = defaultPathButtonColor;
+    dfsButton.style.color = clickedPathButtonColor;
+    bfsButton.style.color = defaultPathButtonColor;
+    astarButton.style.color = defaultPathButtonColor;
+    greedyBestFirstSearchButton.style.color = defaultPathButtonColor;
+    djikstraButton.style.color = defaultPathButtonColor;
   }
   else if (sortType == 'bfs') {
-    dfsButton.style.backgroundColor = defaultPathButtonColor;
-    bfsButton.style.backgroundColor = clickedPathButtonColor;
-    astarButton.style.backgroundColor = defaultPathButtonColor;
-    greedyBestFirstSearchButton.style.backgroundColor = defaultPathButtonColor;
-    djikstraButton.style.backgroundColor = defaultPathButtonColor;
+    dfsButton.style.color = defaultPathButtonColor;
+    bfsButton.style.color = clickedPathButtonColor;
+    astarButton.style.color = defaultPathButtonColor;
+    greedyBestFirstSearchButton.style.color = defaultPathButtonColor;
+    djikstraButton.style.color = defaultPathButtonColor;
   }
   else if (sortType == 'astar') {
-    dfsButton.style.backgroundColor = defaultPathButtonColor;
-    bfsButton.style.backgroundColor = defaultPathButtonColor;
-    astarButton.style.backgroundColor = clickedPathButtonColor;
-    greedyBestFirstSearchButton.style.backgroundColor = defaultPathButtonColor;
-    djikstraButton.style.backgroundColor = defaultPathButtonColor;
+    dfsButton.style.color = defaultPathButtonColor;
+    bfsButton.style.color = defaultPathButtonColor;
+    astarButton.style.color = clickedPathButtonColor;
+    greedyBestFirstSearchButton.style.color = defaultPathButtonColor;
+    djikstraButton.style.color = defaultPathButtonColor;
   }
   else if (sortType == 'greedyBestFirst') {
-    dfsButton.style.backgroundColor = defaultPathButtonColor;
-    bfsButton.style.backgroundColor = defaultPathButtonColor;
-    astarButton.style.backgroundColor = defaultPathButtonColor;
-    greedyBestFirstSearchButton.style.backgroundColor = clickedPathButtonColor;
-    djikstraButton.style.backgroundColor = defaultPathButtonColor;
+    dfsButton.style.color = defaultPathButtonColor;
+    bfsButton.style.color = defaultPathButtonColor;
+    astarButton.style.color = defaultPathButtonColor;
+    greedyBestFirstSearchButton.style.color = clickedPathButtonColor;
+    djikstraButton.style.color = defaultPathButtonColor;
   }
   else if (sortType == 'djikstra') {
-    dfsButton.style.backgroundColor = defaultPathButtonColor;
-    bfsButton.style.backgroundColor = defaultPathButtonColor;
-    astarButton.style.backgroundColor = defaultPathButtonColor;
-    greedyBestFirstSearchButton.style.backgroundColor = defaultPathButtonColor;
-    djikstraButton.style.backgroundColor = clickedPathButtonColor;
+    dfsButton.style.color = defaultPathButtonColor;
+    bfsButton.style.color = defaultPathButtonColor;
+    astarButton.style.color = defaultPathButtonColor;
+    greedyBestFirstSearchButton.style.color = defaultPathButtonColor;
+    djikstraButton.style.color = clickedPathButtonColor;
   }
 }
 
@@ -820,23 +824,23 @@ fastButton.addEventListener('click', () => {
 });
 
 
-let defaultSpeedButtonColor = 'rgb(87, 92, 162)';
-let clickedSpeedButtonColor = 'rgb(87, 92, 120)';
+let defaultSpeedButtonColor = 'tomato';
+let clickedSpeedButtonColor = 'rgb(116, 250, 192)';
 function changeSpeedButtonsColors(sortType) {
   if (sortType == 'slow') {
-    slowButton.style.backgroundColor = clickedSpeedButtonColor;
-    mediumButton.style.backgroundColor = defaultSpeedButtonColor;
-    fastButton.style.backgroundColor = defaultSpeedButtonColor;
+    slowButton.style.color = clickedSpeedButtonColor;
+    mediumButton.style.color = defaultSpeedButtonColor;
+    fastButton.style.color = defaultSpeedButtonColor;
   }
   else if (sortType == 'medium') {
-    mediumButton.style.backgroundColor = clickedSpeedButtonColor;
-    slowButton.style.backgroundColor = defaultSpeedButtonColor;
-    fastButton.style.backgroundColor = defaultSpeedButtonColor;
+    mediumButton.style.color = clickedSpeedButtonColor;
+    slowButton.style.color = defaultSpeedButtonColor;
+    fastButton.style.color = defaultSpeedButtonColor;
   }
   else if (sortType == 'fast') {
-    fastButton.style.backgroundColor = clickedSpeedButtonColor;
-    slowButton.style.backgroundColor = defaultSpeedButtonColor;
-    mediumButton.style.backgroundColor = defaultSpeedButtonColor;
+    fastButton.style.color = clickedSpeedButtonColor;
+    slowButton.style.color = defaultSpeedButtonColor;
+    mediumButton.style.color = defaultSpeedButtonColor;
   }
 }
 
@@ -851,8 +855,8 @@ function clearNodesThatAreNotWalls(numberOfRows, numberOfCols) {
                 node.setAttribute("class", "");
                 node.classList.add('start');
                 node.classList.add('unvisited');
-                node.style.backgroundColor = 'red';
-                node.style.borderColor = 'red';
+                node.style.backgroundColor = 'tomato';
+                node.style.borderColor = 'tomato';
             }
             // target node
             else if (row == 13 && col == 55) {
@@ -882,12 +886,31 @@ function clearNodesThatAreNotWalls(numberOfRows, numberOfCols) {
         }
     }
 }
+function disableButton() {
+    document.getElementById('visualizeButton').disabled = true;
+    visualizeButton.style.backgroundColor = 'red';
+    document.getElementById('clear-board-button').disabled = true; 
+    clearBoardButton.style.color = 'red';
+    document.getElementById('generate-random-walls-button').disabled = true; 
+    generateRandomWallsButton.style.color = 'red';
+}
+
+function enableButton() {
+    document.getElementById('visualizeButton').disabled = false;
+    visualizeButton.style.backgroundColor = 'rgb(124, 91, 255)';
+    visualizeButton.style.animation = 'restoreVisualizeButton 2s'
+    document.getElementById('clear-board-button').disabled = false; 
+    clearBoardButton.style.color = '#d8d8d8';
+    document.getElementById('generate-random-walls-button').disabled = false; 
+    generateRandomWallsButton.style.color = '#d8d8d8';
+}
 
 startNode.classList.add('start');
 visualizeButton.addEventListener('click', () => {
     clearNodesThatAreNotWalls(numberOfRows, numberOfCols);
+    disableButton();
     if (algorithmToVisualize == 'dfs') {
-        beginDFS(startNode, row, col)
+        beginDFS(startNode, row, col);
     }
     else if (algorithmToVisualize == 'bfs') {
         bfs(row, col)
@@ -946,3 +969,6 @@ clearBoardButton.addEventListener('click', () => {
 
 let clickEventOne = new Event('click');
 fastButton.dispatchEvent(clickEventOne);
+
+let clickEventTwo = new Event('click');
+dfsButton.dispatchEvent(clickEventTwo);
