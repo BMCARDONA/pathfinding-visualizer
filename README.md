@@ -18,10 +18,6 @@
 
 - [X] Draw own path
 
-## To-do List:
-- Stop Animation of search algorithm if "clear board" or "generate walls" is clicked. 
-
-
 
 ## What I learned:
 - How to provide each div (in this case, each cell in the grid) with an id containing its respective coordinate.
@@ -32,9 +28,3 @@
 - Figured out how to "click then drag" on a grid to fill in the background color of the target cells. This just involves using 'mousedown' and 'mouseover'.
 - How to use ternary operators
 - How to use classes to keep track of a node's parents. (Learning this lesson proved to be a crucial part of finding the shortest path using the DFS algorithm.)
-
-
-
-<!-- add aStar functions
-
-I still have to add conditions to the main aStar function to check whether the current "dom" node is a wall or a border. Moreover, I need to switch the node's class from "unvisited" to "visited".  -->
