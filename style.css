@@ -17,6 +17,13 @@ body {
   flex-direction: column;
 }
 
+.footer,
+.hyperlink {
+  display: flex;
+  justify-content: center;
+  color: rgb(211, 211, 211);
+}
+
 .title {
   display: flex;
   justify-content: center;
