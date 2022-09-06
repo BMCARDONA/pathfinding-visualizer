@@ -37,6 +37,7 @@ body {
 #bfsButton,
 #astarButton,
 #greedyBestFirstSearchButton,
+#djikstraButton,
 #visualizeButton {
   font-weight: 600;
   font-size: 15px;
@@ -60,7 +61,8 @@ body {
 #dfsButton,
 #bfsButton,
 #astarButton,
-#greedyBestFirstSearchButton {
+#greedyBestFirstSearchButton,
+#djikstraButton {
   background-color: rgb(179, 150, 97);
 }
 
@@ -78,6 +80,7 @@ body {
 #bfsButton:hover,
 #astarButton:hover,
 #greedyBestFirstSearchButton:hover,
+#djikstraButton:hover,
 #visualizeButton:hover {
   filter: brightness(75%) !important;
   -webkit-transition: all .4s ease;
