@@ -804,19 +804,19 @@ let speedOption = '';
 let slowButton = document.getElementById("slow-button");
 slowButton.addEventListener('click', () => {
     changeSpeedButtonsColors('slow');
-    pathSpeed = 30;
+    pathSpeed = 50;
 });
 
 let mediumButton = document.getElementById("medium-button");
 mediumButton.addEventListener('click', () => {
     changeSpeedButtonsColors('medium');
-    pathSpeed = 20;
+    pathSpeed = 30;
 });
 
 let fastButton = document.getElementById("fast-button");
 fastButton.addEventListener('click', () => {
     changeSpeedButtonsColors('fast');
-    pathSpeed = 5;
+    pathSpeed = 10;
 });
 
 
