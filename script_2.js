@@ -208,6 +208,8 @@ function clearBoard(numberOfRows, numberOfCols) {
         astarShortestPath = [];
         greedyBestFirstSearchVisited = [];
         greedyBestFirstSearchShortestPath = [];
+        djikstraVisited = [];
+        djikstraShortestPath = [];
         node.textContent = '';
     }
   }
@@ -323,11 +325,14 @@ function addCurrentNodeToQueue(queue, node) {
 
 function updateNodeInQueue(queue, node) {
     // update g value of node 
+    
     for (let i = 0; i < queue.length; i++) {
       existingNode = queue[i];
-      if (node.g < existingNode.g) {
-          existingNode.g = node.g;
-          existingNode.parent = node.parent
+      if (existingNode.row == row && existingNode.col == col) {
+          if (node.g < existingNode.g) {
+            existingNode.g = node.g;
+            existingNode.parent = node.parent
+          }
       }
     } 
 }
@@ -540,6 +545,141 @@ function greedyBestFirstSearch(startRow, startCol) {
     }
 }
 
+/////////////////////////////////////////// dijkstra's ///////////////////////////////////////////
+
+class dijkstraNode {
+  constructor(parent, row, col, distance) {
+    this.parent = parent;
+    this.row = row;
+    this.col = col;
+    this.distance = distance;
+  }
+}
+
+function updateNodeDistanceInQueue(queue, node, row, col) {
+  for (let i = 0; i < queue.length; i++) {
+    existingNode = queue[i];
+    if (existingNode.row == row && existingNode.col == col) {
+        if (node.distance + 1 < existingNode.distance) {
+          existingNode.distance = node.distance + 1;
+          // we want to set the existing node's parent to the plucked node
+          existingNode.parent = node;
+        }
+    }
+  } 
+}
+
+
+function helper(currentNode, nodeQueue, queue) {
+    if (currentNode.row - 1 >= 0) {
+        let newNode = new dijkstraNode(null, currentNode.row - 1, currentNode.col, Number.MAX_SAFE_INTEGER)
+        let domNode = document.getElementById(`${currentNode.row - 1}-${currentNode.col}`)
+        if (queue.includes(domNode) == false) {
+            queue.push(domNode);
+            nodeQueue.push(newNode);
+            helper(newNode, nodeQueue, queue);
+        }
+    }
+    if (currentNode.col + 1 <= 63) {
+      let newNode = new dijkstraNode(null, currentNode.row, currentNode.col + 1, Number.MAX_SAFE_INTEGER)
+      let domNode = document.getElementById(`${currentNode.row}-${currentNode.col + 1}`)
+      if (queue.includes(domNode) == false) {
+          queue.push(domNode);
+          nodeQueue.push(newNode);
+          helper(newNode, nodeQueue, queue);
+      }
+    }
+    if (currentNode.row + 1 <= 26) {
+      let newNode = new dijkstraNode(null, currentNode.row + 1, currentNode.col, Number.MAX_SAFE_INTEGER)
+      let domNode = document.getElementById(`${currentNode.row + 1}-${currentNode.col}`)
+      if (queue.includes(domNode) == false) {
+          queue.push(domNode);
+          nodeQueue.push(newNode);
+          helper(newNode, nodeQueue, queue);
+      }
+    }
+    if (currentNode.col - 1 >= 0) {
+      let newNode = new dijkstraNode(null, currentNode.row, currentNode.col - 1, Number.MAX_SAFE_INTEGER)
+      let domNode = document.getElementById(`${currentNode.row}-${currentNode.col - 1}`)
+      if (queue.includes(domNode) == false) {
+          queue.push(domNode);
+          nodeQueue.push(newNode);
+          helper(newNode, nodeQueue, queue);
+      }
+    }
+}
+
+let djikstraVisited = [];
+let djikstraShortestPath = [];
+
+
+function djikstras(startRow, startCol) {
+  let startNode = new dijkstraNode(null, startRow, startCol, 0);
+  let nodeQueue = [startNode];
+  let domNodeQueue = [];
+  helper(startNode, nodeQueue, domNodeQueue);
+  // set other nodes distance to INF
+  while (nodeQueue.length > 0) {
+      let currentNode = nodeQueue[0];
+      // set currentNode to queue element with lowest distance value
+      for (let i = 0; i < nodeQueue.length; i++) {
+          node = nodeQueue[i];
+          if (node.distance < currentNode.distance) {
+              currentNode = node;
+          }
+      }
+      // if node is target
+      if (currentNode.row == 13 && currentNode.col == 55) {
+        node = currentNode;
+        while (true) {
+            djikstraShortestPath.push(node);
+            console.log(node);
+            node = node.parent;
+            if (node == null) {
+                break;
+            }
+        }
+        break;
+      }
+      const currentNodeIdx = nodeQueue.indexOf(currentNode);
+      // We splice an array from the queue -- not an element! 
+      let pluckedArray = nodeQueue.splice(currentNodeIdx, 1);  // 2nd parameter means remove one item only
+      let pluckedNode = pluckedArray[0];
+
+      let domNode = document.getElementById(`${pluckedNode.row}-${pluckedNode.col}`);
+      if (domNode.classList.contains('wall') == false && domNode.classList.contains('visited') == false) {
+          djikstraVisited.push(domNode);
+          markNodeAsVisited(domNode);
+
+          if (pluckedNode.row - 1 >= 0) {
+              let dom = document.getElementById(`${pluckedNode.row - 1}-${pluckedNode.col}`)
+              if (dom.classList.contains('visited') == false) {
+                  updateNodeDistanceInQueue(nodeQueue, pluckedNode, pluckedNode.row - 1, pluckedNode.col);
+              }
+          }
+          if (pluckedNode.col + 1 <= 63) {
+              let dom = document.getElementById(`${pluckedNode.row}-${pluckedNode.col + 1}`)
+              if (dom.classList.contains('visited') == false) {
+                  updateNodeDistanceInQueue(nodeQueue, pluckedNode, pluckedNode.row, pluckedNode.col + 1);
+              }
+          }
+          if (pluckedNode.row + 1 <= 26) {
+              let dom = document.getElementById(`${pluckedNode.row + 1}-${pluckedNode.col}`)
+              if (dom.classList.contains('visited') == false) {
+                  updateNodeDistanceInQueue(nodeQueue, pluckedNode, pluckedNode.row + 1, pluckedNode.col);
+              }
+          }
+          if (pluckedNode.col - 1 >= 0) {
+              let dom = document.getElementById(`${pluckedNode.row}-${pluckedNode.col - 1}`)
+              if (dom.classList.contains('visited') == false) {
+                  updateNodeDistanceInQueue(nodeQueue, pluckedNode, pluckedNode.row, pluckedNode.col - 1);
+              }
+          }
+      }
+  }
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // gameBoard must be an id -- it can't be a class. 
@@ -611,30 +751,48 @@ greedyBestFirstSearchButton.addEventListener('click', () => {
     changePathButtonsColors(algorithmToVisualize);
 });
 
+// djikstra button
+let djikstraButton = document.getElementById("djikstraButton")
+djikstraButton.addEventListener('click', () => {
+    algorithmToVisualize = 'djikstra';
+    changePathButtonsColors(algorithmToVisualize);
+});
+
 function changePathButtonsColors(sortType) {
   if (sortType == 'dfs') {
     dfsButton.style.backgroundColor = clickedPathButtonColor;
     bfsButton.style.backgroundColor = defaultPathButtonColor;
     astarButton.style.backgroundColor = defaultPathButtonColor;
     greedyBestFirstSearchButton.style.backgroundColor = defaultPathButtonColor;
+    djikstraButton.style.backgroundColor = defaultPathButtonColor;
   }
   else if (sortType == 'bfs') {
     dfsButton.style.backgroundColor = defaultPathButtonColor;
     bfsButton.style.backgroundColor = clickedPathButtonColor;
     astarButton.style.backgroundColor = defaultPathButtonColor;
     greedyBestFirstSearchButton.style.backgroundColor = defaultPathButtonColor;
+    djikstraButton.style.backgroundColor = defaultPathButtonColor;
   }
   else if (sortType == 'astar') {
     dfsButton.style.backgroundColor = defaultPathButtonColor;
     bfsButton.style.backgroundColor = defaultPathButtonColor;
     astarButton.style.backgroundColor = clickedPathButtonColor;
     greedyBestFirstSearchButton.style.backgroundColor = defaultPathButtonColor;
+    djikstraButton.style.backgroundColor = defaultPathButtonColor;
   }
   else if (sortType == 'greedyBestFirst') {
     dfsButton.style.backgroundColor = defaultPathButtonColor;
     bfsButton.style.backgroundColor = defaultPathButtonColor;
     astarButton.style.backgroundColor = defaultPathButtonColor;
     greedyBestFirstSearchButton.style.backgroundColor = clickedPathButtonColor;
+    djikstraButton.style.backgroundColor = defaultPathButtonColor;
+  }
+  else if (sortType == 'djikstra') {
+    dfsButton.style.backgroundColor = defaultPathButtonColor;
+    bfsButton.style.backgroundColor = defaultPathButtonColor;
+    astarButton.style.backgroundColor = defaultPathButtonColor;
+    greedyBestFirstSearchButton.style.backgroundColor = defaultPathButtonColor;
+    djikstraButton.style.backgroundColor = clickedPathButtonColor;
   }
 }
 
@@ -719,6 +877,8 @@ function clearNodesThatAreNotWalls(numberOfRows, numberOfCols) {
             astarShortestPath = [];
             greedyBestFirstSearchVisited = [];
             greedyBestFirstSearchShortestPath = [];
+            djikstraVisited = [];
+            djikstraShortestPath = [];
         }
     }
 }
@@ -752,7 +912,15 @@ visualizeButton.addEventListener('click', () => {
         setTimeout(() => {
           bfsShortestPathAnimation(greedyBestFirstSearchShortestPath);
         }, timeToFinishBluePath)
-  }
+    }
+    else if (algorithmToVisualize == 'djikstra') {
+      djikstras(row, col);
+      bfsPathColorAnimation(djikstraVisited);
+      let timeToFinishBluePath = pathSpeed * djikstraVisited.length;
+      setTimeout(() => {
+        bfsShortestPathAnimation(djikstraShortestPath);
+      }, timeToFinishBluePath)
+    }
 });
 
 

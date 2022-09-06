@@ -14,10 +14,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 30px;
-  color:rgb(219, 219, 219);
+  font-size: 25px;
+  color:#08b6ab;
   padding: 10px;
-  background-color: rgb(79, 83, 119);
+  background-color: rgb(47, 42, 57);
   /* background-color: #25274d; */
 }
 
@@ -38,7 +38,7 @@ body {
 #astarButton,
 #greedyBestFirstSearchButton,
 #visualizeButton {
-  /* font-weight: 600; */
+  font-weight: 600;
   font-size: 15px;
   border-radius: 5px;
   border: 0;
@@ -141,7 +141,7 @@ body {
 
   0% {
     background-color: rgba(73, 251, 53, 0.75);
-    border-color: rgba(73, 251, 53, 0.75);
+    border-color: green;
   }
 }
 
