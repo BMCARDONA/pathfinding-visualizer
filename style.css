@@ -158,23 +158,25 @@ body {
 }
 
 
-
-
 @keyframes foundFirstPath {
   /* background-color: mediumspringgreen; */
   0% {
     transform: scale(0.3);
-    background-color: rgba(184, 91, 91, 0.75);
-    border-radius: 100%;
+    background-color: rgba(0, 243, 36, 0.75);
+    border-radius: 70%;
+    animation-iteration-count: infinite;
+    color:rgb(124, 91, 255)
   }
 
   50% {
-    background-color: rgba(255, 0, 72, 0.75);
+    background-color: rgba(0, 4, 248, 0.75);
+    animation-iteration-count: infinite;
   }
 
   75% {
     transform: scale(1.2);
-    background-color: rgba(107, 33, 180, 0.75);
+    background-color: rgba(183, 0, 255, 0.75);
+    animation-iteration-count: infinite;
   }
 
   100% {
@@ -182,6 +184,7 @@ body {
     background-color: rgba(124, 91, 255, 0.75);
   }
 }
+
 
 @keyframes flickerGreen {
   /* background-color: mediumspringgreen; */
@@ -196,12 +199,11 @@ body {
   0% {
     transform: scale(1);
     background-color: rgba(65, 255, 172, 0.75);
-    border-color: lightskyblue;
   }
 
   50% {
-    transform: scale(1.1);
-    background-color: rgba(65, 255, 172, 0.75);
+    transform: scale(0.85);
+    background-color: rgba(14, 237, 253, 0.75);
   }
 
   100% {
@@ -235,6 +237,7 @@ body {
   /* }
 }  */
 
+
 @keyframes restoreVisualizeButton {
   0% {
     transform: scale(0.3);
@@ -251,5 +254,19 @@ body {
     background-color: rgba(124, 91, 255, 0.75);
   }
 }
+
+@keyframes resetPathAnimation {
+  0% {
+    transform: scale(1.0);
+  }
+}
+
+@keyframes resetVisualizeButton {
+  0% {
+    transform: scale(1.0);
+  }
+}
+
+
 
 

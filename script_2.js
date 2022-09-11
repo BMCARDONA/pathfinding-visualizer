@@ -75,20 +75,21 @@ class Node {
   }
 }
 
+let lastPathAnimation = "foundFirstPath";
 
 function dfsPathColorAnimation(array) {
   for (let i = 0; i < array.length; i++) {
     setTimeout(() => {
         let node = array[i];
         if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
-          changeNodeColor(node, mainPathColor);
-          node.style.animation = "foundFirstPath 0.5s";
-          node.style.borderColor = mainPathBorderColor;
+            changeNodeColor(node, mainPathColor);
+            node.style.animation = "foundFirstPath 0.5s";
         }
+        node.style.borderColor = mainPathBorderColor;
     }, pathSpeed * i); 
   }
+  resetAnimationForAllValidNodes(27, 64);
 }
-
 
 function shortestPathColorAnimation(array) {
     array.reverse()
@@ -105,7 +106,7 @@ function shortestPathColorAnimation(array) {
           }
       }, finishedPathSpeed * i); 
     }
-}
+};
 
 
 function DFS(array, parentNode, row, col) {
@@ -184,8 +185,8 @@ function clearBoard(numberOfRows, numberOfCols) {
             node.setAttribute("class", "");
             node.classList.add('start');
             node.classList.add('unvisited');
-            node.style.backgroundColor = 'tomato';
-            node.style.borderColor = 'tomato';
+            node.style.backgroundColor = 'red';
+            node.style.borderColor = 'red';
         }
         // target node
         else if (row == 13 && col == 55) {
@@ -194,12 +195,12 @@ function clearBoard(numberOfRows, numberOfCols) {
             node.style.backgroundColor = 'green';
             node.style.borderColor = 'green';
         }
+        // other nodes
         else {
             node.setAttribute("class", "");
             node.classList.add('unvisited');
             node.style.backgroundColor = 'white';
             node.style.borderColor = 'lightgray';
-            
         }
         targetReached = false;
         dfsShortestPath = [];
@@ -219,17 +220,41 @@ function clearBoard(numberOfRows, numberOfCols) {
 
 /////////////////////////////////////////// bfs ///////////////////////////////////////////
 
-function bfsPathColorAnimation(array) {
-  for (let i = 0; i < array.length; i++) {
-    setTimeout(() => {
-        let node = array[i];
-        if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
-          changeNodeColor(node, mainPathColor);
-          node.style.animation = "foundFirstPath 0.5s";
-          node.style.borderColor = mainPathBorderColor;
-        }
-    }, pathSpeed * i); 
+// if array length is odd, need to change first node animation
+
+function resetAnimationForAllValidNodes(numberOfRows, numberOfCols) {
+  for (let row = 0; row < numberOfRows; row++) {
+      for (let col = 0; col < numberOfCols; col++) {
+          let node = document.getElementById(`${row}-${col}`)
+          // start node
+          if (row == 13 && col == 8) {
+              continue;
+          }
+          // target node
+          else if (row == 13 && col == 55) {
+              continue;
+          }
+          // if node is not wall
+          else if (node.classList.contains('wall') == false) {
+              node.style.animation = "resetPathAnimation 0s";
+          }
+      }
   }
+}
+
+
+function bfsPathColorAnimation(array) {
+    for (let i = 0; i < array.length; i++) {
+      setTimeout(() => {
+          let node = array[i];
+          if (node.classList.contains('start') == false && node.classList.contains('target') == false) {
+              changeNodeColor(node, mainPathColor);
+              node.style.animation = "foundFirstPath 0.5s";
+          }
+          node.style.borderColor = mainPathBorderColor;
+      }, pathSpeed * i); 
+    }
+    resetAnimationForAllValidNodes(27, 64);
 }
 
 function bfsShortestPathAnimation(array) {
@@ -244,6 +269,7 @@ function bfsShortestPathAnimation(array) {
             domNode.style.borderColor = shortPathBorderColor;
             // add numbers to final path
             // domNode.textContent = `${i}`;
+            console.log(domNode);
             if (i == array.length - 2) {
               enableButton();
             }
@@ -251,7 +277,6 @@ function bfsShortestPathAnimation(array) {
       }, finishedPathSpeed * i); 
     }
 }
-
 
 class bfsNode {
   constructor(row, col, parent) {
@@ -711,7 +736,7 @@ let col = 8
 let shortPathColor = 'rgb(65, 255, 172)';
 let shortPathBorderColor = 'lightskyblue';
 let mainPathColor = 'rgb(124, 91, 255)';
-let mainPathBorderColor = 'rgb(93, 63, 100)';
+let mainPathBorderColor = 'blue';
 // don't forget to reset these to empty arrays when you clear the board!
 let bfsVisited = [];
 let bfsShortestPath = [];
@@ -720,7 +745,7 @@ let astarShortestPath = [];
 let greedyBestFirstSearchVisited = [];
 let greedyBestFirstSearchShortestPath = [];
 let startNode = document.getElementById(`${row}-${col}`)
-changeNodeColor(startNode, "tomato")
+changeNodeColor(startNode, "red")
 
 
 let algorithmToVisualize = ''
@@ -808,24 +833,24 @@ let speedOption = '';
 let slowButton = document.getElementById("slow-button");
 slowButton.addEventListener('click', () => {
     changeSpeedButtonsColors('slow');
-    pathSpeed = 50;
+    pathSpeed = 60;
 });
 
 let mediumButton = document.getElementById("medium-button");
 mediumButton.addEventListener('click', () => {
     changeSpeedButtonsColors('medium');
-    pathSpeed = 30;
+    pathSpeed = 40;
 });
 
 let fastButton = document.getElementById("fast-button");
 fastButton.addEventListener('click', () => {
     changeSpeedButtonsColors('fast');
-    pathSpeed = 10;
+    pathSpeed = 5;
 });
 
 
 let defaultSpeedButtonColor = 'tomato';
-let clickedSpeedButtonColor = 'rgb(116, 250, 192)';
+let clickedSpeedButtonColor = 'cyan';
 function changeSpeedButtonsColors(sortType) {
   if (sortType == 'slow') {
     slowButton.style.color = clickedSpeedButtonColor;
@@ -855,8 +880,8 @@ function clearNodesThatAreNotWalls(numberOfRows, numberOfCols) {
                 node.setAttribute("class", "");
                 node.classList.add('start');
                 node.classList.add('unvisited');
-                node.style.backgroundColor = 'tomato';
-                node.style.borderColor = 'tomato';
+                node.style.backgroundColor = 'red';
+                node.style.borderColor = 'red';
             }
             // target node
             else if (row == 13 && col == 55) {
@@ -887,6 +912,7 @@ function clearNodesThatAreNotWalls(numberOfRows, numberOfCols) {
     }
 }
 function disableButton() {
+    visualizeButton.style.animation = 'resetVisualizeButton 0s'
     document.getElementById('visualizeButton').disabled = true;
     visualizeButton.style.backgroundColor = 'red';
     document.getElementById('clear-board-button').disabled = true; 
