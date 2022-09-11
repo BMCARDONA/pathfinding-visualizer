@@ -719,7 +719,7 @@ let wallColor = 'rgb(24, 52, 69)';
 makeGrid(numberOfRows, numberOfCols) 
 createUnvisitedAndTargetNodes(numberOfRows, numberOfCols);
 let pathSpeed = 0;
-let finishedPathSpeed = 30;
+let finishedPathSpeed = 45;
 let targetReached = false;
 let dfsShortestPath = []
 let unvisitedNodes = gameBoard.querySelectorAll(":scope > .unvisited");
@@ -736,7 +736,7 @@ let col = 8
 let shortPathColor = 'rgb(65, 255, 172)';
 let shortPathBorderColor = 'lightskyblue';
 let mainPathColor = 'rgb(124, 91, 255)';
-let mainPathBorderColor = 'blue';
+let mainPathBorderColor = 'rebeccapurple';
 // don't forget to reset these to empty arrays when you clear the board!
 let bfsVisited = [];
 let bfsShortestPath = [];
@@ -833,19 +833,19 @@ let speedOption = '';
 let slowButton = document.getElementById("slow-button");
 slowButton.addEventListener('click', () => {
     changeSpeedButtonsColors('slow');
-    pathSpeed = 60;
+    pathSpeed = 45;
 });
 
 let mediumButton = document.getElementById("medium-button");
 mediumButton.addEventListener('click', () => {
     changeSpeedButtonsColors('medium');
-    pathSpeed = 40;
+    pathSpeed = 30;
 });
 
 let fastButton = document.getElementById("fast-button");
 fastButton.addEventListener('click', () => {
     changeSpeedButtonsColors('fast');
-    pathSpeed = 5;
+    pathSpeed = 15;
 });
 
 

@@ -162,20 +162,20 @@ body {
   /* background-color: mediumspringgreen; */
   0% {
     transform: scale(0.3);
-    background-color: rgba(0, 243, 36, 0.75);
-    border-radius: 70%;
+    background-color: rgba(255, 17, 17, 0.75);
+    border-radius: 100%;
     animation-iteration-count: infinite;
     color:rgb(124, 91, 255)
   }
 
   50% {
-    background-color: rgba(0, 4, 248, 0.75);
+    background-color: rgba(255, 0, 76, 0.75);
     animation-iteration-count: infinite;
   }
 
   75% {
     transform: scale(1.2);
-    background-color: rgba(183, 0, 255, 0.75);
+    background-color: rgba(0, 21, 255, 0.75);
     animation-iteration-count: infinite;
   }
 
