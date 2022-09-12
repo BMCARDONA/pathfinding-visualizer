@@ -28,3 +28,5 @@
 - Figured out how to "click then drag" on a grid to fill in the background color of the target cells. This just involves using 'mousedown' and 'mouseover'.
 - How to use ternary operators
 - How to use classes to keep track of a node's parents. (Learning this lesson proved to be a crucial part of finding the shortest path using the DFS algorithm.)
+- The basic of WebPack ([Helpful link](https://webpack.js.org/guides/getting-started/))
+- How to deploy a bundled javaScript project to gitHub pages ([Helpful link](https://medium.com/@cassandra.torske/one-way-to-deploy-your-bundled-javascript-project-to-github-pages-9f9bb2a1aaa1))
