@@ -384,7 +384,7 @@ function aStarSearch(startRow, startCol) {
     // set currentNode to queue element with lowest f value
     for (let i = 0; i < queue.length; i++) {
       let node = queue[i];
-      if (node.f <= currentNode.f) {
+      if (node.f < currentNode.f) {
         currentNode = node;
       }
     }
